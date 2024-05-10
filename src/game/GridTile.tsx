@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Tile } from '../types/types';
 
 function GridTile(props:GridTileProps) {
 
-  const leftPos = `calc(5em * ${props.tile.x - props.longestWord/2} + 50%)`;
-  const topPos = `calc(5em * ${props.tile.y})`;
-
   function onClick(){
-    console.log(props.tile.value, ', ', props.tile.x, ', ', props.tile.y);
+    console.log(props.tile.value, ', ', props.tile.coordinates.x, ', ', props.tile.coordinates.y);
   }
     
   return (
-    <button className='tile' onClick={onClick} style={{position: 'absolute', left: leftPos, top: topPos}}>
+    <button className='tile tile-enabled' onClick={onClick}>
       {props.tile.value}
     </button>
   );
 }
 
-export default GridTile;
-
-export type Tile = {
-  value: string | undefined,
-  x: number,
-  y: number
+function EmptyTile(){
+  return (
+    <div className='tile'>
+    </div>
+  );
 }
 
+export {GridTile, EmptyTile};
+
 interface GridTileProps {
-  tile:Tile,
-  longestWord: number
+  tile:Tile
 }

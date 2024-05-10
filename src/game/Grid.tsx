@@ -1,46 +1,65 @@
 import React, { useEffect, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
-import GridTile, { Tile } from './GridTile';
+import {GridTile, EmptyTile} from './GridTile';
+import { Coordinates, Snake, Tile } from '../types/types';
+import { createTileDictionary, getGridSize, getTileKey } from './TileHelper';
 
 function Grid() {
-
-  const [longestWord, setLongestWord] = useState<number>(0);
-  const [tiles, setTiles] = useState<Tile[]>([]);
+  const [gridSize, setGridSize] = useState<Coordinates>({x:0, y:0});
+  const [tiles, setTiles] = useState<Record<string, Tile>>({});
+  const [snake, setSnake] = useState<Snake>();
 
   useEffect(() => {
-    const initialTiles : Tile[] = [];
-    let lw = 0;
 
-    for(let i = 0; i < mockGameData.words.length; i++){
-      const word = mockGameData.words[i];
-      if(word.word.length > lw){
-        lw = word.word.length;
-      }
-      for(let j = 0; j < word.word.length; j++){
-        const char = word.word.charAt(j);
-        const tile :Tile = {
-          value: char,
-          x: word.offset + j,
-          y: i
-        };
-        initialTiles.push(tile);
-      }
-    }
-    console.log('initial tiles:', initialTiles);
-    setTiles(initialTiles);
-    setLongestWord(lw);
+    const dict = createTileDictionary(mockGameData.words);
+    const size = getGridSize(mockGameData.words);
+
+    setTiles(dict);
+    setGridSize(size);
+
+    //Initialise snake
+    const chars = mockGameData.pathString.split('');
+    const initialSnake:Snake = {
+      initialLetters: chars,
+      lettersRemaining: [...chars]
+    };
+
+    setSnake(initialSnake);
+    
   }, []);
 
+  const listItems = () => {
+    console.log(gridSize);
+    const wordElements = [];
 
-  const listItems = () => tiles.map((tile) => {
-    return <GridTile longestWord = {longestWord} tile = {tile} key = {tile.x.toString()+ '.' + tile.y.toString()}></GridTile>;
-  });
+    for(let j = 0; j < gridSize.y; j++){
+      const tileElements =[];
+
+      for(let i = 0; i < gridSize.x; i++){
+        if(tiles[getTileKey({x:i, y:j})] !== undefined){
+          tileElements.push(<GridTile tile={tiles[getTileKey({x:i, y:j})]}/>);
+        } else {
+          tileElements.push(<EmptyTile/>);
+        }
+      }
+
+      wordElements.push(<div className='wordRow'>
+        {tileElements}
+      </div>);
+    }
+
+    return(wordElements);
+  };
     
   return (
-    <div className='game'>
-      {listItems()}
+    <div>
+      <div>
+        {snake?.lettersRemaining}
+      </div>
+      <div className='game'>
+        {listItems()}
+      </div>
     </div>
-    
   );
 }
 
