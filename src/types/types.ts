@@ -1,5 +1,6 @@
 export type Tile = {
-    value: string | undefined,
+    guess: string | undefined,
+    value: string,
     coordinates: Coordinates
 }
 
@@ -21,5 +22,5 @@ export type Coordinates = {
 
 export type Snake = {
     initialLetters: string[],
-    lettersRemaining: string[],
+    lettersUsed: number
   }

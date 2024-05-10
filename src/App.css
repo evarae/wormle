@@ -34,17 +34,42 @@
   box-sizing: border-box;
 }
 
-.tile-enabled {
+.tile-grid-empty {
+  background-color: lightgrey;
+}
+
+.tile-grid-enabled {
   background-color: lightgreen;
+}
+
+.tile-grid {
   border: none;
   font-size:inherit;
 }  
 
-.game {
-  background-color: lightblue;
+.tile-path{
+  height: 2em;
+  width: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.wordRow{
+.tile-path-unused {
+  background-color: lightgreen;
+}
+
+.tile-path-used{
+  background-color: lightgray;
+}
+
+.path-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+}
+
+.word-container{
   display: flex;
   justify-content: center;
 }

@@ -19,6 +19,7 @@ function createTileDictionary(words: Word[]): Record<string,Tile>{
     letters.forEach((letter, letterIndex) => {
       const tile:Tile = 
         {
+          guess: undefined,
           value: letter,
           coordinates: {
             x: letterIndex + word.offset,

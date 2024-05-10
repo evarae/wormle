@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
-import {GridTile, EmptyTile} from './GridTile';
+import {GridTile, EmptyTile, PathTile} from './GridTile';
 import { Coordinates, Snake, Tile } from '../types/types';
 import { createTileDictionary, getGridSize, getTileKey } from './TileHelper';
 
 function Grid() {
   const [gridSize, setGridSize] = useState<Coordinates>({x:0, y:0});
   const [tiles, setTiles] = useState<Record<string, Tile>>({});
-  const [snake, setSnake] = useState<Snake>();
+  const [path, setPath] = useState<string[]>([]);
+  const [lettersUsed, setLettersUsed] = useState<number>(0);
 
   useEffect(() => {
 
@@ -17,18 +18,29 @@ function Grid() {
     setTiles(dict);
     setGridSize(size);
 
-    //Initialise snake
     const chars = mockGameData.pathString.split('');
-    const initialSnake:Snake = {
-      initialLetters: chars,
-      lettersRemaining: [...chars]
-    };
-
-    setSnake(initialSnake);
+    setPath(chars);
+    setLettersUsed(0);
     
   }, []);
 
-  const listItems = () => {
+  const pathElements = path.map((char, index) =>
+    // eslint-disable-next-line react/jsx-key
+    <PathTile isUsed = {(lettersUsed > index)} letter={char}/>
+  );
+
+  function tileOnClickCallback(tile:Tile){
+
+    if(tile.guess == undefined){
+      const partialRecord : Record<string, Tile> = {};
+      partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: path[lettersUsed], coordinates: tile.coordinates};
+      setTiles({...tiles, ...partialRecord});
+      setLettersUsed(lettersUsed+1);
+    }
+    return;
+  }
+
+  const gridElements = () => {
     console.log(gridSize);
     const wordElements = [];
 
@@ -37,13 +49,13 @@ function Grid() {
 
       for(let i = 0; i < gridSize.x; i++){
         if(tiles[getTileKey({x:i, y:j})] !== undefined){
-          tileElements.push(<GridTile tile={tiles[getTileKey({x:i, y:j})]}/>);
+          tileElements.push(<GridTile tile={tiles[getTileKey({x:i, y:j})]} onClickCallback={tileOnClickCallback}/>);
         } else {
           tileElements.push(<EmptyTile/>);
         }
       }
 
-      wordElements.push(<div className='wordRow'>
+      wordElements.push(<div className='word-container'>
         {tileElements}
       </div>);
     }
@@ -53,11 +65,11 @@ function Grid() {
     
   return (
     <div>
-      <div>
-        {snake?.lettersRemaining}
+      <div className='path-container'>
+        {pathElements}
       </div>
-      <div className='game'>
-        {listItems()}
+      <div >
+        {gridElements()}
       </div>
     </div>
   );
