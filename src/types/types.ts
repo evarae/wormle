@@ -19,8 +19,3 @@ export type Coordinates = {
     x: number,
     y: number
 }
-
-export type Snake = {
-    initialLetters: string[],
-    lettersUsed: number
-  }

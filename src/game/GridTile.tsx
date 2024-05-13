@@ -3,7 +3,7 @@ import { Tile } from '../types/types';
 
 function GridTile(props:GridTileProps) {
   
-  const classNames = (props.tile.value !== undefined) ? 'tile tile-grid tile-grid-enabled' : 'tile tile-grid tile-grid-disabled';
+  const classNames = (props.tile.guess !== undefined) ? 'tile tile-grid tile-grid-enabled' : 'tile tile-grid tile-grid-disabled';
     
   function onClick(){
     props.onClickCallback(props.tile);
