@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
 import {GridTile, EmptyTile, PathTile} from './GridTile';
 import { Coordinates, Tile } from '../types/types';
-import { createTileDictionary, getGridSize, getTileKey } from './TileHelper';
+import { areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getGridSize, getTileKey } from './TileHelper';
 
 function Grid() {
   const [gridSize, setGridSize] = useState<Coordinates>({x:0, y:0});
@@ -10,6 +10,7 @@ function Grid() {
   const [pathLetters, setPathLetters] = useState<string[]>([]);
   const [path, setPath] = useState<Coordinates[]>([]);
 
+  //Initialise the game
   useEffect(() => {
     const dict = createTileDictionary(mockGameData.words);
     const size = getGridSize(mockGameData.words);
@@ -49,8 +50,25 @@ function Grid() {
     return;
   }
 
+  //Check for win condition
+  const isGameOver = useMemo(() => {
+
+    if(path.length !== pathLetters.length){
+      return false;
+    }
+
+    //Iterate through each word and check the right letter is there
+    const values: Tile[] = Object.values(tiles);
+    values.forEach(t => {
+      if(t.guess !== t.value){
+        return false;
+      }
+    });
+    console.log('You won!');
+    return true;
+  }, [path, tiles]);
+
   const gridElements = () => {
-    console.log(gridSize);
     const wordElements = [];
 
     for(let j = 0; j < gridSize.y; j++){
@@ -73,11 +91,7 @@ function Grid() {
   };
 
   function isMoveBackwardValid(coordinates: Coordinates): boolean {
-    if(path.length < 1){
-      return false;
-    }
-
-    return areCoordinatesEqual(path[path.length-1], coordinates);
+    return ((path.length < 1) ? false : areCoordinatesEqual(path[path.length-1], coordinates));
   }
 
   function isMoveForwardValid(coordinates: Coordinates): boolean {
@@ -97,28 +111,10 @@ function Grid() {
 
     return false;
   }
-
-  function areCoordinatesEqual(a:Coordinates, b:Coordinates) : boolean {
-    return (a.x==b.x && a.y==b.y);
-  }
-
-  function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
-    const diffX = Math.abs(a.x - b.x);
-    const diffY = Math.abs(a.y - b.y);
-
-    if(diffX == 1 && diffY == 0){
-      return true;
-    } 
-
-    if(diffX == 0 && diffY == 1){
-      return true;
-    } 
-
-    return false;
-  }
     
   return (
     <div>
+      {isGameOver && <h2>You Win!</h2>}
       <div className='path-container'>
         {pathElements}
       </div>

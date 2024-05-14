@@ -37,4 +37,23 @@ function getTileKey(coordinates:Coordinates):string {
   return(`${coordinates.x},${coordinates.y}`);
 }
 
-export {createTileDictionary, getTileKey, getGridSize};
+function areCoordinatesEqual(a:Coordinates, b:Coordinates) : boolean {
+  return (a.x==b.x && a.y==b.y);
+}
+
+function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
+  const diffX = Math.abs(a.x - b.x);
+  const diffY = Math.abs(a.y - b.y);
+
+  if(diffX == 1 && diffY == 0){
+    return true;
+  } 
+
+  if(diffX == 0 && diffY == 1){
+    return true;
+  } 
+
+  return false;
+}
+
+export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual};
