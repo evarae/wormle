@@ -11,7 +11,6 @@ function Grid() {
   const [path, setPath] = useState<Coordinates[]>([]);
 
   useEffect(() => {
-
     const dict = createTileDictionary(mockGameData.words);
     const size = getGridSize(mockGameData.words);
 
@@ -22,13 +21,26 @@ function Grid() {
     setPathLetters(chars);
   }, []);
 
+  function resetTiles(){
+    const dict = createTileDictionary(mockGameData.words);
+    setPath([]);
+    setTiles(dict);
+  }
+
   const pathElements = pathLetters.map((char, index) =>
     // eslint-disable-next-line react/jsx-key
     <PathTile isUsed = {(path.length > index)} letter={char}/>
   );
 
   function tileOnClickCallback(tile:Tile){
-    if(isMoveValid(tile.coordinates)){
+
+    if(isMoveBackwardValid(tile.coordinates)){
+      const partialRecord : Record<string, Tile> = {};
+      partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: undefined, coordinates: tile.coordinates};
+      setTiles({...tiles, ...partialRecord});
+      path.pop();
+      setPath([...path]);
+    } else if(isMoveForwardValid(tile.coordinates)){
       const partialRecord : Record<string, Tile> = {};
       partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: pathLetters[path.length], coordinates: tile.coordinates};
       setTiles({...tiles, ...partialRecord});
@@ -60,7 +72,15 @@ function Grid() {
     return(wordElements);
   };
 
-  function isMoveValid(coordinates: Coordinates): boolean {
+  function isMoveBackwardValid(coordinates: Coordinates): boolean {
+    if(path.length < 1){
+      return false;
+    }
+
+    return areCoordinatesEqual(path[path.length-1], coordinates);
+  }
+
+  function isMoveForwardValid(coordinates: Coordinates): boolean {
     
     //If it's the first move, probably need some validation for the length of path letters
     if(path.length == 0){
@@ -71,14 +91,18 @@ function Grid() {
       return false;
     }
 
-    if(isAdjacent(path[path.length-1], coordinates)){
+    if(areCoordinatesAdjacent(path[path.length-1], coordinates)){
       return true;
     }
 
     return false;
   }
 
-  function isAdjacent(a:Coordinates, b:Coordinates) : boolean {
+  function areCoordinatesEqual(a:Coordinates, b:Coordinates) : boolean {
+    return (a.x==b.x && a.y==b.y);
+  }
+
+  function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
     const diffX = Math.abs(a.x - b.x);
     const diffY = Math.abs(a.y - b.y);
 
@@ -101,6 +125,7 @@ function Grid() {
       <div >
         {gridElements()}
       </div>
+      <button onClick={resetTiles}>Reset Tiles</button>
     </div>
   );
 }
