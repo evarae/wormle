@@ -26,7 +26,7 @@ function EmptyTile(){
 function PathTile(props:PathTileProps){
 
   return (
-    <div className={props.isUsed? 'tile tile-path tile-path-used':'tile tile-path tile-path-unused'}>
+    <div className={`tile tile-path ${props.isUsed? 'tile-path-used':'tile-path-unused'} ${props.isHighlighted? 'tile-path-highlighted': ''}`}>
       {props.letter}
     </div>
   );
@@ -41,5 +41,6 @@ interface GridTileProps {
 
 interface PathTileProps {
   isUsed:boolean,
+  isHighlighted:boolean,
   letter:string
 }

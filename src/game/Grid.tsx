@@ -29,7 +29,7 @@ function Grid() {
 
   const pathElements = pathLetters.map((char, index) =>
     // eslint-disable-next-line react/jsx-key
-    <PathTile isUsed = {(path.length > index)} letter={char}/>
+    <PathTile isUsed = {(path.length > index)} letter={char} isHighlighted= {(path.length == index)}/>
   );
 
   function tileOnClickCallback(tile:Tile){

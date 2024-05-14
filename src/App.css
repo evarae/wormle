@@ -63,6 +63,10 @@
   background-color: lightgray;
 }
 
+.tile-path-highlighted{
+  background-color: yellow;
+}
+
 .path-container {
   display: flex;
   justify-content: center;
