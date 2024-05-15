@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Tile } from '../types/types';
 
-function GridTile(props:GridTileProps) {
+const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   
   const classNames = (props.tile.guess !== undefined) ? 'tile tile-grid tile-grid-enabled' : 'tile tile-grid tile-grid-disabled';
     
@@ -10,11 +10,13 @@ function GridTile(props:GridTileProps) {
   }
 
   return (
-    <button className={classNames} onClick={onClick}>
+    <button ref={ref} className={classNames} onClick={onClick}>
       {props.tile.guess}
     </button>
   );
-}
+});
+
+GridTile.displayName = 'GridTile';
 
 function EmptyTile(){
   return (

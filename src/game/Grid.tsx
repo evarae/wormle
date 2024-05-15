@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
 import {GridTile, EmptyTile, PathTile} from './GridTile';
 import { Coordinates, Tile } from '../types/types';
@@ -9,6 +9,8 @@ function Grid() {
   const [tiles, setTiles] = useState<Record<string, Tile>>({});
   const [pathLetters, setPathLetters] = useState<string[]>([]);
   const [path, setPath] = useState<Coordinates[]>([]);
+  const [focusedKey, setFocusedKey] = useState<string>();
+  const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
 
   //Initialise the game
   useEffect(() => {
@@ -41,11 +43,13 @@ function Grid() {
       setTiles({...tiles, ...partialRecord});
       path.pop();
       setPath([...path]);
+      setFocusedKey(getTileKey(tile.coordinates));
     } else if(isMoveForwardValid(tile.coordinates)){
       const partialRecord : Record<string, Tile> = {};
       partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: pathLetters[path.length], coordinates: tile.coordinates};
       setTiles({...tiles, ...partialRecord});
       setPath([...path, tile.coordinates]);
+      setFocusedKey(getTileKey(tile.coordinates));
     }
     return;
   }
@@ -64,6 +68,7 @@ function Grid() {
         return false;
       }
     });
+
     console.log('You won!');
     return true;
   }, [path, tiles]);
@@ -75,8 +80,9 @@ function Grid() {
       const tileElements =[];
 
       for(let i = 0; i < gridSize.x; i++){
-        if(tiles[getTileKey({x:i, y:j})] !== undefined){
-          tileElements.push(<GridTile tile={tiles[getTileKey({x:i, y:j})]} onClickCallback={tileOnClickCallback}/>);
+        const t = tiles[getTileKey({x:i, y:j})];
+        if(t !== undefined){
+          tileElements.push(<GridTile tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
         } else {
           tileElements.push(<EmptyTile/>);
         }
@@ -111,9 +117,49 @@ function Grid() {
 
     return false;
   }
+
+  const handleKeyDown = (event: React.KeyboardEvent): any => {
+
+    if(focusedKey===undefined){
+      //TODO: add some default here, maybe go to end of the snake?
+      return;
+    }
+
+    const focusedTile = tiles[focusedKey];
+    if(!focusedTile){
+      return;
+    }
+
+    let newTile = undefined;
+
+    switch(event.code){
+    case ('ArrowRight'): {
+      newTile = tiles[getTileKey({x: focusedTile.coordinates.x + 1, y: focusedTile.coordinates.y})];
+      break;
+    }
+    case ('ArrowLeft'): {
+      newTile = tiles[getTileKey({x: focusedTile.coordinates.x -1 , y: focusedTile.coordinates.y})];
+      break;
+    }
+    case ('ArrowDown'): {
+      newTile = tiles[getTileKey({x: focusedTile.coordinates.x, y: focusedTile.coordinates.y + 1})];
+      break;
+    }
+    case ('ArrowUp'): {
+      newTile = tiles[getTileKey({x: focusedTile.coordinates.x, y: focusedTile.coordinates.y - 1})];
+      break;
+    }
+    }
+
+    if(newTile !== undefined){
+      const newKey = getTileKey(newTile.coordinates);
+      textInputRefs.current[newKey].focus();
+      setFocusedKey(newKey);
+    }
+  };
     
   return (
-    <div>
+    <div onKeyDown={handleKeyDown}>
       {isGameOver && <h2>You Win!</h2>}
       <div className='path-container'>
         {pathElements}

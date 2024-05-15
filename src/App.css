@@ -45,6 +45,9 @@
 .tile-grid {
   border: none;
   font-size:inherit;
+  &:focus {
+    outline: 2px solid green;
+  }
 }  
 
 .tile-path{
