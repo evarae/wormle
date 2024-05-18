@@ -155,7 +155,7 @@ function Grid() {
       //Check if we're moving back to the last entry in the path
       if(path.length >= 2 && areCoordinatesEqual(focusedTile.coordinates, path[path.length-1]) && areCoordinatesEqual(newTile.coordinates, path[path.length-2])){
         tileOnClickCallback(focusedTile);
-      } else {
+      } else if(newTile.guess == undefined){
         tileOnClickCallback(newTile);
       }
 
