@@ -63,14 +63,13 @@ function Grid() {
 
     //Iterate through each word and check the right letter is there
     const values: Tile[] = Object.values(tiles);
+    let isMatch = true;
     values.forEach(t => {
       if(t.guess !== t.value){
-        return false;
+        isMatch = false;
       }
     });
-
-    console.log('You won!');
-    return true;
+    return isMatch;
   }, [path, tiles]);
 
   const gridElements = () => {
@@ -152,6 +151,14 @@ function Grid() {
     }
 
     if(newTile !== undefined){
+
+      //Check if we're moving back to the last entry in the path
+      if(path.length >= 2 && areCoordinatesEqual(focusedTile.coordinates, path[path.length-1]) && areCoordinatesEqual(newTile.coordinates, path[path.length-2])){
+        tileOnClickCallback(focusedTile);
+      } else {
+        tileOnClickCallback(newTile);
+      }
+
       const newKey = getTileKey(newTile.coordinates);
       textInputRefs.current[newKey].focus();
       setFocusedKey(newKey);
