@@ -14,32 +14,50 @@ function TestGrid() {
   return (
     <div className='word-container'>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head south-end'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head north-end'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head east-end'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head west-end'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head vertical-through'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head horizontal-through'></div>
       </div>
       <div className='tile snake-container'>
-        <span className='tile-letter' >h</span>
-        <div className='snake-head corner-through'><div className='corner'></div></div>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
+        <div className='snake-head corner-through'>
+          <div className='corner'>
+            <div className='inner'></div>
+          </div>
+        </div>
       </div>
     </div>
   );

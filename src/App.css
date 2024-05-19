@@ -100,6 +100,8 @@
 }
 
 .snake-head{
+  pointer-events: none;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -160,8 +162,29 @@
   left: 1.6em;
   position: relative;
   background-color: rgb(236, 142, 200);
+  .inner{
+    height: 0.2em;
+    width:0.2em;
+    border-radius: 0 0 0.2em 0;
+    background-color: lightgrey;
+  }
 }
 
 .tile-letter{
+  z-index: 2;
   position: absolute;
+}
+
+.inner-square{
+  height: 3.6em;
+  width: 3.6em;
+  border-radius: 0.2em;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgrey;
+  border: none;
+  font-size: inherit;
+  box-sizing: border-box;
 }
