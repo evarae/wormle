@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Grid from './game/Grid';
+import TestGrid from './game/TestGrid';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         </h1>
       </header>
       <Grid/>
+      <TestGrid/>
     </div>
   );
 }

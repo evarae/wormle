@@ -89,3 +89,79 @@
     transform: rotate(360deg);
   }
 }
+
+.snake-container{
+  height: 4em;
+  width: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(236, 142, 200);
+}
+
+.snake-head{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(96, 229, 96);
+}
+
+.north-end{
+  height: 90%;
+  width: 80%;
+  margin: 10% 10% 0% 10%;
+  border-radius: 50% 50% 0 0;
+}
+
+.south-end{
+  height: 90%;
+  width: 80%;
+  margin: 0% 10% 10% 10%;
+  border-radius: 0% 0% 50% 50%;
+}
+
+.east-end{
+  height: 80%;
+  width: 90%;
+  margin: 10% 10% 10% 0%;
+  border-radius: 0% 50% 50% 0%;
+}
+
+.west-end{
+  height: 80%;
+  width: 90%;
+  margin: 10% 0% 10% 10%;
+  border-radius: 50% 0% 0% 50%;
+}
+
+.vertical-through{
+  height: 100%;
+  width: 80%;
+  margin: 00% 10% 0% 10%;
+}
+
+.horizontal-through{
+  height: 80%;
+  width: 100%;
+  margin: 10% 0% 10% 0%;
+}
+
+.corner-through{
+  height: 90%;
+  width: 90%;
+  margin: 10% 0% 0% 10%;
+  border-radius: 50% 0% 0% 0%;
+}
+
+.corner{
+  height: 0.4em;
+  width: 0.4em;
+  top: 1.6em;
+  left: 1.6em;
+  position: relative;
+  background-color: rgb(236, 142, 200);
+}
+
+.tile-letter{
+  position: absolute;
+}
