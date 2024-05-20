@@ -18,6 +18,12 @@ function TestGrid() {
         <button className='inner-square' onClick={()=> {console.log('clicked');}}>
           <span className='tile-letter' >h</span>
         </button>
+        <div className='snake-head end'></div>
+      </div>
+      <div className='tile snake-container'>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
         <div className='snake-head south-end'></div>
       </div>
       <div className='tile snake-container'>

@@ -79,6 +79,13 @@
     background-color: var(--snake-color);
 }
 
+.end{
+    height: calc(var(--grid-size) - 2*var(--snake-size-offset));
+    width: calc(var(--grid-size) - 2*var(--snake-size-offset));
+    margin: var(--snake-size-offset);
+    border-radius: 50%;
+}
+
 .north-end{
     height: calc(var(--grid-size) - var(--snake-size-offset));
     width: calc(var(--grid-size) - 2*var(--snake-size-offset));
