@@ -119,25 +119,75 @@
     margin: var(--snake-size-offset) 0 var(--snake-size-offset) 0;
 }
 
-.corner-through{
+.bend{
     height: calc(var(--grid-size) - var(--snake-size-offset));
     width: calc(var(--grid-size) - var(--snake-size-offset));
+}
+
+.south-east {
     margin: var(--snake-size-offset) 0 0 var(--snake-size-offset);
     border-radius: 50% 0 0 0;
+    .corner{
+        top: calc(var(--grid-size)/2 - var(--snake-size-offset));
+        left: calc(var(--grid-size)/2 - var(--snake-size-offset));
+    }
+    .inner{
+        border-radius: 0 0 var(--border-radius) 0;
+    }
+}
+
+.south-west {
+    margin: var(--snake-size-offset) var(--snake-size-offset) 0 0 ;
+    border-radius: 0 50% 0 0;
+    .corner{
+        top: calc(var(--grid-size)/2 - var(--snake-size-offset));
+        left: calc((var(--grid-size)/2 - var(--snake-size-offset))*-1);
+    }
+    .inner{
+        position: relative;
+        left: calc(var(--snake-size-offset) - var(--inner-size-offset));
+        border-radius: 0 0 0 var(--border-radius);
+    }
+}
+
+.north-east {
+    margin:  0 0 var(--snake-size-offset) var(--snake-size-offset);
+    border-radius: 0 0 0 50%;
+    .corner{
+        top: calc(-1*(var(--grid-size)/2 - var(--snake-size-offset)));
+        left: calc(var(--grid-size)/2 - var(--snake-size-offset));
+    }
+    .inner{
+        position: relative;
+        top: calc(var(--snake-size-offset) - var(--inner-size-offset));
+        border-radius: 0 var(--border-radius) 0 0;
+    }
+}
+
+.north-west {
+    margin:  0 var(--snake-size-offset) var(--snake-size-offset) 0 ;
+    border-radius: 0 0 50% 0;
+    .corner{
+        top: calc(-1*(var(--grid-size)/2 - var(--snake-size-offset)));
+        left: calc((var(--grid-size)/2 - var(--snake-size-offset))*-1);
+    }
+    .inner{
+        position: relative;
+        left: calc(var(--snake-size-offset) - var(--inner-size-offset));
+        top: calc(var(--snake-size-offset) - var(--inner-size-offset));
+        border-radius: var(--border-radius) 0 0 0;
+    }
 }
 
 .corner{
     height: var(--snake-size-offset);
     width: var(--snake-size-offset);
-    top: calc(var(--grid-size)/2 - var(--snake-size-offset));
-    left: calc(var(--grid-size)/2 - var(--snake-size-offset));
     position: relative;
     background-color: var(--main-bg-color);
     .inner{
+        background-color: var(--empty-tile-color);
         height: calc(var(--snake-size-offset) - var(--inner-size-offset));
         width: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        border-radius: 0 0 var(--border-radius) 0;
-        background-color: var(--empty-tile-color);
     }
 }
 

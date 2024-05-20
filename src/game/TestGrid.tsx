@@ -54,7 +54,37 @@ function TestGrid() {
         <button className='inner-square' onClick={()=> {console.log('clicked');}}>
           <span className='tile-letter' >h</span>
         </button>
-        <div className='snake-head corner-through'>
+        <div className='snake-head bend south-east'>
+          <div className='corner'>
+            <div className='inner'></div>
+          </div>
+        </div>
+      </div>
+      <div className='tile snake-container'>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
+        <div className='snake-head bend south-west'>
+          <div className='corner'>
+            <div className='inner'></div>
+          </div>
+        </div>
+      </div>
+      <div className='tile snake-container'>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
+        <div className='snake-head bend north-east'>
+          <div className='corner'>
+            <div className='inner'></div>
+          </div>
+        </div>
+      </div>
+      <div className='tile snake-container'>
+        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
+          <span className='tile-letter' >h</span>
+        </button>
+        <div className='snake-head bend north-west'>
           <div className='corner'>
             <div className='inner'></div>
           </div>
