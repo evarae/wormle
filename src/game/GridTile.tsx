@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef} from 'react';
 import { TileType, Tile } from '../types/types';
 
 const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
@@ -18,7 +18,7 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
       return (
         <div className={`snake-head ${getClassFromTileType(props.tileType)}`}>
           <div className='corner'>
-            <div className='inner-corner'></div>
+            <div className='inner-corner'/>
           </div>
         </div>
       );
@@ -30,7 +30,7 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
 
   return (
     <div className='tile snake-container'>
-      <button ref={ref} className='inner-square' onClick={onClick}>
+      <button className='inner-square' onClick={onClick} ref = {ref}>
         <span className='tile-letter' >{props.tile.guess}</span>
       </button>
       {props.tileType == TileType.Empty? <></> : snakeElement()}
@@ -42,8 +42,7 @@ GridTile.displayName = 'GridTile';
 
 function InvisibleTile(){
   return (
-    <div className='tile'>
-    </div>
+    <div className='tile'/>
   );
 }
 
@@ -55,8 +54,6 @@ function PathTile(props:PathTileProps){
     </div>
   );
 }
-
-export {GridTile, InvisibleTile, PathTile};
 
 interface GridTileProps {
   onClickCallback: (tile:Tile) => void,
@@ -98,3 +95,5 @@ function getClassFromTileType(tileType: TileType){
     return '';
   }
 }
+
+export {GridTile, InvisibleTile, PathTile};

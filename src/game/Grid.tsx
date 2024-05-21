@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
 import {GridTile, InvisibleTile, PathTile} from './GridTile';
 import { Coordinates, Tile, TileType } from '../types/types';
-import { Cardinal, areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getCardinalOfAdjacentCoordinates, getGridSize, getTileKey } from './TileHelper';
+import { areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getCardinalOfAdjacentCoordinates, getGridSize, getTileKey, getTileTypeFromAdjacentPathTiles } from './GameHelperFunctions';
 import './Grid.css';
 
 function Grid() {
@@ -13,9 +13,8 @@ function Grid() {
 
   //Front end stuff
   const [path, setPath] = useState<Coordinates[]>([]);
-  const [focusedKey, setFocusedKey] = useState<string>();
-  const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
   const [pathTileTypes, setPathTileTypes] = useState<Record<string, TileType>>({});
+  const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
 
   //Initialise the game
   useEffect(() => {
@@ -43,16 +42,23 @@ function Grid() {
       setTiles({...tiles, ...partialRecord});
       path.pop();
       setPath([...path]);
-      setFocusedKey(getTileKey(tile.coordinates));
+      
     } else if(isMoveForwardValid(tile.coordinates)){
       const partialRecord : Record<string, Tile> = {};
       partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: pathLetters[path.length], coordinates: tile.coordinates};
       setTiles({...tiles, ...partialRecord});
       setPath([...path, tile.coordinates]);
-      setFocusedKey(getTileKey(tile.coordinates));
     }
     return;
   }
+
+  //Refocus when the path changes
+  useMemo(() => {
+    if(path.length<1){
+      return;
+    }
+    textInputRefs.current[getTileKey(path[path.length-1])].focus();
+  },[path]);
 
   //Check for win condition
   const isGameOver = useMemo(() => {
@@ -95,51 +101,44 @@ function Grid() {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent): any => {
-
-    console.log('keydown');
-    if(focusedKey===undefined){
+    if(path.length < 1){
       //TODO: add some default here, maybe go to end of the snake?
       return;
     }
 
-    const focusedTile = tiles[focusedKey];
-    if(!focusedTile){
-      return;
-    }
+    const currentCoords = path[path.length - 1];
+    const currentTile = tiles[getTileKey(currentCoords)];
 
     let newTile = undefined;
 
     switch(event.code){
     case ('ArrowRight'): {
-      newTile = tiles[getTileKey({x: focusedTile.coordinates.x + 1, y: focusedTile.coordinates.y})];
+      newTile = tiles[getTileKey({x: currentCoords.x + 1, y: currentCoords.y})];
       break;
     }
     case ('ArrowLeft'): {
-      newTile = tiles[getTileKey({x: focusedTile.coordinates.x -1 , y: focusedTile.coordinates.y})];
+      newTile = tiles[getTileKey({x: currentCoords.x -1 , y: currentCoords.y})];
       break;
     }
     case ('ArrowDown'): {
-      newTile = tiles[getTileKey({x: focusedTile.coordinates.x, y: focusedTile.coordinates.y + 1})];
+      newTile = tiles[getTileKey({x: currentCoords.x, y: currentCoords.y + 1})];
       break;
     }
     case ('ArrowUp'): {
-      newTile = tiles[getTileKey({x: focusedTile.coordinates.x, y: focusedTile.coordinates.y - 1})];
+      newTile = tiles[getTileKey({x: currentCoords.x, y: currentCoords.y - 1})];
       break;
     }
     }
 
-    if(newTile !== undefined){
+    if(newTile == undefined){
+      return;
+    }
 
-      //Check if we're moving back to the last entry in the path
-      if(path.length >= 2 && areCoordinatesEqual(focusedTile.coordinates, path[path.length-1]) && areCoordinatesEqual(newTile.coordinates, path[path.length-2])){
-        tileOnClickCallback(focusedTile);
-      } else if(newTile.guess == undefined){
-        tileOnClickCallback(newTile);
-      }
-
-      const newKey = getTileKey(newTile.coordinates);
-      textInputRefs.current[newKey].focus();
-      setFocusedKey(newKey);
+    //Check if we're moving back to the last entry in the path
+    if(path.length >= 2 && areCoordinatesEqual(currentCoords, path[path.length-1]) && areCoordinatesEqual(newTile.coordinates, path[path.length-2])){
+      tileOnClickCallback(currentTile);
+    } else if(newTile.guess == undefined){
+      tileOnClickCallback(newTile);
     }
   };
 
@@ -159,53 +158,7 @@ function Grid() {
       const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, path[index-1]) : undefined;
       const next = (index +1 <= path.length - 1) ? getCardinalOfAdjacentCoordinates(c, path[index+1]) : undefined;
 
-      let type = TileType.Vertical;
-      if(next === undefined && last === undefined){
-        type = TileType.Head;
-      }
-
-      if(next === undefined && last === Cardinal.North || last === undefined && next === Cardinal.North){
-        type = TileType.HeadNorth;
-      }
-      
-      if(next === undefined && last === Cardinal.South || last === undefined && next === Cardinal.South){
-        type = TileType.HeadSouth;
-      }
-
-      if(next === undefined && last === Cardinal.East || last === undefined && next === Cardinal.East){
-        type = TileType.HeadEast;
-      }
-
-      if(next === undefined && last === Cardinal.West || last === undefined && next === Cardinal.West){
-        type = TileType.HeadWest;
-      }
-
-      if(next === Cardinal.East && last === Cardinal.West || last === Cardinal.East && next === Cardinal.West){
-        type = TileType.Horizontal;
-      }
-
-      if(next === Cardinal.North && last === Cardinal.South || last === Cardinal.North && next === Cardinal.South){
-        type = TileType.Vertical;
-      }
-
-      if(next === Cardinal.North && last === Cardinal.East || last === Cardinal.North && next === Cardinal.East){
-        type = TileType.CornerNorthEast;
-      }
-
-      if(next === Cardinal.North && last === Cardinal.West || last === Cardinal.North && next === Cardinal.West){
-        type = TileType.CornerNorthWest;
-      }
-
-      if(next === Cardinal.South && last === Cardinal.East || last === Cardinal.South && next === Cardinal.East){
-        type = TileType.CornerSouthEast;
-      }
-
-      if(next === Cardinal.South && last === Cardinal.West || last === Cardinal.South && next === Cardinal.West){
-        type = TileType.CornerSouthWest;
-      }
-
-
-      newRecord[getTileKey(c)] = type;
+      newRecord[getTileKey(c)] = getTileTypeFromAdjacentPathTiles(next, last);
     });
 
     setPathTileTypes(newRecord);
