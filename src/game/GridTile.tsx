@@ -1,24 +1,46 @@
 import React, { forwardRef } from 'react';
-import { Tile } from '../types/types';
+import { TileType, Tile } from '../types/types';
 
 const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   
-  const classNames = (props.tile.guess !== undefined) ? 'tile tile-grid tile-grid-enabled' : 'tile tile-grid tile-grid-disabled';
-    
   function onClick(){
     props.onClickCallback(props.tile);
   }
 
+  const snakeElement = () => {
+    switch(props.tileType){
+    case(TileType.Empty):
+      return <></>;
+    case(TileType.CornerNorthEast):
+    case(TileType.CornerNorthWest):
+    case(TileType.CornerSouthEast):
+    case(TileType.CornerSouthWest):
+      return (
+        <div className={`snake-head ${getClassFromTileType(props.tileType)}`}>
+          <div className='corner'>
+            <div className='inner-corner'></div>
+          </div>
+        </div>
+      );
+    default:
+      return <div className={`snake-head ${getClassFromTileType(props.tileType)}`}/>;
+    }
+  }
+  ;
+
   return (
-    <button ref={ref} className={classNames} onClick={onClick}>
-      {props.tile.guess}
-    </button>
+    <div className='tile snake-container'>
+      <button ref={ref} className='inner-square' onClick={onClick}>
+        <span className='tile-letter' >{props.tile.guess}</span>
+      </button>
+      {props.tileType == TileType.Empty? <></> : snakeElement()}
+    </div>
   );
 });
 
 GridTile.displayName = 'GridTile';
 
-function EmptyTile(){
+function InvisibleTile(){
   return (
     <div className='tile'>
     </div>
@@ -34,15 +56,45 @@ function PathTile(props:PathTileProps){
   );
 }
 
-export {GridTile, EmptyTile, PathTile};
+export {GridTile, InvisibleTile, PathTile};
 
 interface GridTileProps {
   onClickCallback: (tile:Tile) => void,
-  tile:Tile
+  tile:Tile,
+  tileType: TileType
 }
 
 interface PathTileProps {
   isUsed:boolean,
   isHighlighted:boolean,
   letter:string
+}
+
+function getClassFromTileType(tileType: TileType){
+  switch(tileType){
+  case(TileType.Head):
+    return 'end';
+  case(TileType.HeadNorth):
+    return 'north-end';
+  case(TileType.HeadSouth):
+    return 'south-end';
+  case(TileType.HeadEast):
+    return 'east-end';
+  case(TileType.HeadWest):
+    return 'west-end';
+  case(TileType.Vertical):
+    return 'vertical-through';
+  case(TileType.Horizontal):
+    return 'horizontal-through';
+  case(TileType.CornerNorthEast):
+    return 'bend north-east';
+  case(TileType.CornerNorthWest):
+    return 'bend north-west';
+  case(TileType.CornerSouthEast):
+    return 'bend south-east';
+  case(TileType.CornerSouthWest):
+    return 'bend south-west';
+  default:
+    return '';
+  }
 }

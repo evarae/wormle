@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
-import {GridTile, EmptyTile, PathTile} from './GridTile';
-import { Coordinates, Tile } from '../types/types';
+import {GridTile, InvisibleTile, PathTile} from './GridTile';
+import { Coordinates, Tile, TileType } from '../types/types';
 import { areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getGridSize, getTileKey } from './TileHelper';
 
 function Grid() {
@@ -81,9 +81,9 @@ function Grid() {
       for(let i = 0; i < gridSize.x; i++){
         const t = tiles[getTileKey({x:i, y:j})];
         if(t !== undefined){
-          tileElements.push(<GridTile tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
+          tileElements.push(<GridTile tileType={TileType.Head} tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
         } else {
-          tileElements.push(<EmptyTile/>);
+          tileElements.push(<InvisibleTile/>);
         }
       }
 
@@ -119,6 +119,7 @@ function Grid() {
 
   const handleKeyDown = (event: React.KeyboardEvent): any => {
 
+    console.log('keydown');
     if(focusedKey===undefined){
       //TODO: add some default here, maybe go to end of the snake?
       return;

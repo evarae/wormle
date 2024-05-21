@@ -1,101 +1,33 @@
 import React from 'react';
 import './Grid.css';
+import { GridTile } from './GridTile';
+import { Tile, TileType } from '../types/types';
 
 function TestGrid() {
 
-  function SnakeTile(){
-    return (
-      <div className='tile snake-container'>
-        <div className='snake-head north-end'>h</div>
-      </div>
-    );
-  }
-      
+  const mockTile:Tile = {
+    guess: 'h',
+    value: 'a',
+    coordinates: {
+      x: 0,
+      y: 0
+    }
+  };
     
   return (
     <div className='word-container'>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head end'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head south-end'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head north-end'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head east-end'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head west-end'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head vertical-through'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head horizontal-through'></div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head bend south-east'>
-          <div className='corner'>
-            <div className='inner'></div>
-          </div>
-        </div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head bend south-west'>
-          <div className='corner'>
-            <div className='inner'></div>
-          </div>
-        </div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head bend north-east'>
-          <div className='corner'>
-            <div className='inner'></div>
-          </div>
-        </div>
-      </div>
-      <div className='tile snake-container'>
-        <button className='inner-square' onClick={()=> {console.log('clicked');}}>
-          <span className='tile-letter' >h</span>
-        </button>
-        <div className='snake-head bend north-west'>
-          <div className='corner'>
-            <div className='inner'></div>
-          </div>
-        </div>
-      </div>
+      <GridTile tile={mockTile} tileType={TileType.Empty} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.Head} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.HeadEast} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.HeadNorth} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.HeadSouth} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.HeadWest} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.Horizontal} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.Vertical} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.CornerNorthEast} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.CornerNorthWest} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.CornerSouthEast} onClickCallback={()=> console.log('Clicked')}/>
+      <GridTile tile={mockTile} tileType={TileType.CornerSouthWest} onClickCallback={()=> console.log('Clicked')}/>
     </div>
   );
 }

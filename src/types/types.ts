@@ -19,3 +19,18 @@ export type Coordinates = {
     x: number,
     y: number
 }
+
+export enum TileType {
+    Head,
+    HeadNorth,
+    HeadEast,
+    HeadSouth,
+    HeadWest,
+    Horizontal,
+    Vertical,
+    CornerNorthEast,
+    CornerNorthWest,
+    CornerSouthEast,
+    CornerSouthWest,
+    Empty
+}
