@@ -42,6 +42,7 @@
 }
 
 .tile-path-unused {
+    color: var(--snake-letter-color);
     background-color: var(--snake-color);
 }
 
@@ -50,6 +51,7 @@
 }
 
 .tile-path-highlighted{
+    color: black;
     background-color: yellow;
 }
 
@@ -86,28 +88,28 @@
     border-radius: 50%;
 }
 
-.north-end{
+.south-end{
     height: calc(var(--grid-size) - var(--snake-size-offset));
     width: calc(var(--grid-size) - 2*var(--snake-size-offset));
     margin: var(--snake-size-offset) var(--snake-size-offset) 0 var(--snake-size-offset);
     border-radius: 50% 50% 0 0;
 }
 
-.south-end{
+.north-end{
     height: calc(var(--grid-size) - var(--snake-size-offset));
     width: calc(var(--grid-size) - 2*var(--snake-size-offset));
     margin: 0 var(--snake-size-offset) var(--snake-size-offset) var(--snake-size-offset);
     border-radius: 0% 0% 50% 50%;
 }
 
-.east-end{
+.west-end{
     height: calc(var(--grid-size) - 2*var(--snake-size-offset));
     width: calc(var(--grid-size) - var(--snake-size-offset));
     margin: var(--snake-size-offset) var(--snake-size-offset) var(--snake-size-offset) 0;
     border-radius: 0% 50% 50% 0%;
 }
 
-.west-end{
+.east-end{
     height: calc(var(--grid-size) - 2*var(--snake-size-offset));
     width: calc(var(--grid-size) - var(--snake-size-offset));
     margin: var(--snake-size-offset) 0 var(--snake-size-offset) var(--snake-size-offset);

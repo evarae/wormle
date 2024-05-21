@@ -56,4 +56,30 @@ function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
   return false;
 }
 
-export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual};
+function getCardinalOfAdjacentCoordinates(from:Coordinates, to:Coordinates) : Cardinal {
+  const diffX = (from.x - to.x);
+  const diffY = (from.y - to.y);
+
+  if(diffX == 1 && diffY == 0){
+    return Cardinal.West;
+  } 
+
+  if(diffX == -1 && diffY == 0){
+    return Cardinal.East;
+  } 
+
+  if(diffX == 0 && diffY == 1){
+    return Cardinal.North;
+  } 
+
+  return Cardinal.South;
+}
+
+export enum Cardinal{
+  North,
+  South,
+  East,
+  West
+}
+
+export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual, getCardinalOfAdjacentCoordinates};
