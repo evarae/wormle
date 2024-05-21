@@ -3,6 +3,7 @@ import mockGameData from '../mock/mockGameData.json';
 import {GridTile, InvisibleTile, PathTile} from './GridTile';
 import { Coordinates, Tile, TileType } from '../types/types';
 import { Cardinal, areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getCardinalOfAdjacentCoordinates, getGridSize, getTileKey } from './TileHelper';
+import './Grid.css';
 
 function Grid() {
   //Game state stuff
@@ -234,8 +235,7 @@ function Grid() {
   };
 
   const pathElements = pathLetters.map((char, index) =>
-    // eslint-disable-next-line react/jsx-key
-    <PathTile isUsed = {(path.length > index)} letter={char} isHighlighted= {(path.length == index)}/>
+    <PathTile key = {index} isUsed = {(path.length > index)} letter={char} isHighlighted= {(path.length == index)}/>
   );
     
   return (

@@ -5,7 +5,7 @@
 - [x] Arrow key controls
 - [ ] Hints
 - [ ] Starting square
-- [ ] Good snake path css
+- [x] Good snake path css
 - [ ] Testing
 - [ ] Front end consuming database API
 - [ ] Mock express server config for local

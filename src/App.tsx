@@ -12,7 +12,6 @@ function App() {
         </h1>
       </header>
       <Grid/>
-      <TestGrid/>
     </div>
   );
 }
