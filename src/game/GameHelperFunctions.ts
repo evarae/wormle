@@ -11,7 +11,7 @@ function getGridSize(words: Word[]): Coordinates {
   return {x: maxWidth, y: words.length};
 }
 
-function createTileDictionary(words: Word[]): Record<string,Tile>{
+function createTileDictionary(words: Word[], startCoordinates:Coordinates): Record<string,Tile>{
   const dictionary:Record<string,Tile> = {};
 
   words.forEach((word, wordIndex) => {
@@ -30,6 +30,7 @@ function createTileDictionary(words: Word[]): Record<string,Tile>{
     });
   });
 
+  dictionary[getTileKey(startCoordinates)].guess = dictionary[getTileKey(startCoordinates)].value;
   return dictionary;
 }
 

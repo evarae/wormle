@@ -18,7 +18,7 @@ function Grid() {
 
   //Initialise the game
   useEffect(() => {
-    const dict = createTileDictionary(mockGameData.words);
+    const dict = createTileDictionary(mockGameData.words, getStartCoordinates());
     const size = getGridSize(mockGameData.words);
 
     setTiles(dict);
@@ -26,11 +26,16 @@ function Grid() {
 
     const chars = mockGameData.pathString.split('');
     setPathLetters(chars);
+    setPath([getStartCoordinates()]);
   }, []);
 
+  function getStartCoordinates() : Coordinates{
+    return {x: mockGameData.words[mockGameData.startWord].offset + mockGameData.startLetter, y: mockGameData.startWord};
+  }
+
   function resetTiles(){
-    const dict = createTileDictionary(mockGameData.words);
-    setPath([]);
+    const dict = createTileDictionary(mockGameData.words, getStartCoordinates());
+    setPath([getStartCoordinates()]);
     setTiles(dict);
   }
 
@@ -52,14 +57,6 @@ function Grid() {
     return;
   }
 
-  //Refocus when the path changes
-  useMemo(() => {
-    if(path.length<1){
-      return;
-    }
-    textInputRefs.current[getTileKey(path[path.length-1])].focus();
-  },[path]);
-
   //Check for win condition
   const isGameOver = useMemo(() => {
 
@@ -79,16 +76,10 @@ function Grid() {
   }, [path, tiles]);
 
   function isMoveBackwardValid(coordinates: Coordinates): boolean {
-    return ((path.length < 1) ? false : areCoordinatesEqual(path[path.length-1], coordinates));
+    return ((path.length < 2) ? false : areCoordinatesEqual(path[path.length-1], coordinates));
   }
 
   function isMoveForwardValid(coordinates: Coordinates): boolean {
-    
-    //If it's the first move, probably need some validation for the length of path letters
-    if(path.length == 0){
-      return true;
-    }
-
     if(tiles[getTileKey(coordinates)].guess !== undefined){
       return false;
     }
@@ -100,7 +91,7 @@ function Grid() {
     return false;
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent): any => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     if(path.length < 1){
       //TODO: add some default here, maybe go to end of the snake?
       return;
@@ -173,15 +164,22 @@ function Grid() {
       for(let i = 0; i < gridSize.x; i++){
         const t = tiles[getTileKey({x:i, y:j})];
         if(t !== undefined){
-          tileElements.push(<GridTile tileType={getTileTypeFromCoordinates(t.coordinates)} tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
+          tileElements.push(<GridTile key = {getTileKey({x:i, y:j})} tileType={getTileTypeFromCoordinates(t.coordinates)} tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
         } else {
-          tileElements.push(<InvisibleTile/>);
+          tileElements.push(<InvisibleTile key = {getTileKey({x:i, y:j})}/>);
         }
       }
 
-      wordElements.push(<div className='word-container'>
+      wordElements.push(<div key = {j} className='word-container'>
         {tileElements}
       </div>);
+    }
+
+    if(path.length>0){
+      const ref = textInputRefs.current[getTileKey(path[path.length-1])];
+      if(ref!== undefined){
+        ref.focus();
+      }
     }
 
     return(wordElements);

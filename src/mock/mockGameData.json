@@ -1,4 +1,6 @@
 {
     "words":[{"offset": 1, "text": "dragon"}, {"offset": 0, "text": "pegasus"}, {"offset": 0, "text": "kraken"}],
-    "pathString": "pkregakenusnogsaard"
+    "pathString": "pkregakenusnogsaard",
+    "startWord": 1,
+    "startLetter": 0
 }
