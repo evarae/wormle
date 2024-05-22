@@ -127,11 +127,11 @@ const Grid = (props:Props) => {
   return (
     <div onKeyDown={handleKeyDown}>
       {isGameOver(props.gameState) && <h2>You Win!</h2>}
+      <div className='gameGridContainer'>
+        {gridElements}
+      </div>
       <div className='path-container'>
         {pathElements}
-      </div>
-      <div >
-        {gridElements}
       </div>
       <button onClick={resetTiles}>Reset Tiles</button>
     </div>

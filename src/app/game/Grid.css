@@ -1,14 +1,6 @@
-:root {
-    --main-bg-color: white;
-    --empty-tile-color: lightgrey;
-    --snake-color: rgb(41, 135, 69);
-    --snake-letter-color: white;
-    --grid-size: 4em;
-    --snake-size-offset: 0.6em;
-    --inner-size-offset: 0.3em;
-    --border-radius: 0.2em;
+.gameGridContainer {
+    margin: 32px;
 }
-
 
 .tile {
     height: var(--grid-size);
@@ -39,6 +31,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: var(--border-radius);
+    margin: 2px;
 }
 
 .tile-path-unused {
@@ -192,7 +186,7 @@
     height: var(--snake-size-offset);
     width: var(--snake-size-offset);
     position: relative;
-    background-color: var(--main-bg-color);
+    background-color: var(--inner-corner-color);
     .inner-corner{
         background-color: var(--empty-tile-color);
         height: calc(var(--snake-size-offset) - var(--inner-size-offset));

@@ -4,6 +4,7 @@ import Grid from './game/Grid';
 import { GameState } from '../types/types';
 import mockGameData from '../mock/mockGameData.json';
 import { setInitialGameState } from './game/GameEngine';
+import NavBar from './navBar/NavBar';
 
 function App() {
   const [gameState, setGameState] = useState<GameState>();
@@ -15,11 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>
-          WORMLE
-        </h1>
-      </header>
+      <NavBar></NavBar>
       {gameState? <Grid gameState={gameState} setGameState={setGameState}/> : <>Loading</>}
     </div>
   );

@@ -1,3 +1,15 @@
+:root {
+  --main-bg-color: none;
+  --inner-corner-color: white;
+  --empty-tile-color: lightgrey;
+  --snake-color: rgb(41, 135, 69);
+  --snake-letter-color: white;
+  --grid-size: 4em;
+  --snake-size-offset: 0.6em;
+  --inner-size-offset: 0.3em;
+  --border-radius: 0.2em;
+}
+
 .App {
   text-align: center;
   color: rgb(0, 0, 0);
@@ -12,15 +24,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  min-height: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
 }
 
 .App-link {

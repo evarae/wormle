@@ -1,0 +1,4 @@
+.MuiToolbar-root {
+    background-color: var(--snake-color);
+    color: var(--snake-letter-color);
+}
