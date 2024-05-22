@@ -1,4 +1,22 @@
-import { Coordinates, GameSetup, Tile, TileType, Word } from '../types/types';
+import { Coordinates, GameSetup, GameState, Tile, TileType, Word } from '../types/types';
+
+function setInitialGameState(gameSetup: GameSetup, setGameState: (newGameState: GameState) => void){
+  const startCoords = getStartCoordinates(gameSetup);
+  const tilesDict = createTileDictionary(gameSetup.words, startCoords);
+  const size = getGridSize(gameSetup.words);
+  const charArray = gameSetup.pathString.split('');
+
+  setGameState({
+    gridSize: size,
+    tiles: tilesDict,
+    pathLetters: charArray,
+    path: [startCoords]
+  });
+}
+
+function getStartCoordinates(gameSetup:GameSetup) : Coordinates {
+  return {x: gameSetup.words[gameSetup.startWord].offset + gameSetup.startLetter, y: gameSetup.startWord};
+}
 
 function getGridSize(words: Word[]): Coordinates {
   let maxWidth = 0;
@@ -9,6 +27,55 @@ function getGridSize(words: Word[]): Coordinates {
   });
 
   return {x: maxWidth, y: words.length};
+}
+
+function tryMove(currentGameState: GameState, setGameState: (newGameState: GameState) => void, move: Coordinates) : void {
+  const moveKey = getTileKey(move);
+  const tileAtCoordinate = currentGameState.tiles[moveKey];
+
+  //Check we aren't trying to move outside the grid
+  if(tileAtCoordinate == undefined){
+    return;
+  }
+
+  const lastTileCoords = (currentGameState.path.length > 0)? currentGameState.path[currentGameState.path.length-1] : undefined;
+  if(lastTileCoords == undefined){
+    //The path is empty
+    return;
+  }
+
+  //If we're clicking on the last tile on the path, clear the tile
+  if(areCoordinatesEqual(move, lastTileCoords) && currentGameState.path.length > 1){
+    const partialRecord : Record<string, Tile> = {};
+    partialRecord[moveKey] = { ...tileAtCoordinate, guess: undefined};
+    currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
+    currentGameState.path.pop();
+    setGameState(duplicateState(currentGameState));
+    return;
+  }
+
+  const lastTile = currentGameState.tiles[getTileKey(lastTileCoords)];
+
+  //If we're clicking on a tile that is empty and adjacent to the also tile on the path, move there
+  if(tileAtCoordinate.guess === undefined && areCoordinatesAdjacent(lastTile.coordinates, move)){
+    const partialRecord : Record<string, Tile> = {};
+    const guessLetter = currentGameState.pathLetters[currentGameState.path.length];
+    partialRecord[moveKey] = { ...tileAtCoordinate, guess: guessLetter};
+    currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
+    currentGameState.path = [...currentGameState.path, move];
+    setGameState(duplicateState(currentGameState));
+    return;
+  }
+  //Else, we're clicking on a square that's already occupied so do nothing
+}
+
+function duplicateState(gameState: GameState): GameState{
+  return {
+    path: gameState.path,
+    gridSize: gameState.gridSize,
+    tiles: gameState.tiles,
+    pathLetters: gameState.pathLetters
+  };
 }
 
 function createTileDictionary(words: Word[], startCoordinates:Coordinates): Record<string,Tile>{
@@ -131,4 +198,4 @@ export enum Cardinal{
   West
 }
 
-export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual, getCardinalOfAdjacentCoordinates, getTileTypeFromAdjacentPathTiles};
+export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual, getCardinalOfAdjacentCoordinates, getTileTypeFromAdjacentPathTiles, setInitialGameState, tryMove};

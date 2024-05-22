@@ -5,9 +5,17 @@ export type Tile = {
 }
 
 export type GameSetup = {
-    words: Word[]
-    startWord: number
+    words: Word[],
+    pathString: string,
+    startWord: number,
     startLetter: number
+}
+
+export type GameState = {
+    gridSize: Coordinates,
+    tiles: Record<string, Tile>,
+    pathLetters: string[],
+    path: Coordinates[]
 }
   
 export type Word = {

@@ -1,65 +1,28 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
 import {GridTile, InvisibleTile, PathTile} from './GridTile';
-import { Coordinates, Tile, TileType } from '../types/types';
-import { areCoordinatesAdjacent, areCoordinatesEqual, createTileDictionary, getCardinalOfAdjacentCoordinates, getGridSize, getTileKey, getTileTypeFromAdjacentPathTiles } from './GameHelperFunctions';
+import { Coordinates, GameState, Tile, TileType } from '../types/types';
+import { areCoordinatesEqual, getCardinalOfAdjacentCoordinates, getTileKey, getTileTypeFromAdjacentPathTiles, setInitialGameState, tryMove } from './GameHelperFunctions';
 import './Grid.css';
 
-function Grid() {
-  //Game state stuff
-  const [gridSize, setGridSize] = useState<Coordinates>({x:0, y:0});
-  const [tiles, setTiles] = useState<Record<string, Tile>>({});
-  const [pathLetters, setPathLetters] = useState<string[]>([]);
-  const [path, setPath] = useState<Coordinates[]>([]);
-
+const Grid = (props:Props) => {
+  //console.log('Grid rerendered');
   //Front end stuff
   const [pathTileTypes, setPathTileTypes] = useState<Record<string, TileType>>({});
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
 
-  //Initialise the game
-  useEffect(() => {
-    const dict = createTileDictionary(mockGameData.words, getStartCoordinates());
-    const size = getGridSize(mockGameData.words);
-
-    setTiles(dict);
-    setGridSize(size);
-
-    const chars = mockGameData.pathString.split('');
-    setPathLetters(chars);
-    setPath([getStartCoordinates()]);
-  }, []);
-
-  function getStartCoordinates() : Coordinates{
-    return {x: mockGameData.words[mockGameData.startWord].offset + mockGameData.startLetter, y: mockGameData.startWord};
-  }
-
   function resetTiles(){
-    const dict = createTileDictionary(mockGameData.words, getStartCoordinates());
-    setPath([getStartCoordinates()]);
-    setTiles(dict);
+    setInitialGameState(mockGameData, props.setGameState);
   }
 
   function tileOnClickCallback(tile:Tile){
-
-    if(isMoveBackwardValid(tile.coordinates)){
-      const partialRecord : Record<string, Tile> = {};
-      partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: undefined, coordinates: tile.coordinates};
-      setTiles({...tiles, ...partialRecord});
-      path.pop();
-      setPath([...path]);
-      
-    } else if(isMoveForwardValid(tile.coordinates)){
-      const partialRecord : Record<string, Tile> = {};
-      partialRecord[getTileKey(tile.coordinates)] = {value: tile.value, guess: pathLetters[path.length], coordinates: tile.coordinates};
-      setTiles({...tiles, ...partialRecord});
-      setPath([...path, tile.coordinates]);
-    }
+    tryMove(props.gameState, props.setGameState, tile.coordinates);
     return;
   }
 
   function refocusPath(){
-    if(path.length>0){
-      const ref = textInputRefs.current[getTileKey(path[path.length-1])];
+    if(props.gameState.path.length>0){
+      const ref = textInputRefs.current[getTileKey(props.gameState.path[props.gameState.path.length-1])];
       if(ref!== undefined){
         ref.focus();
       }
@@ -69,12 +32,12 @@ function Grid() {
   //Check for win condition
   const isGameOver = useMemo(() => {
 
-    if(path.length !== pathLetters.length){
+    if(props.gameState.path.length !== props.gameState.pathLetters.length){
       return false;
     }
 
     //Iterate through each word and check the right letter is there
-    const values: Tile[] = Object.values(tiles);
+    const values: Tile[] = Object.values(props.gameState.tiles);
     let isMatch = true;
     values.forEach(t => {
       if(t.guess !== t.value){
@@ -82,50 +45,33 @@ function Grid() {
       }
     });
     return isMatch;
-  }, [path, tiles]);
-
-  function isMoveBackwardValid(coordinates: Coordinates): boolean {
-    return ((path.length < 2) ? false : areCoordinatesEqual(path[path.length-1], coordinates));
-  }
-
-  function isMoveForwardValid(coordinates: Coordinates): boolean {
-    if(tiles[getTileKey(coordinates)].guess !== undefined){
-      return false;
-    }
-
-    if(areCoordinatesAdjacent(path[path.length-1], coordinates)){
-      return true;
-    }
-
-    return false;
-  }
+  }, [props.gameState]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if(path.length < 1){
+    if(props.gameState.path.length < 1){
       //TODO: add some default here, maybe go to end of the snake?
       return;
     }
 
-    const currentCoords = path[path.length - 1];
-    const currentTile = tiles[getTileKey(currentCoords)];
+    const currentCoords = props.gameState.path[props.gameState.path.length - 1];
 
     let newTile = undefined;
 
     switch(event.code){
     case ('ArrowRight'): {
-      newTile = tiles[getTileKey({x: currentCoords.x + 1, y: currentCoords.y})];
+      newTile = props.gameState.tiles[getTileKey({x: currentCoords.x + 1, y: currentCoords.y})];
       break;
     }
     case ('ArrowLeft'): {
-      newTile = tiles[getTileKey({x: currentCoords.x -1 , y: currentCoords.y})];
+      newTile = props.gameState.tiles[getTileKey({x: currentCoords.x -1 , y: currentCoords.y})];
       break;
     }
     case ('ArrowDown'): {
-      newTile = tiles[getTileKey({x: currentCoords.x, y: currentCoords.y + 1})];
+      newTile = props.gameState.tiles[getTileKey({x: currentCoords.x, y: currentCoords.y + 1})];
       break;
     }
     case ('ArrowUp'): {
-      newTile = tiles[getTileKey({x: currentCoords.x, y: currentCoords.y - 1})];
+      newTile = props.gameState.tiles[getTileKey({x: currentCoords.x, y: currentCoords.y - 1})];
       break;
     }
     }
@@ -135,10 +81,10 @@ function Grid() {
     }
 
     //Check if we're moving back to the last entry in the path
-    if(path.length >= 2 && areCoordinatesEqual(currentCoords, path[path.length-1]) && areCoordinatesEqual(newTile.coordinates, path[path.length-2])){
-      tileOnClickCallback(currentTile);
+    if(props.gameState.path.length >= 2 && areCoordinatesEqual(currentCoords, props.gameState.path[props.gameState.path.length-1]) && areCoordinatesEqual(newTile.coordinates, props.gameState.path[props.gameState.path.length-2])){
+      tryMove(props.gameState, props.setGameState, currentCoords);
     } else if(newTile.guess == undefined){
-      tileOnClickCallback(newTile);
+      tryMove(props.gameState, props.setGameState, newTile.coordinates);
     }
   };
 
@@ -153,6 +99,7 @@ function Grid() {
   //Maintains the snake tile types when the path changes
   useEffect(()=> {
     const newRecord:Record<string, TileType> = {};
+    const path = props.gameState.path;
 
     path.forEach((c, index) => {
       const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, path[index-1]) : undefined;
@@ -162,16 +109,16 @@ function Grid() {
     });
 
     setPathTileTypes(newRecord);
-  },[path]);
+  },[props.gameState]);
 
-  const gridElements = () => {
+  const gridElements = useMemo(() => {
     const wordElements = [];
 
-    for(let j = 0; j < gridSize.y; j++){
+    for(let j = 0; j < props.gameState.gridSize.y; j++){
       const tileElements =[];
 
-      for(let i = 0; i < gridSize.x; i++){
-        const t = tiles[getTileKey({x:i, y:j})];
+      for(let i = 0; i < props.gameState.gridSize.x; i++){
+        const t = props.gameState.tiles[getTileKey({x:i, y:j})];
         if(t !== undefined){
           tileElements.push(<GridTile key = {getTileKey({x:i, y:j})} tileType={getTileTypeFromCoordinates(t.coordinates)} tile={t} onClickCallback={tileOnClickCallback} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>);
         } else {
@@ -186,12 +133,22 @@ function Grid() {
 
     refocusPath();
     return(wordElements);
-  };
 
-  const pathElements = pathLetters.map((char, index) =>
-    <PathTile key = {index} isUsed = {(path.length > index)} letter={char} isHighlighted= {(path.length == index)}/>
-  );
-    
+  }, [props.gameState, pathTileTypes]);
+
+  const pathElements = useMemo(() => {
+    return props.gameState.pathLetters.map((char, index) => {
+      return (
+        <PathTile 
+          key={index} 
+          isUsed={(props.gameState.path.length > index)} 
+          letter={char} 
+          isHighlighted={(props.gameState.path.length === index)}
+        />
+      );
+    });
+  }, [props.gameState]);
+
   return (
     <div onKeyDown={handleKeyDown}>
       {isGameOver && <h2>You Win!</h2>}
@@ -199,11 +156,16 @@ function Grid() {
         {pathElements}
       </div>
       <div >
-        {gridElements()}
+        {gridElements}
       </div>
       <button onClick={resetTiles}>Reset Tiles</button>
     </div>
   );
+};
+
+interface Props{
+  gameState: GameState;
+  setGameState: (newGameState: GameState) => void;
 }
 
 export default Grid;
