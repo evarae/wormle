@@ -2,12 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import mockGameData from '../mock/mockGameData.json';
 import {GridTile, InvisibleTile, PathTile} from './GridTile';
 import { Coordinates, GameState, Tile, TileType } from '../types/types';
-import { areCoordinatesEqual, getCardinalOfAdjacentCoordinates, getTileKey, getTileTypeFromAdjacentPathTiles, setInitialGameState, tryMove } from './GameHelperFunctions';
+import { areCoordinatesEqual, getTileKey, setInitialGameState, tryMove, getTileTypeForPathIndex, isGameOver } from './GameEngine';
 import './Grid.css';
 
 const Grid = (props:Props) => {
-  //console.log('Grid rerendered');
-  //Front end stuff
   const [pathTileTypes, setPathTileTypes] = useState<Record<string, TileType>>({});
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
 
@@ -17,7 +15,6 @@ const Grid = (props:Props) => {
 
   function tileOnClickCallback(tile:Tile){
     tryMove(props.gameState, props.setGameState, tile.coordinates);
-    return;
   }
 
   function refocusPath(){
@@ -29,24 +26,6 @@ const Grid = (props:Props) => {
     }
   }
 
-  //Check for win condition
-  const isGameOver = useMemo(() => {
-
-    if(props.gameState.path.length !== props.gameState.pathLetters.length){
-      return false;
-    }
-
-    //Iterate through each word and check the right letter is there
-    const values: Tile[] = Object.values(props.gameState.tiles);
-    let isMatch = true;
-    values.forEach(t => {
-      if(t.guess !== t.value){
-        isMatch = false;
-      }
-    });
-    return isMatch;
-  }, [props.gameState]);
-
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if(props.gameState.path.length < 1){
       //TODO: add some default here, maybe go to end of the snake?
@@ -54,7 +33,6 @@ const Grid = (props:Props) => {
     }
 
     const currentCoords = props.gameState.path[props.gameState.path.length - 1];
-
     let newTile = undefined;
 
     switch(event.code){
@@ -102,10 +80,7 @@ const Grid = (props:Props) => {
     const path = props.gameState.path;
 
     path.forEach((c, index) => {
-      const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, path[index-1]) : undefined;
-      const next = (index +1 <= path.length - 1) ? getCardinalOfAdjacentCoordinates(c, path[index+1]) : undefined;
-
-      newRecord[getTileKey(c)] = getTileTypeFromAdjacentPathTiles(next, last);
+      newRecord[getTileKey(c)] = getTileTypeForPathIndex(index, props.gameState);
     });
 
     setPathTileTypes(newRecord);
@@ -151,7 +126,7 @@ const Grid = (props:Props) => {
 
   return (
     <div onKeyDown={handleKeyDown}>
-      {isGameOver && <h2>You Win!</h2>}
+      {isGameOver(props.gameState) && <h2>You Win!</h2>}
       <div className='path-container'>
         {pathElements}
       </div>

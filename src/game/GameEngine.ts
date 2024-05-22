@@ -69,6 +69,22 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
   //Else, we're clicking on a square that's already occupied so do nothing
 }
 
+function isGameOver(gameState:GameState) : boolean {
+  if(gameState.path.length !== gameState.pathLetters.length){
+    return false;
+  }
+
+  const values: Tile[] = Object.values(gameState.tiles);
+  let isMatch = true;
+  values.forEach(t => {
+    if(t.guess !== t.value){
+      isMatch = false;
+    }
+  });
+
+  return isMatch;
+}
+
 function duplicateState(gameState: GameState): GameState{
   return {
     path: gameState.path,
@@ -122,6 +138,19 @@ function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
   } 
 
   return false;
+}
+
+function getTileTypeForPathIndex(index: number, gameState:GameState): TileType{
+  if(index >= gameState.path.length){
+    return TileType.Empty;
+  }
+
+  const c = gameState.path[index];
+
+  const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, gameState.path[index-1]) : undefined;
+  const next = (index +1 <= gameState.path.length - 1) ? getCardinalOfAdjacentCoordinates(c, gameState.path[index+1]) : undefined;
+
+  return getTileTypeFromAdjacentPathTiles(next, last);
 }
 
 function getCardinalOfAdjacentCoordinates(from:Coordinates, to:Coordinates) : Cardinal {
@@ -198,4 +227,4 @@ export enum Cardinal{
   West
 }
 
-export {createTileDictionary, getTileKey, getGridSize, areCoordinatesAdjacent, areCoordinatesEqual, getCardinalOfAdjacentCoordinates, getTileTypeFromAdjacentPathTiles, setInitialGameState, tryMove};
+export { areCoordinatesEqual, getTileKey, setInitialGameState, tryMove, getTileTypeForPathIndex, isGameOver};
