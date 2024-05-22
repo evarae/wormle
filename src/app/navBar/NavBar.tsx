@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import HelpIcon from '@mui/icons-material/Help';
 
-export default function NavBar() {
+export default function NavBar(props: Props) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className = 'nav-header'>
@@ -26,6 +26,7 @@ export default function NavBar() {
             WORMLE
           </Typography>
           <IconButton
+            onClick={props.infoButtonOnClick}
             size="large"
             edge="start"
             color="inherit"
@@ -38,4 +39,8 @@ export default function NavBar() {
       </AppBar>
     </Box>
   );
+}
+
+interface Props {
+    infoButtonOnClick: () => void
 }

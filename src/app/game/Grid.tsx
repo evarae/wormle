@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import mockGameData from '../../mock/mockGameData.json';
-import {GridTile, InvisibleTile, PathTile} from './GridTile';
-import { Coordinates, GameState, Tile, TileType } from '../../types/types';
-import { areCoordinatesEqual, getTileKey, setInitialGameState, tryMove, getTileTypeForPathIndex, isGameOver } from './GameEngine';
 import './Grid.css';
+import GridTile from './tiles/GridTile';
+import InvisibleTile from './tiles/InvisibleTile';
+import PathTile from './tiles/PathTile';
+import { Coordinates, GameState, Tile, TileType } from '../../types/types';
+import { areCoordinatesEqual, getTileKey, tryMove, getTileTypeForPathIndex, isGameOver } from './GameEngine';
 
 const Grid = (props:Props) => {
   const [pathTileTypes, setPathTileTypes] = useState<Record<string, TileType>>({});
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
-
-  function resetTiles(){
-    setInitialGameState(mockGameData, props.setGameState);
-  }
 
   function tileOnClickCallback(tile:Tile){
     tryMove(props.gameState, props.setGameState, tile.coordinates);
@@ -101,9 +98,10 @@ const Grid = (props:Props) => {
         }
       }
 
-      wordElements.push(<div key = {j} className='word-container'>
-        {tileElements}
-      </div>);
+      wordElements.push(
+        <div key = {j} className='word-container'>
+          {tileElements}
+        </div>);
     }
 
     refocusPath();
@@ -118,7 +116,7 @@ const Grid = (props:Props) => {
           key={index} 
           isUsed={(props.gameState.path.length > index)} 
           letter={char} 
-          isHighlighted={(props.gameState.path.length === index)}
+          isHighlighted={(props.gameState.path.length -1 === index)}
         />
       );
     });
@@ -133,7 +131,6 @@ const Grid = (props:Props) => {
       <div className='path-container'>
         {pathElements}
       </div>
-      <button onClick={resetTiles}>Reset Tiles</button>
     </div>
   );
 };

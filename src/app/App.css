@@ -1,5 +1,5 @@
 :root {
-  --main-bg-color: none;
+  --main-bg-color: white;
   --inner-corner-color: white;
   --empty-tile-color: lightgrey;
   --snake-color: rgb(41, 135, 69);
@@ -37,4 +37,28 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.modal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .MuiBox-root{
+    margin: 16px;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    width: 400px;
+    max-width: 80%;
+    box-shadow: 24px;
+    align-content: center;
+    background-color: var(--main-bg-color);
+  }
+
+}
+
+.center-modal-button{
+  padding-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
