@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import mockGameData from '../mock/mockGameData.json';
+import mockGameData from '../../mock/mockGameData.json';
 import {GridTile, InvisibleTile, PathTile} from './GridTile';
-import { Coordinates, GameState, Tile, TileType } from '../types/types';
+import { Coordinates, GameState, Tile, TileType } from '../../types/types';
 import { areCoordinatesEqual, getTileKey, setInitialGameState, tryMove, getTileTypeForPathIndex, isGameOver } from './GameEngine';
 import './Grid.css';
 

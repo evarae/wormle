@@ -1,5 +1,5 @@
 import React, { forwardRef} from 'react';
-import { TileType, Tile } from '../types/types';
+import { TileType, Tile } from '../../types/types';
 
 const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   

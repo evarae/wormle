@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Grid from './game/Grid';
-import { GameState } from './types/types';
-import mockGameData from './mock/mockGameData.json';
+import { GameState } from '../types/types';
+import mockGameData from '../mock/mockGameData.json';
 import { setInitialGameState } from './game/GameEngine';
 
 function App() {

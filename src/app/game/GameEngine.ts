@@ -1,4 +1,4 @@
-import { Coordinates, GameSetup, GameState, Tile, TileType, Word } from '../types/types';
+import { Coordinates, GameSetup, GameState, Tile, TileType, Word } from '../../types/types';
 
 function setInitialGameState(gameSetup: GameSetup, setGameState: (newGameState: GameState) => void){
   const startCoords = getStartCoordinates(gameSetup);

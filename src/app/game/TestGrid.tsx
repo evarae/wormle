@@ -1,7 +1,7 @@
 import React from 'react';
 import './Grid.css';
 import { GridTile } from './GridTile';
-import { Tile, TileType } from '../types/types';
+import { Tile, TileType } from '../../types/types';
 
 function TestGrid() {
 
