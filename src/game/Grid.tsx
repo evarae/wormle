@@ -10,9 +10,9 @@ function Grid() {
   const [gridSize, setGridSize] = useState<Coordinates>({x:0, y:0});
   const [tiles, setTiles] = useState<Record<string, Tile>>({});
   const [pathLetters, setPathLetters] = useState<string[]>([]);
+  const [path, setPath] = useState<Coordinates[]>([]);
 
   //Front end stuff
-  const [path, setPath] = useState<Coordinates[]>([]);
   const [pathTileTypes, setPathTileTypes] = useState<Record<string, TileType>>({});
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
 
@@ -55,6 +55,15 @@ function Grid() {
       setPath([...path, tile.coordinates]);
     }
     return;
+  }
+
+  function refocusPath(){
+    if(path.length>0){
+      const ref = textInputRefs.current[getTileKey(path[path.length-1])];
+      if(ref!== undefined){
+        ref.focus();
+      }
+    }
   }
 
   //Check for win condition
@@ -175,13 +184,7 @@ function Grid() {
       </div>);
     }
 
-    if(path.length>0){
-      const ref = textInputRefs.current[getTileKey(path[path.length-1])];
-      if(ref!== undefined){
-        ref.focus();
-      }
-    }
-
+    refocusPath();
     return(wordElements);
   };
 

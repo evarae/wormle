@@ -1,11 +1,13 @@
 # Wormle TODO List
 
 ## Frontend
+- [ ] Info Route
+- [ ] Header/nav
+- [ ] Game complete modal
+- [ ] Styling each word line more clearly
+- [ ] Demo game
 - [ ] Preview on hover
-- [x] Arrow key controls
 - [ ] Hints
-- [ ] Starting square
-- [x] Good snake path css
 - [ ] Testing
 - [ ] Front end consuming database API
 - [ ] Mock express server config for local
