@@ -8,22 +8,40 @@
     background-color: var(--main-bg-color);
     box-sizing: border-box;
 }
-  
-.tile-grid-empty {
-    background-color: var(--empty-tile-color);
-}
 
-.tile-grid-enabled {
-    background-color: var(--snake-color)
-}
-
-.tile-grid {
+.mini-tile {
+    margin: 2px;
+    height: 3em;
+    width: 3em;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    display: flex;
     border: none;
-    font-size:inherit;
-    &:focus {
-        outline: 2px solid green;
+    font-size: inherit;
+    .tile-letter{
+        font-weight: normal;
+        font-size: 1.5em;
+        color:black;
     }
-}  
+}
+
+.tile-color-1{
+    .coloured-tile {
+        background-color: var(--tile-color-1);
+    }
+}
+
+.tile-color-2{
+    .coloured-tile {
+        background-color: var(--tile-color-2);
+    }
+}
+
+.tile-color-3{
+    .coloured-tile {
+        background-color: var(--tile-color-3);
+    }
+}
 
 .tile-path{
     height: 2em;

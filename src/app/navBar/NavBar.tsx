@@ -13,25 +13,15 @@ export default function NavBar(props: Props) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className = 'nav-header'>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography fontWeight = "bold" variant="h2" component="div" sx={{ flexGrow: 1 }}>
             WORMLE
           </Typography>
           <IconButton
             onClick={props.infoButtonOnClick}
             size="large"
-            edge="start"
+            edge="end"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
           >
             <HelpIcon />
           </IconButton>

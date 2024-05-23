@@ -3,40 +3,23 @@
   --inner-corner-color: white;
   --empty-tile-color: lightgrey;
   --snake-color: rgb(41, 135, 69);
+  --secondary-color: white;
+  --secondary-color-dark: rgb(226, 226, 226);
+  --secondary-text-color: black;
   --snake-letter-color: white;
   --grid-size: 4em;
   --snake-size-offset: 0.6em;
   --inner-size-offset: 0.3em;
   --border-radius: 0.2em;
+  
+  --tile-color-1: rgb(252, 211, 222);
+  --tile-color-2: rgb(252, 246, 189);
+  --tile-color-3: rgb(169, 222, 249);
 }
 
 .App {
   text-align: center;
   color: rgb(0, 0, 0);
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-link {
-  color: #004cff;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .modal{
@@ -53,12 +36,24 @@
     align-content: center;
     background-color: var(--main-bg-color);
   }
-
+  .center-button{
+    padding-top: 16px;
+  }
 }
 
-.center-modal-button{
-  padding-top: 32px;
+.center-button{
   display: flex;
   justify-content: center;
   align-items: center;
+  .MuiButton-root{
+    text-transform: none;
+    background-color: var(--secondary-color);
+    color: black;
+    border-color: black;
+  }
+  .MuiButton-root:hover{
+    background-color: var(--secondary-color-dark);
+    border-color: black;
+  }
 }
+

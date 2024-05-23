@@ -1,15 +1,11 @@
 import { Coordinates, GameSetup, GameState, Tile, TileType, Word } from '../../types/types';
 
-function setInitialGameState(gameSetup: GameSetup, setGameState: (newGameState: GameState) => void){
+function getGameStateFromSetup(gameSetup:GameSetup):GameState{
   const startCoords = getStartCoordinates(gameSetup);
-  const tilesDict = createTileDictionary(gameSetup.words, startCoords);
-  const size = getGridSize(gameSetup.words);
-  const charArray = gameSetup.pathString.split('');
-
-  setGameState({
-    gridSize: size,
-    tiles: tilesDict,
-    pathLetters: charArray,
+  return({
+    gridSize: getGridSize(gameSetup.words),
+    tiles: createTileDictionary(gameSetup.words, startCoords),
+    pathLetters: gameSetup.pathString.split(''),
     path: [startCoords]
   });
 }
@@ -227,4 +223,4 @@ export enum Cardinal{
   West
 }
 
-export { areCoordinatesEqual, getTileKey, setInitialGameState, tryMove, getTileTypeForPathIndex, isGameOver};
+export { areCoordinatesEqual, getTileKey, getGameStateFromSetup, tryMove, getTileTypeForPathIndex, isGameOver};

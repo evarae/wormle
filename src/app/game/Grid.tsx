@@ -98,8 +98,9 @@ const Grid = (props:Props) => {
         }
       }
 
+      const mod = j%3;
       wordElements.push(
-        <div key = {j} className='word-container'>
+        <div key = {j} className={`word-container ${mod == 0 ? 'tile-color-1': (mod == 1 ? 'tile-color-2': 'tile-color-3')}`}>
           {tileElements}
         </div>);
     }
