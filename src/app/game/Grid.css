@@ -29,16 +29,25 @@
     .coloured-tile {
         background-color: var(--tile-color-1);
     }
+    .inner-corner {
+        background-color: var(--tile-color-1);
+    }
 }
 
 .tile-color-2{
     .coloured-tile {
         background-color: var(--tile-color-2);
     }
+    .inner-corner {
+        background-color: var(--tile-color-2);
+    }
 }
 
 .tile-color-3{
     .coloured-tile {
+        background-color: var(--tile-color-3);
+    }
+    .inner-corner {
         background-color: var(--tile-color-3);
     }
 }
@@ -206,7 +215,6 @@
     position: relative;
     background-color: var(--inner-corner-color);
     .inner-corner{
-        background-color: var(--empty-tile-color);
         height: calc(var(--snake-size-offset) - var(--inner-size-offset));
         width: calc(var(--snake-size-offset) - var(--inner-size-offset));
     }
