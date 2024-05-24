@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Grid from './game/Grid';
+import Game from './game/Game';
 import { GameState } from '../types/types';
 import mockGameData from '../mock/mockGameData.json';
 import { getGameStateFromSetup } from './game/GameEngine';
@@ -20,45 +20,48 @@ function App() {
     setGameState(getGameStateFromSetup(mockGameData));
   }, []);
 
-  function infoButtonOnClick(){
+  function infoButtonOnClick() {
     setInfoModalOpen(true);
   }
 
-  function tryDemoOnClick(){
+  function tryDemoOnClick() {
     setInfoModalOpen(false);
     setIsDemo(true);
     setGameState(getGameStateFromSetup(demoGameData));
   }
 
-  function resetButtonOnClick(){
-    setGameState(getGameStateFromSetup((mockGameData)));
+  function resetButtonOnClick() {
+    setGameState(getGameStateFromSetup(mockGameData));
     setIsDemo(false);
   }
 
-  function infoModalOnClose(){
+  function infoModalOnClose() {
     setInfoModalOpen(false);
   }
 
-  function infoModal(){
-
-    return(
+  function infoModal() {
+    return (
       <Modal
         open={isInfoModalOpen}
         onClose={infoModalOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        className='modal'
+        className="modal"
       >
         <Box>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Welcome to Wormle!
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Use the arrow keys or mouse to move the worm through the grid. Use the letters on your worm to spell a themed word on each row. The first move is always done for you.
+            Use the arrow keys or mouse to move the worm through the grid. Use
+            the letters on your worm to spell a themed word on each row. The
+            first move is always done for you.
           </Typography>
-          <MiniGrid gameState={getGameStateFromSetup(demoGameData)}/>
-          <div className='center-button'>
-            <Button variant = 'outlined' onClick = {tryDemoOnClick}>Try a demo</Button>
+          <MiniGrid gameState={getGameStateFromSetup(demoGameData)} />
+          <div className="center-button">
+            <Button variant="outlined" onClick={tryDemoOnClick}>
+              Try a demo
+            </Button>
           </div>
         </Box>
       </Modal>
@@ -67,11 +70,17 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar infoButtonOnClick = {infoButtonOnClick}/>
+      <NavBar infoButtonOnClick={infoButtonOnClick} />
       {infoModal()}
-      {gameState? <Grid gameState={gameState} setGameState={setGameState}/> : <>Loading</>}
-      <div className='center-button'>
-        <Button variant='outlined' size = 'small' onClick = {resetButtonOnClick}>{isDemo? 'Go to today\'s game':'Reset tiles'}</Button>
+      {gameState ? (
+        <Game gameState={gameState} setGameState={setGameState} />
+      ) : (
+        <>Loading</>
+      )}
+      <div className="center-button">
+        <Button variant="outlined" size="small" onClick={resetButtonOnClick}>
+          {isDemo ? 'Go to today\'s game' : 'Reset tiles'}
+        </Button>
       </div>
     </div>
   );

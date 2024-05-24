@@ -6,7 +6,9 @@ import { getClassFromTileType } from '../GridDisplayHelpers';
 const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   
   function onClick(){
-    props.onClickCallback(props.tile);
+    if(!props.isReadOnly){
+      props.onClickCallback(props.tile);
+    }
   }
 
   const snakeElement = () => {
@@ -31,9 +33,17 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
 
   return (
     <div className='tile snake-container'>
-      <button className='inner-square coloured-tile' onClick={onClick} ref = {ref}>
-        <span className='tile-letter' >{props.tile.guess}</span>
-      </button>
+      {
+        (props.isReadOnly?(
+          <div className='inner-square coloured-tile'>
+            <span className='tile-letter' >{props.tile.guess}</span>
+          </div>
+        ):(
+          <button className='inner-square coloured-tile' onClick={onClick} ref = {ref}>
+            <span className='tile-letter' >{props.tile.guess}</span>
+          </button>
+        ))
+      }
       {props.tileType == TileType.Empty? <></> : snakeElement()}
     </div>
   );
@@ -41,10 +51,17 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
 
 GridTile.displayName = 'GridTile';
 
-interface GridTileProps {
-  onClickCallback: (tile:Tile) => void,
-  tile:Tile,
-  tileType: TileType
-}
+export type GridTileProps = 
+  | { 
+      isReadOnly: true; 
+      tile: Tile; 
+      tileType: TileType; 
+    }
+  | { 
+      isReadOnly: false; 
+      tile: Tile; 
+      tileType: TileType; 
+      onClickCallback: (tile: Tile) => void; 
+    };
 
 export default GridTile;
