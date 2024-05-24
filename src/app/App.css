@@ -7,10 +7,6 @@
   --secondary-color-dark: rgb(226, 226, 226);
   --secondary-text-color: black;
   --snake-letter-color: white;
-  --grid-size: 4em;
-  --snake-size-offset: 0.6em;
-  --inner-size-offset: 0.3em;
-  --border-radius: 0.2em;
   
   --tile-color-1: rgb(252, 211, 222);
   --tile-color-2: rgb(252, 246, 189);

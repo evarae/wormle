@@ -20,12 +20,6 @@ export default function Grid(props:GridProps){
     }
   }
   
-  useEffect(() => {
-    if(!props.isReadOnly){
-      refocusPath();
-    }
-  }, [props.gameState]);
-  
   function getTileTypeFromCoordinates(coordinates: Coordinates): TileType {
     const type = pathTileTypes[getTileKey(coordinates)];
     if (type === undefined) {
@@ -48,10 +42,17 @@ export default function Grid(props:GridProps){
   
     setPathTileTypes(newRecord);
   }, [props.gameState]);
+
+  //Refocuses when the path changes
+  useEffect(() => {
+    if(!props.isReadOnly){
+      refocusPath();
+    }
+  }, [props.gameState]);
+      
   
   const renderedTiles = useMemo(() => {
     const wordElements = [];
-      
   
     for (let j = 0; j < props.gameState.gridSize.y; j++) {
       const tileElements = [];
@@ -71,17 +72,8 @@ export default function Grid(props:GridProps){
         }
       }
     
-      const mod = j % 3;
       wordElements.push(
-        <div
-          key={j}
-          className={`word-container ${
-            mod == 0? 'tile-color-1'
-              : mod == 1
-                ? 'tile-color-2'
-                : 'tile-color-3'
-          }`}
-        >
+        <div key={j} className={`word-container tile-color-${(j%3)+1}`}>
           {tileElements}
         </div>
       );
@@ -90,16 +82,20 @@ export default function Grid(props:GridProps){
     return wordElements;
   }, [props.gameState, pathTileTypes]);
   
-  return (<div className="gameGridContainer">{renderedTiles}</div>);
+  return (<div className={`grid-container grid-container-${props.gridSize?? 'large'}`}>{renderedTiles}</div>);
 }
   
   
   type GridProps = {
+    gridSize?:GridSize
     gameState: GameState,
     isReadOnly: true
   } | {
+    gridSize?:GridSize
     gameState: GameState,
     isReadOnly: false,
     tileOnClickCallback: (tile: Tile) => void
   }
+
+  type GridSize = 'large' | 'small'
   

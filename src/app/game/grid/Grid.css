@@ -1,3 +1,36 @@
+:root{
+    --grid-size-large: 4em;
+    --snake-size-offset-large: 0.6em;
+    --inner-size-offset-large: 0.3em;
+    --grid-size-small: 3em;
+    --snake-size-offset-small: 0.4em;
+    --inner-size-offset-small: 0.2em;
+    --border-radius-large: 0.2em;
+    --border-radius-small: 0.15em;
+    --grid-font-size-large: 1.5em;
+    --grid-font-size-small: 1.0em;
+}
+
+.grid-container{
+    margin: 32px;
+}
+
+.grid-container-large {
+    --grid-size: var(--grid-size-large);
+    --snake-size-offset: var(--snake-size-offset-large);
+    --inner-size-offset: var(--inner-size-offset-large);
+    --border-radius: var(--border-radius-large);
+    --grid-font-size: var(--grid-font-size-large);
+}
+
+.grid-container-small{
+    --grid-size: var(--grid-size-small);
+    --snake-size-offset: var(--snake-size-offset-small);
+    --inner-size-offset: var(--inner-size-offset-small);
+    --border-radius: var(--border-radius-small);
+    --grid-font-size: var(--grid-font-size-small);
+}
+
 .tile {
     height: var(--grid-size);
     width: var(--grid-size);
@@ -219,7 +252,7 @@
 .tile-letter{
     z-index: 2;
     position: absolute;
-    font-size: 1.5em;
+    font-size: var(--grid-font-size);
     font-weight: bold;
     color: var(--snake-letter-color);
 }
