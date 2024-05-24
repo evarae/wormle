@@ -1,7 +1,3 @@
-.gameGridContainer {
-    margin: 32px;
-}
-
 .tile {
     height: var(--grid-size);
     width: var(--grid-size);

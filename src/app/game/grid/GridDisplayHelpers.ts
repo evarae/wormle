@@ -1,4 +1,4 @@
-import { TileType } from '../../types/types';
+import { TileType } from '../../../types/types';
 
 export function getClassFromTileType(tileType: TileType){
   switch(tileType){

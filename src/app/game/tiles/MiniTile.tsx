@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tile } from '../../../types/types';
-import '../Grid.css';
+import '../grid/Grid.css';
 
 export default function MiniTile(props:Props){
 

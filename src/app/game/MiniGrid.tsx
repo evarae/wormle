@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import './Grid.css';
+import './grid/Grid.css';
 import InvisibleTile from './tiles/InvisibleTile';
 import { GameState } from '../../types/types';
 import { getTileKey} from './GameEngine';

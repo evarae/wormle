@@ -1,7 +1,7 @@
 import React, { forwardRef} from 'react';
 import { TileType, Tile } from '../../../types/types';
-import '../Grid.css';
-import { getClassFromTileType } from '../GridDisplayHelpers';
+import '../grid/Grid.css';
+import { getClassFromTileType } from '../grid/GridDisplayHelpers';
 
 const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   

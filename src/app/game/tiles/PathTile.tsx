@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Grid.css';
+import '../grid/Grid.css';
 
 export default function PathTile(props:PathTileProps){
 
