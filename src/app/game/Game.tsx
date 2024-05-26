@@ -9,6 +9,7 @@ import {
   isGameOver,
 } from './GameEngine';
 import Grid from './grid/Grid';
+import DemoGrid from './DemoGrid';
 
 const Game = (props: Props) => {
 
@@ -96,7 +97,6 @@ const Game = (props: Props) => {
       {isGameOver(props.gameState) && <h2>You Win!</h2>}
       <Grid gameState={props.gameState} isReadOnly={false} tileOnClickCallback={tileOnClickCallback}/>
       <div className="path-container">{pathElements}</div>
-      <Grid gameState={props.gameState} isReadOnly={true} gridSize='small'/>
     </div>
   );
 };

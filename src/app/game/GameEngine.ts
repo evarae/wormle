@@ -52,7 +52,7 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
 
   const lastTile = currentGameState.tiles[getTileKey(lastTileCoords)];
 
-  //If we're clicking on a tile that is empty and adjacent to the also tile on the path, move there
+  //If we're clicking on a tile that is empty and adjacent to the last tile on the path, move there
   if(tileAtCoordinate.guess === undefined && areCoordinatesAdjacent(lastTile.coordinates, move)){
     const partialRecord : Record<string, Tile> = {};
     const guessLetter = currentGameState.pathLetters[currentGameState.path.length];

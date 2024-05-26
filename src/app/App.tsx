@@ -7,7 +7,7 @@ import { getGameStateFromSetup } from './game/GameEngine';
 import NavBar from './navBar/NavBar';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { demoGameData } from '../demoData/demoData';
-import MiniGrid from './game/MiniGrid';
+import DemoGrid from './game/DemoGrid';
 
 function App() {
   const [isWinModalOpen, setWinModalOpen] = useState(false);
@@ -57,7 +57,7 @@ function App() {
             the letters on your worm to spell a themed word on each row. The
             first move is always done for you.
           </Typography>
-          <MiniGrid gameState={getGameStateFromSetup(demoGameData)} />
+          <DemoGrid/>
           <div className="center-button">
             <Button variant="outlined" onClick={tryDemoOnClick}>
               Try a demo
