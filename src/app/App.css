@@ -20,17 +20,21 @@
 
 .modal{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   .MuiBox-root{
-    margin: 16px;
-    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
     padding: 40px;
     width: 400px;
     max-width: 80%;
     box-shadow: 24px;
-    align-content: center;
     background-color: var(--main-bg-color);
+    outline: none
   }
   .center-button{
     padding-top: 16px;
@@ -38,9 +42,6 @@
 }
 
 .center-button{
-  display: flex;
-  justify-content: center;
-  align-items: center;
   .MuiButton-root{
     text-transform: none;
     background-color: var(--secondary-color);

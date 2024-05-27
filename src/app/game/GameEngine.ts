@@ -6,7 +6,8 @@ function getGameStateFromSetup(gameSetup:GameSetup):GameState{
     gridSize: getGridSize(gameSetup.words),
     tiles: createTileDictionary(gameSetup.words, startCoords),
     pathLetters: gameSetup.pathString.split(''),
-    path: [startCoords]
+    path: [startCoords],
+    theme: gameSetup.theme
   });
 }
 
@@ -86,7 +87,8 @@ function duplicateState(gameState: GameState): GameState{
     path: gameState.path,
     gridSize: gameState.gridSize,
     tiles: gameState.tiles,
-    pathLetters: gameState.pathLetters
+    pathLetters: gameState.pathLetters,
+    theme: gameState.theme
   };
 }
 

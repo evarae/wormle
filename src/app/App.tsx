@@ -3,11 +3,12 @@ import './App.css';
 import Game from './game/Game';
 import { GameState } from '../types/types';
 import mockGameData from '../mock/mockGameData.json';
-import { getGameStateFromSetup } from './game/GameEngine';
+import { getGameStateFromSetup, isGameOver } from './game/GameEngine';
 import NavBar from './navBar/NavBar';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Button} from '@mui/material';
 import { demoGameData } from '../demoData/demoData';
-import DemoGrid from './game/DemoGrid';
+import InfoModal from './modals/InfoModal';
+import WinModal from './modals/WinModal';
 
 function App() {
   const [isWinModalOpen, setWinModalOpen] = useState(false);
@@ -33,45 +34,34 @@ function App() {
   function resetButtonOnClick() {
     setGameState(getGameStateFromSetup(mockGameData));
     setIsDemo(false);
+    setInfoModalOpen(false);
+    setWinModalOpen(false);
   }
 
   function infoModalOnClose() {
     setInfoModalOpen(false);
   }
 
-  function infoModal() {
-    return (
-      <Modal
-        open={isInfoModalOpen}
-        onClose={infoModalOnClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="modal"
-      >
-        <Box>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Welcome to Wormle!
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Use the arrow keys or mouse to move the worm through the grid. Use
-            the letters on your worm to spell a themed word on each row. The
-            first move is always done for you.
-          </Typography>
-          <DemoGrid/>
-          <div className="center-button">
-            <Button variant="outlined" onClick={tryDemoOnClick}>
-              Try a demo
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-    );
+  function winModalOnClose() {
+    setWinModalOpen(false);
   }
+
+  useEffect(()=> {
+    if(gameState && isGameOver(gameState)){
+      console.log('active element: ', document.activeElement);
+      if(document.activeElement instanceof HTMLElement){
+        console.log('isHTML');
+        document.activeElement.blur();
+      }
+      setWinModalOpen(true);
+    }
+  },[gameState]);
 
   return (
     <div className="App">
       <NavBar infoButtonOnClick={infoButtonOnClick} />
-      {infoModal()}
+      <InfoModal isOpen={isInfoModalOpen} onClose={infoModalOnClose} tryDemoOnClick={tryDemoOnClick}/>
+      {gameState && <WinModal isOpen={isWinModalOpen} onClose={winModalOnClose} gameState={gameState} isDemo={isDemo} tryAgainOnClick={resetButtonOnClick}/>}
       {gameState ? (
         <Game gameState={gameState} setGameState={setGameState} />
       ) : (

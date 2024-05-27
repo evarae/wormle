@@ -2,5 +2,6 @@
     "words":[{"offset": 1, "text": "dragon"}, {"offset": 0, "text": "pegasus"}, {"offset": 0, "text": "kraken"}],
     "pathString": "pkregakenusnogsaard",
     "startWord": 1,
-    "startLetter": 0
+    "startLetter": 0,
+    "theme": "The Monster Manual"
 }

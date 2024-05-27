@@ -8,14 +8,16 @@ export type GameSetup = {
     words: Word[],
     pathString: string,
     startWord: number,
-    startLetter: number
+    startLetter: number,
+    theme: string
 }
 
 export type GameState = {
     gridSize: Coordinates,
     tiles: Record<string, Tile>,
     pathLetters: string[],
-    path: Coordinates[]
+    path: Coordinates[],
+    theme: string,
 }
   
 export type Word = {

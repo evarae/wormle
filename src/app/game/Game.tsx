@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
-import './Game.css';
 import PathTile from './tiles/PathTile';
 import { GameState, Tile } from '../../types/types';
 import {
   areCoordinatesEqual,
   getTileKey,
   tryMove,
-  isGameOver,
 } from './GameEngine';
 import Grid from './grid/Grid';
-import DemoGrid from './DemoGrid';
 
 const Game = (props: Props) => {
 
@@ -94,7 +91,6 @@ const Game = (props: Props) => {
 
   return (
     <div onKeyDown={handleKeyDown}>
-      {isGameOver(props.gameState) && <h2>You Win!</h2>}
       <Grid gameState={props.gameState} isReadOnly={false} tileOnClickCallback={tileOnClickCallback}/>
       <div className="path-container">{pathElements}</div>
     </div>
