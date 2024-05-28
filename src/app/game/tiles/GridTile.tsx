@@ -10,9 +10,20 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
       props.onClickCallback(props.tile);
     }
   }
+  function onMouseEnter(){
+    if(!props.isReadOnly){
+      props.onMouseEnter(props.tile);
+    }
+  }
 
-  const snakeElement = () => {
-    switch(props.tileType){
+  function onMouseLeave(){
+    if(!props.isReadOnly){
+      props.onMouseLeave();
+    }
+  }
+
+  const snakeElement = (tileType:TileType, isPreview = false) => {
+    switch(tileType){
     case(TileType.Empty):
       return <></>;
     case(TileType.CornerNorthEast):
@@ -20,31 +31,37 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
     case(TileType.CornerSouthEast):
     case(TileType.CornerSouthWest):
       return (
-        <div className={`snake-head ${getClassFromTileType(props.tileType)}`}>
+        <div className={`snake-head ${isPreview? 'snake-preview': ''} ${getClassFromTileType(tileType)}`}>
           <div className='corner'>
             <div className='inner-corner'/>
           </div>
         </div>
       );
     default:
-      return <div className={`snake-head ${getClassFromTileType(props.tileType)}`}/>;
+      return <div className={`snake-head ${isPreview? 'snake-preview': ''} ${getClassFromTileType(tileType)}`}/>;
     }
   };
 
+  const letterDisplay = () => {
+    const letter = (props.tile.guess !== undefined)? props.tile.guess: props.previewString;
+    return(<span className='tile-letter' >{letter}</span>);
+  };
+
   return (
-    <div className='tile snake-container'>
+    <div className='tile'>
       {
         (props.isReadOnly?(
           <div className='inner-square coloured-tile'>
-            <span className='tile-letter' >{props.tile.guess}</span>
+            {letterDisplay()}
           </div>
         ):(
-          <button className='inner-square coloured-tile' onClick={onClick} ref = {ref}>
-            <span className='tile-letter' >{props.tile.guess}</span>
+          <button className='inner-square coloured-tile' onClick={onClick} ref = {ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+            {letterDisplay()}
           </button>
         ))
       }
-      {props.tileType == TileType.Empty? <></> : snakeElement()}
+      {(props.previewString && props.previewTileType)? snakeElement(props.previewTileType, true) : <></>}
+      {props.tileType == TileType.Empty? <></> : snakeElement(props.tileType)}
     </div>
   );
 });
@@ -56,12 +73,18 @@ export type GridTileProps =
       isReadOnly: true; 
       tile: Tile; 
       tileType: TileType; 
+      previewString?: string;
+      previewTileType?: TileType;
     }
   | { 
       isReadOnly: false; 
       tile: Tile; 
       tileType: TileType; 
       onClickCallback: (tile: Tile) => void; 
+      onMouseEnter: (tile: Tile) => void;
+      onMouseLeave: () => void;
+      previewString?: string;
+      previewTileType?: TileType;
     };
 
 export default GridTile;

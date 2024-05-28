@@ -36,22 +36,9 @@
     width: var(--grid-size);
     background-color: var(--main-bg-color);
     box-sizing: border-box;
-}
-
-.mini-tile {
-    margin: 2px;
-    height: 3em;
-    width: 3em;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
     display: flex;
-    border: none;
-    font-size: inherit;
-    .tile-letter{
-        font-weight: normal;
-        font-size: 1.5em;
-        color:black;
-    }
+    justify-content: center;
+    align-items: center;
 }
 
 .tile-color-1{
@@ -115,12 +102,6 @@
     display: flex;
     justify-content: center;
 }
-
-.snake-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
   
 .snake-head{
     pointer-events: none;
@@ -129,6 +110,11 @@
     justify-content: center;
     align-items: center;
     background-color: var(--snake-color);
+    position: absolute;
+}
+
+.snake-preview{
+    background-color: var(--snake-hover-color);
 }
 
 .end{
@@ -258,15 +244,16 @@
 }
 
 .inner-square{
+    position: absolute;
     height: calc(var(--grid-size) - var(--inner-size-offset)*2);
     width: calc(var(--grid-size) - var(--inner-size-offset)*2);
     border-radius: var(--border-radius);
     display: flex;
-    position: absolute;
     justify-content: center;
     align-items: center;
-    background-color: var(--empty-tile-color);
-    border: none;
     font-size: inherit;
     box-sizing: border-box;
+    border: none;
+    outline: none;
+    background-color: var(--empty-tile-color);
 }

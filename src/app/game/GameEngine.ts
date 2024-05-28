@@ -138,15 +138,15 @@ function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
   return false;
 }
 
-function getTileTypeForPathIndex(index: number, gameState:GameState): TileType{
-  if(index >= gameState.path.length){
+function getTileTypeForPathIndex(index: number, path:Coordinates[]): TileType{
+  if(index >= path.length){
     return TileType.Empty;
   }
 
-  const c = gameState.path[index];
+  const c = path[index];
 
-  const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, gameState.path[index-1]) : undefined;
-  const next = (index +1 <= gameState.path.length - 1) ? getCardinalOfAdjacentCoordinates(c, gameState.path[index+1]) : undefined;
+  const last = (index -1 >= 0)? getCardinalOfAdjacentCoordinates(c, path[index-1]) : undefined;
+  const next = (index +1 <= path.length - 1) ? getCardinalOfAdjacentCoordinates(c, path[index+1]) : undefined;
 
   return getTileTypeFromAdjacentPathTiles(next, last);
 }
@@ -218,6 +218,47 @@ function getTileTypeFromAdjacentPathTiles(next: Cardinal | undefined, last: Card
   return TileType.Empty;
 }
 
+function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Coordinates):Coordinates[] {
+
+  const array:Coordinates[] = [];
+
+  if(from.y == to.y && from.x != to.x){
+    const direction = ((from.x-to.x) > 0) ? (-1) : 1;
+
+    for(let i = from.x ; i != to.x; i+=direction){
+      const c:Coordinates = {x: (i), y: from.y};
+      const tile = gameState.tiles[getTileKey(c)];
+
+      if(tile==undefined){
+        return [];
+      }
+
+      array.push(c);
+    }
+    array.push(to);
+    return array;
+  }
+
+  if(from.x == to.x && from.y != to.y){
+    const direction = ((from.y-to.y) > 0) ? (-1) : 1;
+
+    for(let i = from.y ; i != to.y; i+=direction){
+      const c:Coordinates = {y: (i), x: from.x};
+      const tile = gameState.tiles[getTileKey(c)];
+
+      if(tile==undefined){
+        return [];
+      }
+
+      array.push(c);
+    }
+    array.push(to);
+    return array;
+  }
+
+  return [];
+}
+
 export enum Cardinal{
   North,
   South,
@@ -225,4 +266,4 @@ export enum Cardinal{
   West
 }
 
-export { areCoordinatesEqual, getTileKey, getGameStateFromSetup, tryMove, getTileTypeForPathIndex, isGameOver};
+export { areCoordinatesEqual, getTileKey, getGameStateFromSetup, tryMove, getTileTypeForPathIndex, isGameOver, getValidMovesBetweenPoints};
