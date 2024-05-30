@@ -29,41 +29,55 @@ function getGridSize(words: Word[]): Coordinates {
 function tryMove(currentGameState: GameState, setGameState: (newGameState: GameState) => void, move: Coordinates) : void {
   const moveKey = getTileKey(move);
   const tileAtCoordinate = currentGameState.tiles[moveKey];
+  const lastTileCoords = (currentGameState.path.length > 0)? currentGameState.path[currentGameState.path.length-1] : undefined;
 
   //Check we aren't trying to move outside the grid
-  if(tileAtCoordinate == undefined){
+  if(tileAtCoordinate == undefined || lastTileCoords == undefined){
     return;
   }
 
-  const lastTileCoords = (currentGameState.path.length > 0)? currentGameState.path[currentGameState.path.length-1] : undefined;
-  if(lastTileCoords == undefined){
-    //The path is empty
-    return;
-  }
+  let state = currentGameState;
 
   //If we're clicking on the last tile on the path, clear the tile
   if(areCoordinatesEqual(move, lastTileCoords) && currentGameState.path.length > 1){
-    const partialRecord : Record<string, Tile> = {};
-    partialRecord[moveKey] = { ...tileAtCoordinate, guess: undefined};
-    currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
-    currentGameState.path.pop();
-    setGameState(duplicateState(currentGameState));
-    return;
+    state = moveBackward(currentGameState, move);
+    setGameState(state);
   }
 
-  const lastTile = currentGameState.tiles[getTileKey(lastTileCoords)];
+  const path = getValidMovesBetweenPoints(currentGameState, lastTileCoords, move);
+  
 
-  //If we're clicking on a tile that is empty and adjacent to the last tile on the path, move there
-  if(tileAtCoordinate.guess === undefined && areCoordinatesAdjacent(lastTile.coordinates, move)){
-    const partialRecord : Record<string, Tile> = {};
-    const guessLetter = currentGameState.pathLetters[currentGameState.path.length];
-    partialRecord[moveKey] = { ...tileAtCoordinate, guess: guessLetter};
-    currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
-    currentGameState.path = [...currentGameState.path, move];
-    setGameState(duplicateState(currentGameState));
-    return;
-  }
-  //Else, we're clicking on a square that's already occupied so do nothing
+  path.forEach(c => {
+    state = moveForward(state, c);
+  });
+
+  setGameState(state);
+
+}
+
+function moveForward(currentGameState: GameState, move: Coordinates) : GameState{
+  const guessLetter = currentGameState.pathLetters[currentGameState.path.length];
+  const tileAtCoordinate = currentGameState.tiles[getTileKey(move)];
+
+  const partialRecord : Record<string, Tile> = {};
+  partialRecord[getTileKey(move)] = { ...tileAtCoordinate, guess: guessLetter};
+
+  currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
+  currentGameState.path = [...currentGameState.path, move];
+
+  return duplicateState(currentGameState);
+}
+
+function moveBackward(currentGameState: GameState, move: Coordinates){
+  const tileAtCoordinate = currentGameState.tiles[getTileKey(move)];
+
+  const partialRecord : Record<string, Tile> = {};
+  partialRecord[getTileKey(move)] = { ...tileAtCoordinate, guess: undefined};
+
+  currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
+  currentGameState.path.pop();
+  
+  return duplicateState(currentGameState);
 }
 
 function isGameOver(gameState:GameState) : boolean {
@@ -225,7 +239,7 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
   if(from.y == to.y && from.x != to.x){
     const direction = ((from.x-to.x) > 0) ? (-1) : 1;
 
-    for(let i = from.x ; i != to.x; i+=direction){
+    for(let i = from.x + direction ; i != to.x + direction; i+=direction){
       const c:Coordinates = {x: (i), y: from.y};
       const tile = gameState.tiles[getTileKey(c)];
 
@@ -233,16 +247,19 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
         return [];
       }
 
+      if(!areCoordinatesEqual(c, from) && tile.guess !== undefined){
+        return [];
+      }
+
       array.push(c);
     }
-    array.push(to);
     return array;
   }
 
   if(from.x == to.x && from.y != to.y){
     const direction = ((from.y-to.y) > 0) ? (-1) : 1;
 
-    for(let i = from.y ; i != to.y; i+=direction){
+    for(let i = from.y + direction; i != to.y + direction; i+=direction){
       const c:Coordinates = {y: (i), x: from.x};
       const tile = gameState.tiles[getTileKey(c)];
 
@@ -250,9 +267,12 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
         return [];
       }
 
+      if(!areCoordinatesEqual(c, from) && tile.guess !== undefined){
+        return [];
+      }
+
       array.push(c);
     }
-    array.push(to);
     return array;
   }
 

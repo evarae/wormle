@@ -47,9 +47,11 @@ export default function Grid(props:GridProps){
 
     //Set preview tile stuff
     if(hoveredCoordinates !== undefined && props.gameState.path !== undefined){
-      const previewPath = getValidMovesBetweenPoints(props.gameState, props.gameState.path[props.gameState.path.length-1], hoveredCoordinates);
-      console.log('preview path: ', previewPath);
-
+      const lastPathCoordinate = props.gameState.path[props.gameState.path.length-1];
+      const previewPath = getValidMovesBetweenPoints(props.gameState, lastPathCoordinate, hoveredCoordinates);
+      if(previewPath.length > 0){
+        previewPath.unshift(lastPathCoordinate);
+      }
       previewPath.forEach((c, index) => {
         displayModifiers[getTileKey(c)] = {...displayModifiers[getTileKey(c)], previewTileType: getTileTypeForPathIndex(index, previewPath), previewString: props.gameState.pathLetters[props.gameState.path.length -1 + index]};
       });
