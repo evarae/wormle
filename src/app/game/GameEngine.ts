@@ -45,7 +45,6 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
   }
 
   const path = getValidMovesBetweenPoints(currentGameState, lastTileCoords, move);
-  
 
   path.forEach(c => {
     state = moveForward(state, c);
@@ -137,21 +136,6 @@ function areCoordinatesEqual(a:Coordinates, b:Coordinates) : boolean {
   return (a.x==b.x && a.y==b.y);
 }
 
-function areCoordinatesAdjacent(a:Coordinates, b:Coordinates) : boolean {
-  const diffX = Math.abs(a.x - b.x);
-  const diffY = Math.abs(a.y - b.y);
-
-  if(diffX == 1 && diffY == 0){
-    return true;
-  } 
-
-  if(diffX == 0 && diffY == 1){
-    return true;
-  } 
-
-  return false;
-}
-
 function getTileTypeForPathIndex(index: number, path:Coordinates[]): TileType{
   if(index >= path.length){
     return TileType.Empty;
@@ -238,45 +222,27 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
 
   if(from.y == to.y && from.x != to.x){
     const direction = ((from.x-to.x) > 0) ? (-1) : 1;
-
     for(let i = from.x + direction ; i != to.x + direction; i+=direction){
-      const c:Coordinates = {x: (i), y: from.y};
-      const tile = gameState.tiles[getTileKey(c)];
-
-      if(tile==undefined){
-        return [];
-      }
-
-      if(!areCoordinatesEqual(c, from) && tile.guess !== undefined){
-        return [];
-      }
-
-      array.push(c);
+      array.push({x: (i), y: from.y});
     }
-    return array;
   }
 
   if(from.x == to.x && from.y != to.y){
     const direction = ((from.y-to.y) > 0) ? (-1) : 1;
-
     for(let i = from.y + direction; i != to.y + direction; i+=direction){
-      const c:Coordinates = {y: (i), x: from.x};
-      const tile = gameState.tiles[getTileKey(c)];
-
-      if(tile==undefined){
-        return [];
-      }
-
-      if(!areCoordinatesEqual(c, from) && tile.guess !== undefined){
-        return [];
-      }
-
-      array.push(c);
+      array.push({y: (i), x: from.x});
     }
-    return array;
   }
 
-  return [];
+  //Assumes we're trying to move into an empty space
+  for(const c of array){
+    const tile = gameState.tiles[getTileKey(c)];
+    if(tile == undefined || tile.guess !== undefined){
+      return [];
+    }
+  }
+
+  return array;
 }
 
 export enum Cardinal{

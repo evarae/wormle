@@ -19,6 +19,13 @@ export default function Grid(props:GridProps){
       }
     }
   }
+
+  function onClickCallback(tile:Tile){
+    setHoveredCoordinates(undefined);
+    if(!props.isReadOnly){
+      props.tileOnClickCallback(tile);
+    }
+  }
   
   function onMouseEnter(tile:Tile){
     setHoveredCoordinates(tile.coordinates);
@@ -49,6 +56,7 @@ export default function Grid(props:GridProps){
     if(hoveredCoordinates !== undefined && props.gameState.path !== undefined){
       const lastPathCoordinate = props.gameState.path[props.gameState.path.length-1];
       const previewPath = getValidMovesBetweenPoints(props.gameState, lastPathCoordinate, hoveredCoordinates);
+
       if(previewPath.length > 0){
         previewPath.unshift(lastPathCoordinate);
       }
@@ -73,7 +81,7 @@ export default function Grid(props:GridProps){
         if (t !== undefined) {
           const tileProps:GridTileProps = props.isReadOnly? 
             {isReadOnly: true, tile: t, ...mods} :
-            {isReadOnly: false, tile: t, onClickCallback: props.tileOnClickCallback, onMouseEnter: onMouseEnter, onMouseLeave:onMouseLeave, ...mods};
+            {isReadOnly: false, tile: t, onClickCallback: onClickCallback, onMouseEnter: onMouseEnter, onMouseLeave:onMouseLeave, ...mods};
   
           tileElements.push(
             <GridTile {...tileProps} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>
