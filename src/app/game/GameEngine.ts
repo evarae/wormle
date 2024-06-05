@@ -26,6 +26,27 @@ function getGridSize(words: Word[]): Coordinates {
   return {x: maxWidth, y: words.length};
 }
 
+function tryMoveInDirection(currentGameState: GameState, direction:Cardinal, setGameState: (newGameState: GameState) => void) : void {
+
+  const headCoords = (currentGameState.path.length > 0)? currentGameState.path[currentGameState.path.length-1] : undefined;
+  if(headCoords == undefined){
+    return;
+  }
+
+  const newCoords = coordinateInDirection(headCoords, direction);
+  const head1Coords = (currentGameState.path.length > 1)? currentGameState.path[currentGameState.path.length-2] : undefined;
+  const isMovingBackwards = (head1Coords != undefined && areCoordinatesEqual(newCoords, head1Coords));
+
+  const tileAtCoordinate = currentGameState.tiles[getTileKey(newCoords)];
+  
+  if(!(isMovingBackwards) && (tileAtCoordinate == undefined || tileAtCoordinate.guess != undefined)){
+    return;
+  }
+
+  tryMove(currentGameState, setGameState, newCoords);
+  return;
+}
+
 function tryMove(currentGameState: GameState, setGameState: (newGameState: GameState) => void, move: Coordinates) : void {
   const moveKey = getTileKey(move);
   const tileAtCoordinate = currentGameState.tiles[moveKey];
@@ -38,10 +59,18 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
 
   let state = currentGameState;
 
-  //If we're clicking on the last tile on the path, clear the tile
-  if(areCoordinatesEqual(move, lastTileCoords) && currentGameState.path.length > 1){
-    state = moveBackward(currentGameState, move);
+  if(tileAtCoordinate.guess != undefined){
+    if(state.path.length <= 1){
+      return;
+    }
+
+    state = moveBackward(state, state.path[state.path.length-1]);
+    while(state.path.length > 1 && !areCoordinatesEqual(state.path[state.path.length-1], move)){
+      state = moveBackward(state, state.path[state.path.length-1]);
+    }
+
     setGameState(state);
+    return;
   }
 
   const path = getValidMovesBetweenPoints(currentGameState, lastTileCoords, move);
@@ -51,10 +80,9 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
   });
 
   setGameState(state);
-
 }
 
-function moveForward(currentGameState: GameState, move: Coordinates) : GameState{
+function moveForward(currentGameState: GameState, move: Coordinates) : GameState {
   const guessLetter = currentGameState.pathLetters[currentGameState.path.length];
   const tileAtCoordinate = currentGameState.tiles[getTileKey(move)];
 
@@ -67,7 +95,7 @@ function moveForward(currentGameState: GameState, move: Coordinates) : GameState
   return duplicateState(currentGameState);
 }
 
-function moveBackward(currentGameState: GameState, move: Coordinates){
+function moveBackward(currentGameState: GameState, move: Coordinates) : GameState {
   const tileAtCoordinate = currentGameState.tiles[getTileKey(move)];
 
   const partialRecord : Record<string, Tile> = {};
@@ -245,6 +273,19 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
   return array;
 }
 
+function coordinateInDirection(startCoordinates: Coordinates, direction:Cardinal):Coordinates{
+  switch(direction){
+  case(Cardinal.North):
+    return {x:startCoordinates.x, y: startCoordinates.y - 1}; 
+  case(Cardinal.South):
+    return {x:startCoordinates.x, y: startCoordinates.y + 1}; 
+  case(Cardinal.East):
+    return {x:startCoordinates.x + 1, y: startCoordinates.y}; 
+  case(Cardinal.West):
+    return {x:startCoordinates.x - 1, y: startCoordinates.y}; 
+  }
+}
+
 export enum Cardinal{
   North,
   South,
@@ -252,4 +293,4 @@ export enum Cardinal{
   West
 }
 
-export { areCoordinatesEqual, getTileKey, getGameStateFromSetup, tryMove, getTileTypeForPathIndex, isGameOver, getValidMovesBetweenPoints};
+export { getTileKey, getGameStateFromSetup, tryMove, getTileTypeForPathIndex, isGameOver, getValidMovesBetweenPoints, tryMoveInDirection};

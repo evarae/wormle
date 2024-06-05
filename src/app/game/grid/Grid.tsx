@@ -81,7 +81,7 @@ export default function Grid(props:GridProps){
         if (t !== undefined) {
           const tileProps:GridTileProps = props.isReadOnly? 
             {isReadOnly: true, tile: t, ...mods} :
-            {isReadOnly: false, tile: t, onClickCallback: onClickCallback, onMouseEnter: onMouseEnter, onMouseLeave:onMouseLeave, ...mods};
+            {isReadOnly: false, tile: t, onClickCallback, onMouseEnter, onMouseLeave, ...mods};
   
           tileElements.push(
             <GridTile {...tileProps} ref={(ref) => textInputRefs.current[getTileKey(t.coordinates)] = ref!}/>

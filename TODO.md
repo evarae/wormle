@@ -2,11 +2,8 @@
 
 ## Frontend
 - [ ] Info Route
-- [ ] Header/nav
-- [ ] Game complete modal
-- [ ] Styling each word line more clearly
-- [ ] Demo game
-- [ ] Preview on hover
+- [x] Styling each word line more clearly
+- [x] Preview on hover
 - [ ] Hints
 - [ ] Testing
 - [ ] Front end consuming database API

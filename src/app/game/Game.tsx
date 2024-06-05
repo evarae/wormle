@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import PathTile from './tiles/PathTile';
 import { GameState, Tile } from '../../types/types';
 import {
-  areCoordinatesEqual,
-  getTileKey,
+  Cardinal,
   tryMove,
+  tryMoveInDirection,
 } from './GameEngine';
 import Grid from './grid/Grid';
 
@@ -15,65 +15,28 @@ const Game = (props: Props) => {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (props.gameState.path.length < 1) {
-      //TODO: add some default here, maybe go to end of the snake?
-      return;
-    }
 
-    const currentCoords = props.gameState.path[props.gameState.path.length - 1];
-    let newTile = undefined;
+    let direction = undefined;
 
     switch (event.code) {
-    case 'ArrowRight': {
-      newTile =
-          props.gameState.tiles[
-            getTileKey({ x: currentCoords.x + 1, y: currentCoords.y })
-          ];
+    case 'ArrowRight': 
+      direction = Cardinal.East;
       break;
-    }
-    case 'ArrowLeft': {
-      newTile =
-          props.gameState.tiles[
-            getTileKey({ x: currentCoords.x - 1, y: currentCoords.y })
-          ];
+    case 'ArrowLeft': 
+      direction = Cardinal.West;
       break;
-    }
-    case 'ArrowDown': {
-      newTile =
-          props.gameState.tiles[
-            getTileKey({ x: currentCoords.x, y: currentCoords.y + 1 })
-          ];
+    case 'ArrowDown': 
+      direction = Cardinal.South;
       break;
-    }
-    case 'ArrowUp': {
-      newTile =
-          props.gameState.tiles[
-            getTileKey({ x: currentCoords.x, y: currentCoords.y - 1 })
-          ];
-      break;
-    }
+    case 'ArrowUp': 
+      direction = Cardinal.North;
     }
 
-    if (newTile == undefined) {
+    if (direction == undefined) {
       return;
     }
 
-    //Check if we're moving back to the last entry in the path
-    if (
-      props.gameState.path.length >= 2 &&
-      areCoordinatesEqual(
-        currentCoords,
-        props.gameState.path[props.gameState.path.length - 1]
-      ) &&
-      areCoordinatesEqual(
-        newTile.coordinates,
-        props.gameState.path[props.gameState.path.length - 2]
-      )
-    ) {
-      tryMove(props.gameState, props.setGameState, currentCoords);
-    } else if (newTile.guess == undefined) {
-      tryMove(props.gameState, props.setGameState, newTile.coordinates);
-    }
+    tryMoveInDirection(props.gameState, direction, props.setGameState);
   };
   
   const pathElements = useMemo(() => {
