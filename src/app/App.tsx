@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Game from './game/Game';
 import { GameState } from '../types/types';
-import mockGameData from '../mock/mockGameData.json';
+import mockGameData from '../gameData/game.json';
 import { getGameStateFromSetup, isGameOver } from './game/GameEngine';
 import NavBar from './navBar/NavBar';
 import { Button} from '@mui/material';
