@@ -4,18 +4,16 @@
 - [ ] Info Route
 - [ ] Hints
 - [ ] Testing
-- [ ] Responsive UI for mobile
-- [ ] Improve hover UI
-- [ ] Meaningful Readme
+- [ ] Improve path letters
 
 ## Infrastructure
 - [ ] Website/domain set up
 
 ## Backend
 - [ ] Database for games
-- [ ] API for database
-- [ ] API validation so it only serves todays/old games
-- [ ] How to securely and conveniently add new games to the database
+- [ ] Lambda that takes database entry and copies to s3
+- [ ] GHA triggers the lambda to replace the puzzle
+- [ ] Securely and conveniently add new games to the database
 
 ## Game maker program
 - [ ] Inputs for words, path, offset

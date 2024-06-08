@@ -1,6 +1,29 @@
-# Getting Started with Create React App
+# WORMLE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Wormle is a daily word game created by Rae McLean. Players guide a worm through the grid to spell a related word on each line, using the arrow keys or mouse. 
+
+This is a react app written in typescript, and was bootstrapped with [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
+
+## CI/CD Pipeline
+
+On push to main, the github actions workflow "PushToMain.yml" will run. This will:
+- Build using node version 22.x
+- Run unit tests
+- Use an IAM access key to log into a AWS user who has s3 write permissions, and upload the contents of the /build folder into an s3 bucket: https://wormle.s3.amazonaws.com/index.html.
+
+## Defining the daily puzzle
+
+The daily puzzle is defined in the public/data/game.json folder with the following structure:
+
+`
+{
+    "words":[{"offset": 1, "text": "dragon"}, {"offset": 0, "text": "pegasus"}, {"offset": 0, "text": "kraken"}],
+    "pathString": "pkregakenusnogsaard",
+    "startWord": 1,
+    "startLetter": 0,
+    "theme": "The Monster Manual"
+}
+`
 
 ## Available Scripts
 
@@ -38,9 +61,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
