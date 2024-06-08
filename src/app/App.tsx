@@ -70,15 +70,17 @@ function App() {
       <InfoModal isOpen={isInfoModalOpen} onClose={infoModalOnClose} tryDemoOnClick={tryDemoOnClick}/>
       {gameState && <WinModal isOpen={isWinModalOpen} onClose={winModalOnClose} gameState={gameState} isDemo={isDemo} tryAgainOnClick={resetButtonOnClick}/>}
       {gameState ? (
-        <Game gameState={gameState} setGameState={setGameState} />
+        <div>
+          <Game gameState={gameState} setGameState={setGameState} />
+          <div className="center-button">
+            <Button variant="outlined" size="small" onClick={resetButtonOnClick}>
+              {isDemo ? 'Go to today\'s game' : 'Reset tiles'}
+            </Button>
+          </div>
+        </div>
       ) : (
-        <>Loading</>
+        <></>
       )}
-      <div className="center-button">
-        <Button variant="outlined" size="small" onClick={resetButtonOnClick}>
-          {isDemo ? 'Go to today\'s game' : 'Reset tiles'}
-        </Button>
-      </div>
     </div>
   );
 }

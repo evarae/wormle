@@ -7,6 +7,7 @@ import {
   tryMoveInDirection,
 } from './GameEngine';
 import Grid from './grid/Grid';
+import './Game.css';
 
 const Game = (props: Props) => {
 
@@ -53,7 +54,7 @@ const Game = (props: Props) => {
   }, [props.gameState]);
 
   return (
-    <div onKeyDown={handleKeyDown}>
+    <div onKeyDown={handleKeyDown} className="game-container">
       <Grid gameState={props.gameState} isReadOnly={false} tileOnClickCallback={tileOnClickCallback}/>
       <div className="path-container">{pathElements}</div>
     </div>

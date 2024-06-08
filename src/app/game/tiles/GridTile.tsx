@@ -48,14 +48,14 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   };
 
   return (
-    <div className='tile'>
+    <div className='tile' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {
         (props.isReadOnly?(
           <div className='inner-square coloured-tile'>
             {letterDisplay()}
           </div>
         ):(
-          <button className='inner-square coloured-tile' onClick={onClick} ref = {ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+          <button className='inner-square coloured-tile' onClick={onClick} ref = {ref}>
             {letterDisplay()}
           </button>
         ))

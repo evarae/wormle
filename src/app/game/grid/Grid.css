@@ -38,10 +38,6 @@
     }
 }
 
-.grid-container{
-    margin-top: 32px;
-}
-
 .grid-container-small{
     --grid-size: var(--grid-size-small);
 }
@@ -216,7 +212,7 @@
     margin:  0 0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 0 0 0 50%;
     .corner{
-        top: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
+        top: calc(-1*var(--grid-size)*(1/2 - var(--snake-size-offset)));
         left: calc((var(--grid-size)*(1/2 - var(--snake-size-offset))));
     }
     .inner-corner{
