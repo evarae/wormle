@@ -3,7 +3,7 @@ import './grid/Grid.css';
 import { Coordinates, GameState } from '../../types/types';
 import Grid from './grid/Grid';
 import { getGameStateFromSetup, tryMove } from './GameEngine';
-import { demoGameData } from '../../demoData/demoData';
+import { demoData } from '../../gameData/data';
 
 const DemoGrid = () => {
   const [gameState, setGameState] = useState<GameState>();
@@ -11,7 +11,7 @@ const DemoGrid = () => {
   const moves:Coordinates[] = [{x:1,y:1}, {x:0, y:1}, {x:0, y:0}, {x:1, y:0}, {x:2, y:0}];
 
   useEffect(() => {
-    setGameState(getGameStateFromSetup(demoGameData));
+    setGameState(getGameStateFromSetup(demoData));
   }, []);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const DemoGrid = () => {
     }
 
     if(count == moves.length){
-      setGameState(getGameStateFromSetup(demoGameData));
+      setGameState(getGameStateFromSetup(demoData));
       return;
     }
 
