@@ -1,11 +1,11 @@
-name: Build, test and deploy to s3
+name: Push to main
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build test deploy:
     runs-on: ubuntu-latest
 
     steps:
