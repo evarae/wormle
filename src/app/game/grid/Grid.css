@@ -213,7 +213,7 @@
     border-radius: 0 0 0 50%;
     .corner{
         top: calc(-1*var(--grid-size)*(1/2 - var(--snake-size-offset)));
-        left: calc((var(--grid-size)*(1/2 - var(--snake-size-offset))));
+        left: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
     }
     .inner-corner{
         position: relative;
