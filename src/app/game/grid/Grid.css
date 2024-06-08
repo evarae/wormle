@@ -1,34 +1,53 @@
 :root{
-    --grid-size-large: 4em;
-    --snake-size-offset-large: 0.6em;
-    --inner-size-offset-large: 0.3em;
-    --grid-size-small: 3em;
-    --snake-size-offset-small: 0.4em;
-    --inner-size-offset-small: 0.2em;
-    --border-radius-large: 0.2em;
-    --border-radius-small: 0.15em;
-    --grid-font-size-large: 1.5em;
-    --grid-font-size-small: 1.0em;
+    --grid-size-xlarge: 60px;
+    --grid-size-large: 50px;
+    --grid-size-medium: 42px;
+    --grid-size-small: 36px;
+    --grid-size-xsmall: 30px;
+    --snake-size-offset: 0.15;
+    --inner-size-offset: 0.075;
+
+    --border-radius: 0.05;
+    --grid-font-size: 0.36;
+}
+
+@media only screen and (max-width: 410px) {
+    .grid-container-large {
+        --grid-size: var(--grid-size-small);
+    }
+    .grid-container-medium{
+        --grid-size: var(--grid-size-xsmall);
+    }
+}
+
+@media only screen and (min-width: 410px) and (max-width: 600px) {
+    .grid-container-large {
+        --grid-size: var(--grid-size-medium);
+    }
+    .grid-container-medium{
+        --grid-size: var(--grid-size-small);
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .grid-container-large {
+        --grid-size: var(--grid-size-xlarge);
+    }
+    .grid-container-medium{
+        --grid-size: var(--grid-size-large);
+    }
 }
 
 .grid-container{
-    margin: 32px;
-}
-
-.grid-container-large {
-    --grid-size: var(--grid-size-large);
-    --snake-size-offset: var(--snake-size-offset-large);
-    --inner-size-offset: var(--inner-size-offset-large);
-    --border-radius: var(--border-radius-large);
-    --grid-font-size: var(--grid-font-size-large);
+    margin-top: 32px;
 }
 
 .grid-container-small{
     --grid-size: var(--grid-size-small);
-    --snake-size-offset: var(--snake-size-offset-small);
-    --inner-size-offset: var(--inner-size-offset-small);
-    --border-radius: var(--border-radius-small);
-    --grid-font-size: var(--grid-font-size-small);
+}
+
+.grid-container-small{
+    --grid-size: var(--grid-size-xsmall);
 }
 
 .tile {
@@ -69,13 +88,11 @@
 }
 
 .tile-path{
-    height: 2em;
-    width: 2em;
+    height: var(--grid-size-xsmall);
+    width: var(--grid-size-xsmall);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: var(--border-radius);
-    margin: 2px;
 }
 
 .tile-path-unused {
@@ -118,136 +135,136 @@
 }
 
 .end{
-    height: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    width: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    margin: var(--snake-size-offset);
+    height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    margin: calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 50%;
 }
 
 .south-end{
-    height: calc(var(--grid-size) - var(--snake-size-offset));
-    width: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    margin: var(--snake-size-offset) var(--snake-size-offset) 0 var(--snake-size-offset);
+    height: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 50% 50% 0 0;
 }
 
 .north-end{
-    height: calc(var(--grid-size) - var(--snake-size-offset));
-    width: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    margin: 0 var(--snake-size-offset) var(--snake-size-offset) var(--snake-size-offset);
+    height: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    margin: 0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset))calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 0% 0% 50% 50%;
 }
 
 .west-end{
-    height: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    width: calc(var(--grid-size) - var(--snake-size-offset));
-    margin: var(--snake-size-offset) var(--snake-size-offset) var(--snake-size-offset) 0;
+    height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
+    margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0;
     border-radius: 0% 50% 50% 0%;
 }
 
 .east-end{
-    height: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    width: calc(var(--grid-size) - var(--snake-size-offset));
-    margin: var(--snake-size-offset) 0 var(--snake-size-offset) var(--snake-size-offset);
+    height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
+    margin: calc(var(--grid-size)*var(--snake-size-offset))  0 calc(var(--grid-size)*var(--snake-size-offset))  calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 50% 0% 0% 50%;
 }
 
 .vertical-through{
     height: var(--grid-size);
-    width: calc(var(--grid-size) - 2*var(--snake-size-offset));
-    margin: 0 var(--snake-size-offset) 0 var(--snake-size-offset);
+    width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    margin: 0  calc(var(--grid-size)*var(--snake-size-offset)) 0  calc(var(--grid-size)*var(--snake-size-offset));
 }
 
 .horizontal-through{
-    height: calc(var(--grid-size) - 2*var(--snake-size-offset));
+    height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     width: var(--grid-size);
-    margin: var(--snake-size-offset) 0 var(--snake-size-offset) 0;
+    margin: calc(var(--grid-size)*var(--snake-size-offset)) 0  calc(var(--grid-size)*var(--snake-size-offset)) 0;
 }
 
 .bend{
-    height: calc(var(--grid-size) - var(--snake-size-offset));
-    width: calc(var(--grid-size) - var(--snake-size-offset));
+    height: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
 }
 
 .south-east {
-    margin: var(--snake-size-offset) 0 0 var(--snake-size-offset);
+    margin: calc(var(--grid-size)*var(--snake-size-offset)) 0 0 calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 50% 0 0 0;
     .corner{
-        top: calc(var(--grid-size)/2 - var(--snake-size-offset));
-        left: calc(var(--grid-size)/2 - var(--snake-size-offset));
+        top: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
+        left: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
     }
     .inner-corner{
-        border-radius: 0 0 var(--border-radius) 0;
+        border-radius: 0 0 calc(var(--grid-size)*var(--border-radius)) 0;
     }
 }
 
 .south-west {
-    margin: var(--snake-size-offset) var(--snake-size-offset) 0 0 ;
+    margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 0 ;
     border-radius: 0 50% 0 0;
     .corner{
-        top: calc(var(--grid-size)/2 - var(--snake-size-offset));
-        left: calc((var(--grid-size)/2 - var(--snake-size-offset))*-1);
+        top: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
+        left: calc(-1*var(--grid-size)*(1/2 - var(--snake-size-offset)));
     }
     .inner-corner{
         position: relative;
-        left: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        border-radius: 0 0 0 var(--border-radius);
+        left: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
+        border-radius: 0 0 0 calc(var(--grid-size)*var(--border-radius));
     }
 }
 
 .north-east {
-    margin:  0 0 var(--snake-size-offset) var(--snake-size-offset);
+    margin:  0 0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset));
     border-radius: 0 0 0 50%;
     .corner{
-        top: calc(-1*(var(--grid-size)/2 - var(--snake-size-offset)));
-        left: calc(var(--grid-size)/2 - var(--snake-size-offset));
+        top: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
+        left: calc((var(--grid-size)*(1/2 - var(--snake-size-offset))));
     }
     .inner-corner{
         position: relative;
-        top: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        border-radius: 0 var(--border-radius) 0 0;
+        top: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
+        border-radius: 0 calc(var(--grid-size)*var(--border-radius)) 0 0;
     }
 }
 
 .north-west {
-    margin:  0 var(--snake-size-offset) var(--snake-size-offset) 0 ;
+    margin:  0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 ;
     border-radius: 0 0 50% 0;
     .corner{
-        top: calc(-1*(var(--grid-size)/2 - var(--snake-size-offset)));
-        left: calc((var(--grid-size)/2 - var(--snake-size-offset))*-1);
+        top: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
+        left: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
     }
     .inner-corner{
         position: relative;
-        left: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        top: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        border-radius: var(--border-radius) 0 0 0;
+        left: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
+        top: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
+        border-radius: calc(var(--grid-size)*var(--border-radius)) 0 0 0;
     }
 }
 
 .corner{
-    height: var(--snake-size-offset);
-    width: var(--snake-size-offset);
+    height: calc(var(--grid-size)*var(--snake-size-offset));
+    width: calc(var(--grid-size)*var(--snake-size-offset));
     position: relative;
     background-color: var(--inner-corner-color);
     .inner-corner{
-        height: calc(var(--snake-size-offset) - var(--inner-size-offset));
-        width: calc(var(--snake-size-offset) - var(--inner-size-offset));
+        height: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
+        width: calc(var(--grid-size)*(var(--snake-size-offset) - var(--inner-size-offset)));
     }
 }
 
 .tile-letter{
     z-index: 2;
     position: absolute;
-    font-size: var(--grid-font-size);
+    font-size: calc(var(--grid-size)*var(--grid-font-size));
     font-weight: bold;
     color: var(--snake-letter-color);
 }
 
 .inner-square{
     position: absolute;
-    height: calc(var(--grid-size) - var(--inner-size-offset)*2);
-    width: calc(var(--grid-size) - var(--inner-size-offset)*2);
-    border-radius: var(--border-radius);
+    height: calc(var(--grid-size) *(1 - 2 * var(--inner-size-offset)));
+    width: calc(var(--grid-size) *(1 - 2 * var(--inner-size-offset)));
+    border-radius: calc(var(--grid-size)*var(--border-radius));
     display: flex;
     justify-content: center;
     align-items: center;

@@ -2,16 +2,13 @@
 
 ## Frontend
 - [ ] Info Route
-- [x] Styling each word line more clearly
-- [x] Preview on hover
 - [ ] Hints
 - [ ] Testing
-- [ ] Front end consuming database API
-- [ ] Mock express server config for local
+- [ ] Responsive UI for mobile
+- [ ] Improve hover UI
+- [ ] Meaningful Readme
 
 ## Infrastructure
-- [ ] Github Actions
-- [ ] Deploy to AWS
 - [ ] Website/domain set up
 
 ## Backend

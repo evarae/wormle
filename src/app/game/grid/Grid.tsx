@@ -121,5 +121,5 @@ export default function Grid(props:GridProps){
     tileOnClickCallback: (tile: Tile) => void
   }
 
-  type GridSize = 'large' | 'small'
+  type GridSize = 'large' | 'medium' | 'small' | 'xsmall';
   

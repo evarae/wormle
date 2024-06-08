@@ -39,7 +39,7 @@ const DemoGrid = () => {
 
   return (
     <div>
-      {gameState? <Grid gameState={gameState} isReadOnly={true} gridSize='small'/> : <></>}
+      {gameState? <Grid gameState={gameState} isReadOnly={true} gridSize='medium'/> : <></>}
     </div>);
 };
 

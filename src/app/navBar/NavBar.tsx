@@ -13,7 +13,7 @@ export default function NavBar(props: Props) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className = 'nav-header'>
         <Toolbar>
-          <Typography fontWeight = "bold" variant="h2" component="div" sx={{ flexGrow: 1 }}>
+          <Typography fontWeight = "bold" variant="h3" component="div" sx={{ flexGrow: 1 }}>
             WORMLE
           </Typography>
           <IconButton
