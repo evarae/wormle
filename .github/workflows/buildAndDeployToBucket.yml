@@ -9,33 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build with Node.js 22.x
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 22.x
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
 
-  test:
-    needs: [build]
-    runs-on: ubuntu-latest
+    - name: Install dependencies
+      run: npm ci
 
-    steps:
-    - uses: actions/checkout@v3
+    - name: Build project
+      run: npm run build --if-present
       env:
         CI: false
-    - run: npm test --passWithNoTests
 
-  deployS3:
-    needs: [test]
-      runs-on: ubuntu-latest
+    - name: Test
+      run: npm test --passWithNoTests
 
-      steps:
-      - uses: actions/checkout@v3
-      - name: Upload to S3 Bucket
-        run: AWS_DEFAULT_REGION=ap-southeast-2 AWS_ACCESS_KEY_ID=${{secrets.AWS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}} aws s3 sync ./build/ s3://wormle
-        
-          
-      
+    - name: Upload to S3 Bucket
+      env:
+        AWS_DEFAULT_REGION: ap-southeast-2
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: aws s3 sync ./build/ s3://wormle
