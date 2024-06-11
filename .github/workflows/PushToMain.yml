@@ -36,9 +36,13 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: aws s3 sync ./build/ s3://wormle
     
+  invoke-lambda:
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Invoke Lambda
       env:
-        AWS_DEFAULT_REGION: ap-southeast-2
+        AWS_DEFAULT_REGION: us-east-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: aws lambda invoke --function-name uploadLatestDatabaseGame --cli-binary-format raw-in-base64-out response.json
+      run: aws lambda invoke --region us-east-1 --function-name uploadLatestDatabaseGame --cli-binary-format raw-in-base64-out response.json
