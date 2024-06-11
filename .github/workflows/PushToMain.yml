@@ -38,6 +38,7 @@ jobs:
     
   invoke-lambda:
     runs-on: ubuntu-latest
+    needs: build-test-deploy
 
     steps:
     - name: Invoke Lambda
