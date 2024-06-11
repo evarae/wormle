@@ -43,7 +43,7 @@ function tryMoveInDirection(currentGameState: GameState, direction:Cardinal, set
     return;
   }
 
-  tryMove(currentGameState, setGameState, isMovingBackwards? headCoords: newCoords);
+  tryMove(currentGameState, setGameState, newCoords);
   return;
 }
 
@@ -64,10 +64,9 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
       return;
     }
 
-    while(state.path.length > 2 && !areCoordinatesEqual(state.path[state.path.length-1], move)){
+    while(state.path.length > 1 && !areCoordinatesEqual(state.path[state.path.length-1], move)){
       state = moveBackward(state, state.path[state.path.length-1]);
     }
-    state = moveBackward(state, state.path[state.path.length-1]);
 
     setGameState(state);
     return;

@@ -2,16 +2,16 @@
   --main-bg-color: white;
   --inner-corner-color: white;
   --empty-tile-color: lightgrey;
-  --snake-color: rgb(41, 135, 69);
-  --snake-hover-color: rgba(35, 255, 101, 0.438);
+  --snake-color: rgb(97, 146, 101);
+  --snake-hover-color: rgba(97, 146, 101, 0.438);
   --secondary-color: white;
   --secondary-color-dark: rgb(226, 226, 226);
   --secondary-text-color: black;
   --snake-letter-color: white;
   
-  --tile-color-1: rgb(252, 211, 222);
-  --tile-color-2: rgb(252, 246, 189);
-  --tile-color-3: rgb(169, 222, 249);
+  --tile-color-1: rgb(242, 192, 192);
+  --tile-color-2: rgb(216, 210, 157);
+  --tile-color-3: rgb(159, 198, 218);
 }
 
 .App {
