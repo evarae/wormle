@@ -16,7 +16,7 @@ export default function InfoModal(props: Props) {
         </Typography>
         <Typography id=" modal-modal-description" sx={{ mt: 2 }}>
           {
-            "Wormle is a daily word created by me, Rae McLean. It's still in the development phase, but your feedback is welcome! If you want, you can find me on LinkedIn"
+            "Wormle is a daily word game created by me, Rae McLean. It's still in the development phase, but your feedback is welcome! If you want, you can find me on LinkedIn"
           }
         </Typography>
         <div className="center-button">

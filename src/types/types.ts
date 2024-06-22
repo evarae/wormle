@@ -18,6 +18,7 @@ export type GameState = {
     pathLetters: string[],
     path: Coordinates[],
     theme: string,
+    moveCount: number
 }
   
 export type Word = {

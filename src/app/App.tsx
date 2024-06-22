@@ -39,7 +39,7 @@ function App() {
   }
 
   function tryDemoOnClick() {
-    setInfoModalOpen(false);
+    setHelpModalOpen(false);
     setIsDemo(true);
     setGameState(getGameStateFromSetup(demoData));
   }

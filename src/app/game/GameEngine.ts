@@ -7,7 +7,8 @@ function getGameStateFromSetup(gameSetup:GameSetup):GameState{
     tiles: createTileDictionary(gameSetup.words, startCoords),
     pathLetters: gameSetup.pathString.split(''),
     path: [startCoords],
-    theme: gameSetup.theme
+    theme: gameSetup.theme,
+    moveCount: 0
   });
 }
 
@@ -90,6 +91,7 @@ function moveForward(currentGameState: GameState, move: Coordinates) : GameState
 
   currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
   currentGameState.path = [...currentGameState.path, move];
+  currentGameState.moveCount ++;
 
   return duplicateState(currentGameState);
 }
@@ -102,6 +104,7 @@ function moveBackward(currentGameState: GameState, move: Coordinates) : GameStat
 
   currentGameState.tiles = {...currentGameState.tiles, ...partialRecord};
   currentGameState.path.pop();
+  currentGameState.moveCount ++;
   
   return duplicateState(currentGameState);
 }
@@ -128,7 +131,8 @@ function duplicateState(gameState: GameState): GameState{
     gridSize: gameState.gridSize,
     tiles: gameState.tiles,
     pathLetters: gameState.pathLetters,
-    theme: gameState.theme
+    theme: gameState.theme,
+    moveCount: gameState.moveCount
   };
 }
 
