@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Link, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
+import DemoGrid from "../game/DemoGrid";
 
-export default function InfoModal(props: Props) {
+export default function HelpModal(props: Props) {
   return (
     <Modal
       open={props.isOpen}
@@ -15,14 +16,15 @@ export default function InfoModal(props: Props) {
           Welcome to Wormle!
         </Typography>
         <Typography id=" modal-modal-description" sx={{ mt: 2 }}>
-          {
-            "Wormle is a daily word created by me, Rae McLean. It's still in the development phase, but your feedback is welcome! If you want, you can find me on LinkedIn"
-          }
+          Use the arrow keys or mouse to move the worm through the grid. Use the
+          letters on your worm to spell a themed word on each row. The first
+          move is always done for you.
         </Typography>
+        <DemoGrid />
         <div className="center-button">
-          <Link href="https://www.linkedin.com/in/evaraemclean/">
-            Talk to me here
-          </Link>
+          <Button variant="outlined" onClick={props.tryDemoOnClick}>
+            Try a demo
+          </Button>
         </div>
       </Box>
     </Modal>
