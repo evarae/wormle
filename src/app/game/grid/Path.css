@@ -1,0 +1,16 @@
+:root {
+    --path-letter-color: black;
+}
+
+.word-container-path{
+    .coloured-tile {
+        background-color: var(--empty-tile-color);
+    }
+}
+
+.tile-path-empty{
+    .tile-letter{
+        font-weight: normal;
+        color: var(--path-letter-color);
+    }
+}

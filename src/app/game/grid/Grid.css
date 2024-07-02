@@ -2,8 +2,8 @@
     --grid-size-xlarge: 60px;
     --grid-size-large: 50px;
     --grid-size-medium: 42px;
-    --grid-size-small: 36px;
-    --grid-size-xsmall: 30px;
+    --grid-size-small: 38px;
+    --grid-size-xsmall: 32px;
     --snake-size-offset: 0.15;
     --inner-size-offset: 0.075;
 
@@ -81,34 +81,6 @@
     .inner-corner {
         background-color: var(--tile-color-3);
     }
-}
-
-.tile-path{
-    height: var(--grid-size-xsmall);
-    width: var(--grid-size-xsmall);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.tile-path-unused {
-    color: var(--snake-letter-color);
-    background-color: var(--snake-color);
-}
-
-.tile-path-used{
-    background-color: var(--empty-tile-color);
-}
-
-.tile-path-highlighted{
-    color: black;
-    background-color: yellow;
-}
-
-.path-container {
-    display: flex;
-    justify-content: center;
-    margin: 16px;
 }
 
 .word-container{

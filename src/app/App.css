@@ -8,6 +8,7 @@
   --secondary-color-dark: rgb(226, 226, 226);
   --secondary-text-color: black;
   --snake-letter-color: white;
+  --empty-letter-color: black;
   
   --tile-color-1: rgb(242, 192, 192);
   --tile-color-2: rgb(216, 210, 157);
