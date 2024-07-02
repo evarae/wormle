@@ -2,6 +2,7 @@
     --path-letter-color: black;
 }
 
+
 .word-container-path{
     .coloured-tile {
         background-color: var(--empty-tile-color);
@@ -14,3 +15,30 @@
         color: var(--path-letter-color);
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .path-large{
+        display: none;
+    }
+    .path-medium {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1000px) {
+    .path-large {
+        display: none;
+    }
+    .path-small {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .path-small {
+        display: none;
+    }
+    .path-medium {
+        display: none;
+    }
+}    
