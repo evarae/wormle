@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Game from "./game/Game";
-import { GameState } from "../types/types";
+import { GameState, GameWithDate } from "../types/types";
 import { getGameStateFromSetup, isGameOver } from "./game/GameEngine";
 import NavBar from "./navBar/NavBar";
 import { Button } from "@mui/material";
@@ -16,6 +16,7 @@ function App() {
   const [isHelpModalOpen, setHelpModalOpen] = useState(false);
   const [isDemo, setIsDemo] = useState<boolean>(false);
   const [gameState, setGameState] = useState<GameState>();
+  const [gameSetupData, setGameSetupData] = useState<GameWithDate>();
 
   //Initialise the game
   useEffect(() => {
@@ -25,7 +26,8 @@ function App() {
   function setInitialGameData() {
     const fetchData = async () => {
       const data = await getData();
-      setGameState(getGameStateFromSetup(data));
+      setGameSetupData(data);
+      setGameState(getGameStateFromSetup(data.game));
     };
     fetchData();
   }
@@ -41,7 +43,7 @@ function App() {
   function tryDemoOnClick() {
     setHelpModalOpen(false);
     setIsDemo(true);
-    setGameState(getGameStateFromSetup(demoData));
+    setGameState(getGameStateFromSetup(demoData.game));
   }
 
   function resetButtonOnClick() {
@@ -65,9 +67,7 @@ function App() {
 
   useEffect(() => {
     if (gameState && isGameOver(gameState)) {
-      console.log("active element: ", document.activeElement);
       if (document.activeElement instanceof HTMLElement) {
-        console.log("isHTML");
         document.activeElement.blur();
       }
       setWinModalOpen(true);
@@ -90,18 +90,22 @@ function App() {
         onClose={infoModalOnClose}
         tryDemoOnClick={tryDemoOnClick}
       />
-      {gameState && (
+      {gameState && gameSetupData && (
         <WinModal
           isOpen={isWinModalOpen}
           onClose={winModalOnClose}
           gameState={gameState}
+          theme={isDemo ? demoData.game.theme : gameSetupData.game.theme}
+          date={gameSetupData.date}
           isDemo={isDemo}
           tryAgainOnClick={resetButtonOnClick}
         />
       )}
       {gameState ? (
         <div>
-          <Game gameState={gameState} setGameState={setGameState} />
+          <div className="game-container">
+            <Game gameState={gameState} setGameState={setGameState} />
+          </div>
           <div className="center-button">
             <Button
               variant="outlined"

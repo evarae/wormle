@@ -1,12 +1,9 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { TileType, Coordinates, GameState, Tile } from "../../../types/types";
-import {
-  getTileKey,
-  getTileTypeForPathIndex,
-  getValidMovesBetweenPoints,
-} from "../GameEngine";
+import { getTileKey, getValidMovesBetweenPoints } from "../GameEngine";
 import GridTile, { GridTileProps } from "../tiles/GridTile";
 import InvisibleTile from "../tiles/InvisibleTile";
+import { getTileTypeForPathIndex } from "../../../helpers/tileTypeHelper";
 
 export default function Grid(props: GridProps) {
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});

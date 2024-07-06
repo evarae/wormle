@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { GameState, Tile } from "../../types/types";
 import { Cardinal, tryMove, tryMoveInDirection } from "./GameEngine";
 import Grid from "./grid/Grid";
@@ -35,7 +35,7 @@ const Game = (props: Props) => {
   };
 
   return (
-    <div onKeyDown={handleKeyDown} className="game-container">
+    <div onKeyDown={handleKeyDown}>
       <Grid
         gameState={props.gameState}
         isReadOnly={false}

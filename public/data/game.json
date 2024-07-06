@@ -1,7 +1,29 @@
 {
-    "words":[{"offset": 0, "text": "ketchup"}, {"offset": 0, "text": "mustard"}, {"offset": 1, "text": "onion"}, {"offset": 1, "text": "pickle"}],
-    "pathString": "kcinipoumketstchupdraonle",
-    "startWord": 3,
-    "startLetter": 3,
-    "theme": "The Works"
+   "date":"2000-01-01",
+   "game":{
+      "words":[
+         {
+            "offset":0,
+            "text":"ketchup"
+         },
+         {
+            "offset":0,
+            "text":"mustard"
+         },
+         {
+            "offset":1,
+            "text":"onion"
+         },
+         {
+            "offset":1,
+            "text":"pickle"
+         }
+      ],
+      "pathString":"kcinipoumketstchupdraonle",
+      "startCoordinates":{
+         "x":4,
+         "y":3
+      },
+      "theme":"The Works"
+   }
 }

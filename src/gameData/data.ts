@@ -1,22 +1,23 @@
-import { GameSetup } from '../types/types';
+import { GameWithDate } from '../types/types';
 import defaultGame from './defaultGame.json';
 
-export const demoData:GameSetup = {
+export const demoData:GameWithDate = 
+{
+  date: "",
+  game: {
+
   words: [{offset: 0, text: 'cat'}, {offset: 0, text: 'dog'}],
   pathString: 'godcat',
-  startWord: 1,
-  startLetter: 2,
-  theme: 'Furry friends'
-};
+  startCoordinates: {x:2, y:1},
+  theme: 'Furry friends',
+}};
 
-export async function getData():Promise<GameSetup> {
+export async function getData():Promise<GameWithDate> {
   const response = await fetch('data/game.json');
   try {
     const data = await response.json();
-    console.log(data);
-    return data as GameSetup;
+    return data as GameWithDate;
   } catch (err) {
-    console.log(err);
     return defaultGame;
   }
 }

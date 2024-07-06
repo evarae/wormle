@@ -4,12 +4,16 @@ export type Tile = {
     coordinates: Coordinates
 }
 
+export type GameWithDate = {
+    date: string,
+    game: GameSetup
+}
+
 export type GameSetup = {
     words: Word[],
     pathString: string,
-    startWord: number,
-    startLetter: number,
-    theme: string
+    startCoordinates: Coordinates,
+    theme: string,
 }
 
 export type GameState = {
@@ -17,7 +21,6 @@ export type GameState = {
     tiles: Record<string, Tile>,
     pathLetters: string[],
     path: Coordinates[],
-    theme: string,
     moveCount: number
 }
   

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
+import { formatDate } from "../../helpers/dateFormatter";
 
 export default function WinModal(props: Props) {
   const minMoves = props.gameState.path.length - 1;
@@ -19,7 +20,7 @@ export default function WinModal(props: Props) {
         <Typography id="modal-modal-title" variant="h5" component="h2">
           Nice work, you win!
         </Typography>
-        <Typography paddingTop={"16px"}>
+        <Typography paddingTop={"8px"}>
           {`You finished the game in ${props.gameState.moveCount} moves.`}
         </Typography>
         <Typography paddingBottom={"16px"}>
@@ -37,7 +38,12 @@ export default function WinModal(props: Props) {
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
         </Typography>
-        <Typography variant="h6">{props.gameState.theme}</Typography>
+        <Typography variant="h6">{props.theme}</Typography>
+        {!props.isDemo && (
+          <Typography variant="body2" paddingTop={"8px"}>
+            {formatDate(props.date)}
+          </Typography>
+        )}
         <>
           {props.isDemo && (
             <div className="center-button">
@@ -56,6 +62,8 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   gameState: GameState;
+  theme: string;
+  date: string;
   isDemo?: boolean;
   tryAgainOnClick: () => void;
 }
