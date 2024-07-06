@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./grid/Grid.css";
 import { Coordinates, GameState } from "../../types/types";
 import Grid from "./grid/Grid";
-import { getGameStateFromSetup, tryMove } from "./GameEngine";
+import { getGameStateFromSetup, tryMove } from "../../helpers/GameEngine";
 import { demoData } from "../../gameData/data";
 
 const DemoGrid = () => {

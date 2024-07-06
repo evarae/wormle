@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { TileType, Coordinates, GameState, Tile } from "../../../types/types";
-import { getTileKey, getValidMovesBetweenPoints } from "../GameEngine";
+import {
+  getTileKey,
+  getValidMovesBetweenPoints,
+} from "../../../helpers/GameEngine";
 import GridTile, { GridTileProps } from "../tiles/GridTile";
 import InvisibleTile from "../tiles/InvisibleTile";
 import { getTileTypeForPathIndex } from "../../../helpers/tileTypeHelper";

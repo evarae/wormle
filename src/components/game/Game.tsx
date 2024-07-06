@@ -1,6 +1,10 @@
 import React from "react";
 import { GameState, Tile } from "../../types/types";
-import { Cardinal, tryMove, tryMoveInDirection } from "./GameEngine";
+import {
+  Cardinal,
+  tryMove,
+  tryMoveInDirection,
+} from "../../helpers/GameEngine";
 import Grid from "./grid/Grid";
 import "./Game.css";
 import Path from "./grid/Path";
