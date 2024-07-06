@@ -57,30 +57,30 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
     return <span className="tile-letter">{letter}</span>;
   };
 
-  return (
-    <div
-      className="tile"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {props.isReadOnly ? (
-        <div className="inner-square coloured-tile">{letterDisplay()}</div>
-      ) : (
-        <button
-          className="inner-square coloured-tile"
-          onClick={onClick}
-          ref={ref}
-        >
-          {letterDisplay()}
-        </button>
-      )}
+  const gridContent = (
+    <>
+      <div className="inner-square coloured-tile">{letterDisplay()}</div>
       {props.previewString && props.previewTileType ? (
         snakeElement(props.previewTileType, true)
       ) : (
         <></>
       )}
       {props.tileType == TileType.Empty ? <></> : snakeElement(props.tileType)}
-    </div>
+    </>
+  );
+
+  return props.isReadOnly ? (
+    <div className="tile">{gridContent}</div>
+  ) : (
+    <button
+      className="tile"
+      onClick={onClick}
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {gridContent}
+    </button>
   );
 });
 
