@@ -1,0 +1,15 @@
+.statistic-block {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding-top: 16px;
+}
+
+.statistic-block-item {
+    flex-grow: 1;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}

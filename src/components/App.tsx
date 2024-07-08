@@ -9,6 +9,11 @@ import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
 import InfoModal from "./modals/InfoModal";
+import { postStatistic, PostStatisticResponse } from "../helpers/postStatistic";
+import {
+  getPlayerStreakStatistics,
+  updateGameFinishedOnDate,
+} from "../helpers/statistics";
 
 function App() {
   const [isWinModalOpen, setWinModalOpen] = useState(false);
@@ -17,9 +22,13 @@ function App() {
   const [isDemo, setIsDemo] = useState<boolean>(false);
   const [gameState, setGameState] = useState<GameState>();
   const [gameSetupData, setGameSetupData] = useState<GameWithDate>();
+  const [startTime, setStartTime] = useState<number>(0);
+  const [statisticResponse, setStatisticResponse] =
+    useState<PostStatisticResponse>();
 
   //Initialise the game
   useEffect(() => {
+    setStartTime(Date.now);
     setInitialGameData();
   }, []);
 
@@ -67,12 +76,49 @@ function App() {
 
   useEffect(() => {
     if (gameState && isGameOver(gameState)) {
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      setWinModalOpen(true);
+      onWinGame().then(() => {
+        console.log("Finished win actions");
+      });
     }
   }, [gameState]);
+
+  async function onWinGame() {
+    if (!gameSetupData || !gameState) {
+      return;
+    }
+
+    if (statisticResponse !== undefined && !isDemo) {
+      updateGameFinishedOnDate(gameSetupData.date);
+      const response = await SendStatistic();
+      setStatisticResponse(response);
+    }
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    setWinModalOpen(true);
+  }
+
+  async function SendStatistic(): Promise<PostStatisticResponse> {
+    if (!gameSetupData || !gameState) {
+      return {
+        successful: false,
+        status: 400,
+      };
+    }
+
+    const stats = getPlayerStreakStatistics();
+
+    const result = await postStatistic({
+      date: gameSetupData.date,
+      moveCount: gameState.moveCount,
+      streak: stats.currentStreak,
+      secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+    });
+
+    return result;
+  }
 
   return (
     <div className="App">
@@ -99,6 +145,7 @@ function App() {
           date={gameSetupData.date}
           isDemo={isDemo}
           tryAgainOnClick={resetButtonOnClick}
+          statisticResponse={statisticResponse}
         />
       )}
       {gameState ? (

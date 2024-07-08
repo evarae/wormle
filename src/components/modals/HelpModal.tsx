@@ -15,7 +15,12 @@ export default function HelpModal(props: Props) {
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Welcome to Wormle!
         </Typography>
-        <Typography id=" modal-modal-description" sx={{ mt: 2 }}>
+        <Typography
+          id=" modal-modal-description"
+          sx={{ mt: 2 }}
+          paddingBottom={"16px"}
+          textAlign={"center"}
+        >
           Use the arrow keys or mouse to move the worm through the grid. Use the
           letters on your worm to spell a themed word on each row. The first
           move is always done for you.
