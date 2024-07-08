@@ -87,8 +87,8 @@ function App() {
       return;
     }
 
+    updateGameFinishedOnDate(gameSetupData.date);
     if (statisticResponse !== undefined && !isDemo) {
-      updateGameFinishedOnDate(gameSetupData.date);
       const response = await SendStatistic();
       setStatisticResponse(response);
     }
