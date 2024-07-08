@@ -1,4 +1,4 @@
-import { Cardinal } from "../app/game/GameEngine";
+import { Cardinal } from "./GameEngine";
 import { Coordinates, TileType } from "../types/types";
 
 export function getTileTypeForPathIndex(index: number, path:Coordinates[]): TileType{

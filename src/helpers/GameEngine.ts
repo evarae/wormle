@@ -1,4 +1,4 @@
-import { Coordinates, GameSetup, GameState, Tile, Word } from '../../types/types';
+import { Coordinates, GameSetup, GameState, Tile, Word } from '../types/types';
 
 function getGameStateFromSetup(gameSetup:GameSetup):GameState{
   return({
@@ -21,10 +21,8 @@ function getGridSize(words: Word[]): Coordinates {
   return {x: maxWidth, y: words.length};
 }
 
-function tryMoveInDirection(currentGameState: GameState, direction:Cardinal, setGameState: (newGameState: GameState) => void) : void {
-  const state = JSON.parse(JSON.stringify(currentGameState));
-
-  const headCoords = (state.path.length > 0)? state.path[state.path.length-1] : undefined;
+function tryMoveInDirection(state: GameState, direction:Cardinal, setGameState: (newGameState: GameState) => void) : void {
+const headCoords = (state.path.length > 0)? state.path[state.path.length-1] : undefined;
   if(headCoords == undefined){
     return;
   }
@@ -76,8 +74,7 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
   setGameState(state);
 }
 
-function moveForward(currentGameState: GameState, move: Coordinates) : GameState {
-  const state = JSON.parse(JSON.stringify(currentGameState));
+function moveForward(state: GameState, move: Coordinates) : GameState {
   const guessLetter = state.pathLetters[state.path.length];
   const tileAtCoordinate = state.tiles[getTileKey(move)];
 
@@ -91,8 +88,7 @@ function moveForward(currentGameState: GameState, move: Coordinates) : GameState
   return state;
 }
 
-function moveBackward(currentGameState: GameState, move: Coordinates) : GameState {
-  const state = JSON.parse(JSON.stringify(currentGameState));
+function moveBackward(state: GameState, move: Coordinates) : GameState {
   const tileAtCoordinate = state.tiles[getTileKey(move)];
 
   const partialRecord : Record<string, Tile> = {};
