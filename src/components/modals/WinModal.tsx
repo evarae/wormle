@@ -7,7 +7,7 @@ import { PostStatisticResponse } from "../../helpers/postStatistic";
 import { getPlayerStreakStatistics } from "../../helpers/statistics";
 import "./WinModal.css";
 
-const MIN_PLAYER_COUNT_TO_DISPLAY = 5;
+const MIN_PERCENTAGE_TO_DISPLAY = 50;
 
 export default function WinModal(props: Props) {
   const minMoves = props.gameState.path.length - 1;
@@ -20,19 +20,16 @@ export default function WinModal(props: Props) {
       ? "Thats the minimum number possible!"
       : `The minimum possible was ${minMoves}.`;
 
-    if (
-      props.statisticResponse &&
-      props.statisticResponse.body &&
-      props.statisticResponse.body.playerCount > MIN_PLAYER_COUNT_TO_DISPLAY
-    ) {
+    if (props.statisticResponse && props.statisticResponse.body) {
       const body = props.statisticResponse.body;
-      const percent = Math.floor(
-        body.moveCountBetterThanCount / body.playerCount
-      );
+      const ratio = body.moveCountBetterThanCount / body.playerCount;
+      const percent = Math.floor(ratio * 100);
 
-      bottomMessage = isMin
-        ? `That's the minimum number possible, better than ${percent}% of other players!`
-        : `That's better than ${percent}% of players.`;
+      if (percent >= MIN_PERCENTAGE_TO_DISPLAY) {
+        bottomMessage = isMin
+          ? `That's the minimum number possible, better than ${percent}% of other players!`
+          : `That's better than ${percent}% of other players.`;
+      }
     }
 
     return (
