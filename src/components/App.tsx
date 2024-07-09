@@ -76,9 +76,7 @@ function App() {
 
   useEffect(() => {
     if (gameState && isGameOver(gameState)) {
-      onWinGame().then(() => {
-        console.log("Finished win actions");
-      });
+      onWinGame();
     }
   }, [gameState]);
 
@@ -87,14 +85,14 @@ function App() {
       return;
     }
 
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     updateGameFinishedOnDate(gameSetupData.date);
     if (statisticResponse === undefined && !isDemo) {
       const response = await SendStatistic();
       setStatisticResponse(response);
-    }
-
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
     }
 
     setWinModalOpen(true);

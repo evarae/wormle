@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GameState, Tile } from "../../types/types";
 import {
   Cardinal,
+  isGameOver,
   tryMove,
   tryMoveInDirection,
 } from "../../helpers/GameEngine";
@@ -10,9 +11,19 @@ import "./Game.css";
 import Path from "./grid/Path";
 
 const Game = (props: Props) => {
+  const [gameOver, setGameOver] = useState(false);
+
   function tileOnClickCallback(tile: Tile) {
     tryMove(props.gameState, props.setGameState, tile.coordinates);
   }
+
+  useEffect(() => {
+    if (isGameOver(props.gameState)) {
+      setGameOver(true);
+    } else if (gameOver) {
+      setGameOver(false);
+    }
+  }, [props.gameState]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     let direction = undefined;
@@ -42,7 +53,7 @@ const Game = (props: Props) => {
     <div onKeyDown={handleKeyDown}>
       <Grid
         gameState={props.gameState}
-        isReadOnly={false}
+        isReadOnly={gameOver}
         tileOnClickCallback={tileOnClickCallback}
       />
       <div className="path-container">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
@@ -12,33 +12,36 @@ const MIN_PERCENTAGE_TO_DISPLAY = 50;
 export default function WinModal(props: Props) {
   const minMoves = props.gameState.path.length - 1;
 
-  const statisticMessage = () => {
+  const statisticMessage = useMemo(() => {
     const isMin = minMoves >= props.gameState.moveCount;
-    const topMessage = `You finished the game in ${props.gameState.moveCount} moves.`;
 
-    let bottomMessage = isMin
+    let moveCommentString = isMin
       ? "Thats the minimum number possible!"
       : `The minimum possible was ${minMoves}.`;
 
     if (props.statisticResponse && props.statisticResponse.body) {
-      const body = props.statisticResponse.body;
-      const ratio = body.moveCountBetterThanCount / body.playerCount;
+      const ratio =
+        props.statisticResponse.body.moveCountBetterThanCount /
+        props.statisticResponse.body.playerCount;
       const percent = Math.floor(ratio * 100);
 
       if (percent >= MIN_PERCENTAGE_TO_DISPLAY) {
-        bottomMessage = isMin
+        moveCommentString = isMin
           ? `That's the minimum number possible, better than ${percent}% of other players!`
           : `That's better than ${percent}% of other players.`;
       }
     }
 
     return (
-      <>
-        <Typography paddingTop={"8px"}>{topMessage}</Typography>
-        <Typography align="center">{bottomMessage}</Typography>
-      </>
+      <Typography align="center" paddingTop={"8px"}>
+        {`You finished the game in ${props.gameState.moveCount} moves. ${moveCommentString}`}
+      </Typography>
     );
-  };
+  }, [
+    props.statisticResponse,
+    props.gameState.path,
+    props.gameState.moveCount,
+  ]);
 
   return (
     <Modal
@@ -62,12 +65,12 @@ export default function WinModal(props: Props) {
           </Typography>
         )}
         <Grid gameState={props.gameState} isReadOnly={true} gridSize="small" />
-        {statisticMessage()}
+        {statisticMessage}
         {!props.isDemo && <StatisticBlock />}
         {props.isDemo && (
           <div className="center-button">
             <Button variant="outlined" onClick={props.tryAgainOnClick}>
-              {props.isDemo ? "Try the real game" : "Play again"}
+              Try the real game
             </Button>
           </div>
         )}
@@ -101,7 +104,7 @@ function Statistic(props: StatisticProps) {
   return (
     <div className="statistic-block-item">
       <Typography component="h3">{props.statisticName}</Typography>
-      <Typography variant="h2" component="body">
+      <Typography variant="h4" component="body">
         {props.statisticNumber}
       </Typography>
     </div>

@@ -41,8 +41,7 @@ const headCoords = (state.path.length > 0)? state.path[state.path.length-1] : un
   return;
 }
 
-function tryMove(currentGameState: GameState, setGameState: (newGameState: GameState) => void, move: Coordinates) : void {
-  let state = JSON.parse(JSON.stringify(currentGameState));
+function tryMove(state: GameState, setGameState: (newGameState: GameState) => void, move: Coordinates) : void {
   const moveKey = getTileKey(move);
   const tileAtCoordinate = state.tiles[moveKey];
   const lastTileCoords = (state.path.length > 0)? state.path[state.path.length-1] : undefined;
@@ -65,7 +64,7 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
     return;
   }
 
-  const path = getValidMovesBetweenPoints(currentGameState, lastTileCoords, move);
+  const path = getValidMovesBetweenPoints(state, lastTileCoords, move);
 
   path.forEach(c => {
     state = moveForward(state, c);
@@ -74,7 +73,8 @@ function tryMove(currentGameState: GameState, setGameState: (newGameState: GameS
   setGameState(state);
 }
 
-function moveForward(state: GameState, move: Coordinates) : GameState {
+function moveForward(currentGameState: GameState, move: Coordinates) : GameState {
+  const state = JSON.parse(JSON.stringify(currentGameState));
   const guessLetter = state.pathLetters[state.path.length];
   const tileAtCoordinate = state.tiles[getTileKey(move)];
 
@@ -88,7 +88,8 @@ function moveForward(state: GameState, move: Coordinates) : GameState {
   return state;
 }
 
-function moveBackward(state: GameState, move: Coordinates) : GameState {
+function moveBackward(currentGameState: GameState, move: Coordinates) : GameState {
+  const state = JSON.parse(JSON.stringify(currentGameState));
   const tileAtCoordinate = state.tiles[getTileKey(move)];
 
   const partialRecord : Record<string, Tile> = {};

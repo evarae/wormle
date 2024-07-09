@@ -136,7 +136,7 @@ export default function Grid(props: GridProps) {
     }
 
     return wordElements;
-  }, [props.gameState, hoveredCoordinates]);
+  }, [props.gameState, hoveredCoordinates, props.isReadOnly]);
 
   return (
     <div
