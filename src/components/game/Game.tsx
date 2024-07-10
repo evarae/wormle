@@ -42,7 +42,7 @@ const Game = (props: Props) => {
         direction = Cardinal.North;
     }
 
-    if (direction == undefined) {
+    if (direction === undefined) {
       return;
     }
 

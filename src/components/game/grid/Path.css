@@ -16,6 +16,21 @@
     }
 }
 
+@keyframes bounceUp {
+    0% {
+        translate: 0px 0px;
+    }
+
+    50% {
+        translate: 0px -16px;
+        background-color: green;
+    }
+
+    100% {
+        translate: 0px 0px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .path-large{
         display: none;

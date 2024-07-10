@@ -23,17 +23,17 @@ function getGridSize(words: Word[]): Coordinates {
 
 function tryMoveInDirection(state: GameState, direction:Cardinal, setGameState: (newGameState: GameState) => void) : void {
 const headCoords = (state.path.length > 0)? state.path[state.path.length-1] : undefined;
-  if(headCoords == undefined){
+  if(!headCoords){
     return;
   }
 
   const newCoords = coordinateInDirection(headCoords, direction);
   const head1Coords = (state.path.length > 1)? state.path[state.path.length-2] : undefined;
-  const isMovingBackwards = (head1Coords != undefined && areCoordinatesEqual(newCoords, head1Coords));
+  const isMovingBackwards = (head1Coords && areCoordinatesEqual(newCoords, head1Coords));
 
   const tileAtCoordinate = state.tiles[getTileKey(newCoords)];
   
-  if(!(isMovingBackwards) && (tileAtCoordinate == undefined || tileAtCoordinate.guess != undefined)){
+  if(!(isMovingBackwards) && (!tileAtCoordinate || tileAtCoordinate.guess)){
     return;
   }
 
@@ -47,11 +47,11 @@ function tryMove(state: GameState, setGameState: (newGameState: GameState) => vo
   const lastTileCoords = (state.path.length > 0)? state.path[state.path.length-1] : undefined;
 
   //Check we aren't trying to move outside the grid
-  if(tileAtCoordinate == undefined || lastTileCoords == undefined){
+  if(!tileAtCoordinate || !lastTileCoords){
     return;
   }
 
-  if(tileAtCoordinate.guess != undefined){
+  if(tileAtCoordinate.guess){
     if(state.path.length <= 1){
       return;
     }
@@ -169,7 +169,7 @@ function getValidMovesBetweenPoints(gameState:GameState, from:Coordinates, to:Co
   //Assumes we're trying to move into an empty space
   for(const c of array){
     const tile = gameState.tiles[getTileKey(c)];
-    if(tile == undefined || tile.guess !== undefined){
+    if(!tile || tile.guess){
       return [];
     }
   }

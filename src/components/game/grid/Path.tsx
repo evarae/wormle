@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GameState, Tile, TileType } from "../../../types/types";
 import GridTile from "../tiles/GridTile";
 import "./Path.css";
 import InvisibleTile from "../tiles/InvisibleTile";
+import { isGameOver } from "../../../helpers/GameEngine";
 
 export default function Path(props: Props) {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    let delay = 0;
+    const delayIncremenet = 0.06;
+
+    for (let i = 0; i < props.gameState.pathLetters.length; i++) {
+      const element = document.getElementById(`path-letter-${i}`);
+
+      if (!element) {
+        return;
+      }
+
+      if (!animate) {
+        element.style.animation = "";
+        element.style.animationDelay = "";
+      } else {
+        element.style.animation = "0.7s 1 normal ease bounceUp";
+        element.style.animationDelay = `${delay}s`;
+        delay += delayIncremenet;
+      }
+    }
+  }, [animate]);
+
+  useEffect(() => {
+    if (isGameOver(props.gameState)) {
+      setAnimate(true);
+    } else {
+      if (animate) {
+        setAnimate(false);
+      }
+    }
+  }, [props.gameState]);
+
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   const mappedOverflowTiles = (rowLength: number) => {
     const words: JSX.Element[][] = [];
     const pathLength = props.gameState.path.length;
@@ -60,8 +99,9 @@ export default function Path(props: Props) {
         className = "tile-path-empty";
       }
 
+      const id = `path-letter-${index}`;
       currentWord.push(
-        <div className={className} key={`path-letter-${index}`}>
+        <div id={id} className={className} key={id}>
           <GridTile isReadOnly={true} tile={tile} tileType={tileType} />
         </div>
       );

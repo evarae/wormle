@@ -10,7 +10,8 @@ import { getTileTypeForPathIndex } from "../../../helpers/tileTypeHelper";
 
 export default function Grid(props: GridProps) {
   const textInputRefs = useRef<Record<string, HTMLButtonElement>>({});
-  const [hoveredCoordinates, setHoveredCoordinates] = useState<Coordinates>();
+  const [hoveredCoordinates, setHoveredCoordinates] =
+    useState<Coordinates | null>(null);
 
   function refocusPath() {
     if (props.gameState.path.length > 0) {
@@ -18,14 +19,14 @@ export default function Grid(props: GridProps) {
         textInputRefs.current[
           getTileKey(props.gameState.path[props.gameState.path.length - 1])
         ];
-      if (ref !== undefined) {
+      if (ref) {
         ref.focus();
       }
     }
   }
 
   function onClickCallback(tile: Tile) {
-    setHoveredCoordinates(undefined);
+    setHoveredCoordinates(null);
     if (!props.isReadOnly) {
       props.tileOnClickCallback(tile);
     }
@@ -36,7 +37,7 @@ export default function Grid(props: GridProps) {
   }
 
   function onMouseLeave() {
-    setHoveredCoordinates(undefined);
+    setHoveredCoordinates(null);
   }
 
   //Refocuses when the path changes
@@ -44,13 +45,13 @@ export default function Grid(props: GridProps) {
     if (!props.isReadOnly) {
       refocusPath();
     }
-  }, [props.gameState]);
+  }, [props.gameState, props.isReadOnly]);
 
   const renderedTiles = useMemo(() => {
     const displayModifiers: Record<string, TileDisplayMod> = {};
 
     //Set tile types
-    if (props.gameState.path !== undefined) {
+    if (props.gameState.path) {
       props.gameState.path.forEach((c, index) => {
         displayModifiers[getTileKey(c)] = {
           tileType: getTileTypeForPathIndex(index, props.gameState.path),
@@ -59,10 +60,7 @@ export default function Grid(props: GridProps) {
     }
 
     //Set preview tile stuff
-    if (
-      hoveredCoordinates !== undefined &&
-      props.gameState.path !== undefined
-    ) {
+    if (hoveredCoordinates && props.gameState.path) {
       const lastPathCoordinate =
         props.gameState.path[props.gameState.path.length - 1];
       const previewPath = getValidMovesBetweenPoints(
@@ -95,11 +93,11 @@ export default function Grid(props: GridProps) {
         const t = props.gameState.tiles[getTileKey({ x: i, y: j })];
         let mods = displayModifiers[getTileKey({ x: i, y: j })];
 
-        if (mods == undefined) {
+        if (!mods) {
           mods = { tileType: TileType.Empty };
         }
 
-        if (t !== undefined) {
+        if (t) {
           const tileProps: GridTileProps = props.isReadOnly
             ? { isReadOnly: true, tile: t, ...mods }
             : {

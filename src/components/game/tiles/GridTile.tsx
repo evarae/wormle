@@ -52,8 +52,7 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   };
 
   const letterDisplay = () => {
-    const letter =
-      props.tile.guess !== undefined ? props.tile.guess : props.previewString;
+    const letter = props.tile.guess ? props.tile.guess : props.previewString;
     return <span className="tile-letter">{letter}</span>;
   };
 
