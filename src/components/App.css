@@ -7,6 +7,7 @@
   --secondary-color: white;
   --secondary-color-dark: rgb(226, 226, 226);
   --secondary-text-color: black;
+  --info-text-color: rgb(150, 150, 150);
   --snake-letter-color: white;
   --empty-letter-color: black;
   
@@ -58,4 +59,11 @@
 
 .game-container {
   margin-top: 32px;
+}
+
+.info-text-container {
+  color: var(--info-text-color);
+  padding: 16px;
+  text-align: center;
+  font-style: italic;
 }

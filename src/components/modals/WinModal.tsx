@@ -3,9 +3,10 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
 import { formatDate } from "../../helpers/dateFormatter";
-import { PostStatisticResponse } from "../../helpers/postStatistic";
 import { getPlayerStreakStatistics } from "../../helpers/statistics";
 import "./WinModal.css";
+import { PostRequestStatus } from "../App";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const MIN_PERCENTAGE_TO_DISPLAY = 50;
 
@@ -19,10 +20,10 @@ export default function WinModal(props: Props) {
       ? "Thats the minimum number possible!"
       : `The minimum possible was ${minMoves}.`;
 
-    if (props.statisticResponse && props.statisticResponse.body) {
+    if (props.postRequestStatus && props.postRequestStatus.responseData) {
       const ratio =
-        props.statisticResponse.body.moveCountBetterThanCount /
-        props.statisticResponse.body.playerCount;
+        props.postRequestStatus.responseData.moveCountBetterThanCount /
+        props.postRequestStatus.responseData.playerCount;
       const percent = Math.floor(ratio * 100);
 
       if (percent >= MIN_PERCENTAGE_TO_DISPLAY) {
@@ -38,10 +39,64 @@ export default function WinModal(props: Props) {
       </Typography>
     );
   }, [
-    props.statisticResponse,
+    props.postRequestStatus,
     props.gameState.path,
     props.gameState.moveCount,
   ]);
+
+  const modalTopContent = (
+    <>
+      <Typography id="modal-modal-title" variant="h5" component="h2">
+        Nice work, you win!
+      </Typography>
+      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
+      </Typography>
+      <Typography variant="h6">{props.theme}</Typography>
+      {!props.isDemo && (
+        <Typography variant="body2" paddingBottom={"16px"}>
+          {formatDate(props.date)}
+        </Typography>
+      )}
+      <Grid gameState={props.gameState} isReadOnly={true} gridSize="small" />
+    </>
+  );
+
+  const modalBottomContent = () => {
+    if (props.isDemo) {
+      return (
+        <div className="center-button">
+          <Button variant="outlined" onClick={props.tryAgainOnClick}>
+            Try the real game
+          </Button>
+        </div>
+      );
+    }
+
+    if (props.postRequestStatus?.isError) {
+      return (
+        <div className="info-text-container">
+          Error posting statistics. Please check your internet connection and
+          ad-blocker settings.
+        </div>
+      );
+    }
+
+    if (props.postRequestStatus?.isLoading) {
+      return (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    return (
+      <>
+        {statisticMessage}
+        <StatisticBlock />
+      </>
+    );
+  };
 
   return (
     <Modal
@@ -52,28 +107,8 @@ export default function WinModal(props: Props) {
       className="modal"
     >
       <Box>
-        <Typography id="modal-modal-title" variant="h5" component="h2">
-          Nice work, you win!
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
-        </Typography>
-        <Typography variant="h6">{props.theme}</Typography>
-        {!props.isDemo && (
-          <Typography variant="body2" paddingBottom={"16px"}>
-            {formatDate(props.date)}
-          </Typography>
-        )}
-        <Grid gameState={props.gameState} isReadOnly={true} gridSize="small" />
-        {statisticMessage}
-        {!props.isDemo && <StatisticBlock />}
-        {props.isDemo && (
-          <div className="center-button">
-            <Button variant="outlined" onClick={props.tryAgainOnClick}>
-              Try the real game
-            </Button>
-          </div>
-        )}
+        {modalTopContent}
+        {modalBottomContent()}
       </Box>
     </Modal>
   );
@@ -124,5 +159,5 @@ interface Props {
   date: string;
   isDemo?: boolean;
   tryAgainOnClick: () => void;
-  statisticResponse?: PostStatisticResponse;
+  postRequestStatus?: PostRequestStatus;
 }

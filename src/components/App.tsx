@@ -9,7 +9,10 @@ import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
 import InfoModal from "./modals/InfoModal";
-import { postStatistic, PostStatisticResponse } from "../helpers/postStatistic";
+import {
+  postStatistic,
+  PostStatisticResponseBody,
+} from "../helpers/postStatistic";
 import {
   getPlayerStreakStatistics,
   updateGameFinishedOnDate,
@@ -23,8 +26,10 @@ function App() {
   const [gameState, setGameState] = useState<GameState>();
   const [gameSetupData, setGameSetupData] = useState<GameWithDate>();
   const [startTime, setStartTime] = useState<number>(0);
-  const [statisticResponse, setStatisticResponse] =
-    useState<PostStatisticResponse>();
+  const [postRequest, setPostRequest] = useState<PostRequestStatus>({
+    isError: false,
+    isLoading: false,
+  });
 
   //Initialise the game
   useEffect(() => {
@@ -90,32 +95,41 @@ function App() {
     }
 
     updateGameFinishedOnDate(gameSetupData.date);
-    if (!statisticResponse && !isDemo) {
-      const response = await SendStatistic();
-      setStatisticResponse(response);
+    if (!postRequest.responseData && !isDemo) {
+      SendStatistic();
     }
 
     setWinModalOpen(true);
   }
 
-  async function SendStatistic(): Promise<PostStatisticResponse> {
+  async function SendStatistic() {
     if (!gameSetupData || !gameState) {
-      return {
-        successful: false,
-        status: 400,
-      };
+      return;
     }
 
     const stats = getPlayerStreakStatistics();
+    setPostRequest({ ...postRequest, isLoading: true, isError: false });
 
-    const result = await postStatistic({
+    postStatistic({
       date: gameSetupData.date,
       moveCount: gameState.moveCount,
       streak: stats.currentStreak,
       secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+    }).then((response) => {
+      if (response.successful) {
+        setPostRequest({
+          isError: false,
+          isLoading: false,
+          responseData: response.body,
+        });
+      } else {
+        setPostRequest({
+          isError: true,
+          isLoading: false,
+          responseData: undefined,
+        });
+      }
     });
-
-    return result;
   }
 
   return (
@@ -143,7 +157,7 @@ function App() {
           date={gameSetupData.date}
           isDemo={isDemo}
           tryAgainOnClick={resetButtonOnClick}
-          statisticResponse={statisticResponse}
+          postRequestStatus={postRequest}
         />
       )}
       {gameState ? (
@@ -167,5 +181,11 @@ function App() {
     </div>
   );
 }
+
+export type PostRequestStatus = {
+  isLoading: boolean;
+  isError: boolean;
+  responseData?: PostStatisticResponseBody;
+};
 
 export default App;

@@ -1,4 +1,4 @@
-const lambdaURL = "https://to4zu3blqohst2nhk5xd6kjpd40cdnja.lambda-url.us-east-1.on.aws/";
+const lambdaURL = "https://wormle.com/api/statistic";
 
 export async function postStatistic (body: PostStatisticRequestBody): Promise<PostStatisticResponse> {
 
@@ -13,24 +13,32 @@ export async function postStatistic (body: PostStatisticRequestBody): Promise<Po
         body: raw,
     };
 
-    const response = await fetch(lambdaURL, requestOptions);
+    try {
+        const response = await fetch(lambdaURL, requestOptions);
 
-    if (response.ok && response.body !== null) {
+        if (!response.ok) {
+            return {
+                successful: false,
+                status: response.status
+            }
+        }
+
         const json: PostStatisticResponseBody = await response.json();
         return {
             successful: true,
             status: response.status,
             body: json
         }
-    }
 
-    return {
-        successful:false,
-        status: response.status
+    } catch (error) {
+        return {
+            successful: false,
+            status: 500,
+        }
     }
 }
 
-type PostStatisticRequestBody = {
+export type PostStatisticRequestBody = {
     date: string,
 	moveCount: number,
 	streak: number,
@@ -43,7 +51,7 @@ export interface PostStatisticResponse {
     body?: PostStatisticResponseBody 
 }
 
-interface PostStatisticResponseBody {
+export interface PostStatisticResponseBody {
     moveCountBetterThanCount: number,
     playerCount: number,
     secondsToCompleteBetterThanCount: number
