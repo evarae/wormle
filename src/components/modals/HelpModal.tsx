@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import DemoGrid from "../game/DemoGrid";
+import DonationLink from "./Donation";
 
 export default function HelpModal(props: Props) {
   return (
@@ -31,6 +32,7 @@ export default function HelpModal(props: Props) {
             Try a demo
           </Button>
         </div>
+        <DonationLink />
       </Box>
     </Modal>
   );

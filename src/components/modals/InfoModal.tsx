@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Link, Modal, Typography } from "@mui/material";
+import { KOFI_LINK } from "./Donation";
 
 export default function InfoModal(props: Props) {
   return (
@@ -14,16 +15,14 @@ export default function InfoModal(props: Props) {
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Welcome to Wormle!
         </Typography>
-        <Typography id=" modal-modal-description" sx={{ mt: 2 }}>
-          {
-            "Wormle is a daily word game created by me, Rae McLean. It's still in the development phase, but your feedback is welcome! If you want, you can find me on LinkedIn"
-          }
+        <Typography id=" modal-modal-description" sx={{ mt: 2 }} align="center">
+          Wormle is a daily word game created by me, Rae McLean. It&apos;s still
+          in the development phase, but your feedback is welcome!
+          <br /> <br />
+          If you want to help me pay for the costs of hosting wormle, you can{" "}
+          <Link href={KOFI_LINK}>buy me a coffee through ko-fi</Link>
         </Typography>
-        <div className="center-button">
-          <Link href="https://www.linkedin.com/in/evaraemclean/">
-            Talk to me here
-          </Link>
-        </div>
+        <div className="center-button"></div>
       </Box>
     </Modal>
   );

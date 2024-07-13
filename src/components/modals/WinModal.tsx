@@ -7,6 +7,7 @@ import { getPlayerStreakStatistics } from "../../helpers/statistics";
 import "./WinModal.css";
 import { PostRequestStatus } from "../App";
 import CircularProgress from "@mui/material/CircularProgress";
+import DonationLink from "./Donation";
 
 const MIN_PERCENTAGE_TO_DISPLAY = 50;
 
@@ -109,6 +110,7 @@ export default function WinModal(props: Props) {
       <Box>
         {modalTopContent}
         {modalBottomContent()}
+        <DonationLink />
       </Box>
     </Modal>
   );
