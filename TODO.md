@@ -4,15 +4,15 @@
 
 - [ ] Hints
 - [ ] Testing
-- [ ] Improve path letters
+- [x] Improve path letters
 - [ ] Win animation
-- [ ] Statistics
+- [x] Statistics
 - [ ] Share link
-- [ ] Kofi link
+- [x] Kofi link
 
 ## Infrastructure
 
-- [ ] Logging
+- [x] Logging
 
 ## Backend
 
@@ -23,4 +23,4 @@
 ## Other
 
 - [ ] Playtest
-- [ ] Kofi
+- [x] Ko-fi

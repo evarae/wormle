@@ -1,29 +1,64 @@
 # WORMLE
 
-Wormle is a daily word game created by Rae McLean. Players guide a worm through the grid to spell a related word on each line, using the arrow keys or mouse. 
+Wormle is a daily word game created by Rae McLean. Players guide a worm through the grid to spell a related word on each line, using the arrow keys or mouse. Play wormle at [wormle.com](https://wormle.com).
 
 This is a react app written in typescript, and was bootstrapped with [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
 ## CI/CD Pipeline
 
 On push to main, the github actions workflow "PushToMain.yml" will run. This will:
+
 - Build using node version 22.x
 - Run unit tests
 - Use an IAM access key to log into a AWS user who has s3 write permissions, and upload the contents of the /build folder into an s3 bucket: https://wormle.s3.amazonaws.com/index.html.
+
+## AWS Architecture
+
+Wormle runs on AWS services.
+
+- S3: contains the front-end build files
+- Cloudfront: surfaces S3 files and post-statistic lambda function URL
+- DynamoDB - daily game table: Stores daily puzzles as JSON files
+- DynamoDB - statistic table: Stores statistics posted from the frontend, e.g. streak data
+- Cloudwatch: triggers Lambda to update the game file every 24 hours
+- Lambda - update game: take latest puzzle in DynamoDB and writes it to S3 file
+- Lambda - post statistics: write statistics to DynamoDB table. Returns statistics (e.g. you did better than 4% of other players).
+- Route 53: Domain registrar and DNS hosting. Points to cloudfront distribution.
+- Amazon Certificate Manager: provides ssl certificate, uses DNS record hosted in route 53
 
 ## Defining the daily puzzle
 
 The daily puzzle is defined in the public/data/game.json folder with the following structure:
 
-`
-{
-    "words":[{"offset": 1, "text": "dragon"}, {"offset": 0, "text": "pegasus"}, {"offset": 0, "text": "kraken"}],
-    "pathString": "pkregakenusnogsaard",
-    "startWord": 1,
-    "startLetter": 0,
-    "theme": "The Monster Manual"
-}
-`
+`{
+   "date":"2000-01-01",
+   "game":{
+      "words":[
+         {
+            "offset":0,
+            "text":"ketchup"
+         },
+         {
+            "offset":0,
+            "text":"mustard"
+         },
+         {
+            "offset":1,
+            "text":"onion"
+         },
+         {
+            "offset":1,
+            "text":"pickle"
+         }
+      ],
+      "pathString":"kcinipoumketstchupdraonle",
+      "startCoordinates":{
+         "x":4,
+         "y":3
+      },
+      "theme":"The Works"
+   }
+}`
 
 ## Available Scripts
 
