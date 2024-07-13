@@ -16,15 +16,15 @@ On push to main, the github actions workflow "PushToMain.yml" will run. This wil
 
 Wormle runs on AWS services.
 
-- S3: contains the front-end build files
-- Cloudfront: surfaces S3 files and post-statistic lambda function URL
-- DynamoDB - daily game table: Stores daily puzzles as JSON files
-- DynamoDB - statistic table: Stores statistics posted from the frontend, e.g. streak data
-- Cloudwatch: triggers Lambda to update the game file every 24 hours
-- Lambda - update game: take latest puzzle in DynamoDB and writes it to S3 file
-- Lambda - post statistics: write statistics to DynamoDB table. Returns statistics (e.g. you did better than 4% of other players).
-- Route 53: Domain registrar and DNS hosting. Points to cloudfront distribution.
-- Amazon Certificate Manager: provides ssl certificate, uses DNS record hosted in route 53
+- <b>S3:</b> contains the front-end build files
+- <b>CloudFront:</b> surfaces S3 files and post-statistic lambda function URL
+- <b>DynamoDB - daily puzzle table:</b> Stores daily puzzles as JSON files
+- <b>DynamoDB - statistic table:</b> Stores statistics posted from the frontend, e.g. streak data
+- <b>Cloudwatch:</b> triggers Lambda to update the game file every 24 hours
+- <b>Lambda - update game:</b> take latest puzzle in DynamoDB and writes it to S3 file
+- <b>Lambda - post statistics:</b> write statistics to DynamoDB table. Returns statistics (e.g. you did better than 4% of other players).
+- <b>Route 53:</b> Domain registrar and DNS hosting. Points to cloudfront distribution.
+- <b>Amazon Certificate Manager:</b> provides ssl certificate, uses DNS record hosted in route 53
 
 ## Defining the daily puzzle
 

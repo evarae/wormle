@@ -11,6 +11,10 @@
     --grid-font-size: 0.36;
 }
 
+.grid-container{
+    display: block;
+}
+
 @media only screen and (max-width: 410px) {
     .grid-container-large {
         --grid-size: var(--grid-size-small);

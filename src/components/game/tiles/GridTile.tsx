@@ -68,10 +68,17 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
     </>
   );
 
+  const ariaLabel = `coordinate ${props.tile.coordinates.x + 1}, ${
+    props.tile.coordinates.y + 1
+  }, guess ${props.tile.guess ?? "none"}`;
+
   return props.isReadOnly ? (
-    <div className="tile">{gridContent}</div>
+    <td aria-label={ariaLabel} className="tile">
+      {gridContent}
+    </td>
   ) : (
     <button
+      aria-label={ariaLabel}
       className="tile"
       onClick={onClick}
       ref={ref}

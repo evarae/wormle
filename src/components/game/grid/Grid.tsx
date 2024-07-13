@@ -124,12 +124,12 @@ export default function Grid(props: GridProps) {
       }
 
       wordElements.push(
-        <div
+        <tr
           key={`grid-word-${j}`}
           className={`word-container tile-color-${(j % 3) + 1}`}
         >
           {tileElements}
-        </div>
+        </tr>
       );
     }
 
@@ -137,11 +137,11 @@ export default function Grid(props: GridProps) {
   }, [props.gameState, hoveredCoordinates, props.isReadOnly]);
 
   return (
-    <div
+    <table
       className={`grid-container grid-container-${props.gridSize ?? "large"}`}
     >
       {renderedTiles}
-    </div>
+    </table>
   );
 }
 

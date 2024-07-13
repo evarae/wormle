@@ -13,8 +13,8 @@ export const demoData:GameWithDate =
 }};
 
 export async function getData():Promise<GameWithDate> {
-  const response = await fetch('data/game.json');
   try {
+    const response = await fetch('data/game.json');
     const data = await response.json();
     return data as GameWithDate;
   } catch (err) {

@@ -14,6 +14,7 @@
     "@types/node": "^16.18.97",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
+    "msw": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
@@ -44,5 +45,9 @@
     "eslint-plugin-react": "^7.34.3",
     "globals": "^15.6.0",
     "typescript-eslint": "^7.13.1"
+  },
+  "jest": {
+  "transformIgnorePatterns": ["/node_modules/(?!(@bundled-es-modules)/)",       "[/\\\\]node_modules[/\\\\].+[^esm]\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"]
   }
 }
