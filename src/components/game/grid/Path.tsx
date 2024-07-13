@@ -10,23 +10,22 @@ export default function Path(props: Props) {
 
   useEffect(() => {
     let delay = 0;
-    const delayIncremenet = 0.06;
+    const delayIncremenet = 0.02;
 
     for (let i = 0; i < props.gameState.pathLetters.length; i++) {
-      const element = document.getElementById(`path-letter-${i}`);
-
-      if (!element) {
-        return;
-      }
-
-      if (!animate) {
-        element.style.animation = "";
-        element.style.animationDelay = "";
-      } else {
-        element.style.animation = "0.7s 1 normal ease bounceUp";
-        element.style.animationDelay = `${delay}s`;
-        delay += delayIncremenet;
-      }
+      const elms: NodeListOf<HTMLElement> = document.querySelectorAll(
+        `[id='path-letter-${i}']`
+      );
+      elms.forEach((element) => {
+        if (!animate) {
+          element.style.animation = "";
+          element.style.animationDelay = "";
+        } else {
+          element.style.animation = "0.7s 1 normal ease bounceUp";
+          element.style.animationDelay = `${delay}s`;
+          delay += delayIncremenet;
+        }
+      });
     }
   }, [animate]);
 
@@ -39,10 +38,6 @@ export default function Path(props: Props) {
       }
     }
   }, [props.gameState]);
-
-  function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const mappedOverflowTiles = (rowLength: number) => {
     const words: JSX.Element[][] = [];
