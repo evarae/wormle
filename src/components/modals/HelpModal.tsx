@@ -32,7 +32,6 @@ export default function HelpModal(props: Props) {
             Try a demo
           </Button>
         </div>
-        <DonationLink />
       </Box>
     </Modal>
   );
