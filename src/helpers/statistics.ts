@@ -5,7 +5,7 @@ const LAST_GAME_DATE_KEY = "lastGameDate"
 const GAMES_PLAYED_KEY = "gamesPlayed"
 
 export function updateGameFinishedOnDate(gameDate: string){
-    const lastFinishedDay = localStorage.getItem(LAST_GAME_DATE_KEY);
+    const lastFinishedDay = getLastDayPlayed();
 
     if(lastFinishedDay === gameDate){
         return;
@@ -57,6 +57,10 @@ function getNumberFromLocalStorage(key:string){
     return number;
 }
 
+export function getLastDayPlayed(): string|null {
+    return localStorage.getItem(LAST_GAME_DATE_KEY);
+}
+
 export function getPlayerStreakStatistics():PlayerStreakStatistics{
     return {
         currentStreak: getNumberFromLocalStorage(STREAK_KEY),
@@ -84,5 +88,5 @@ function getPreviousDay(dateString: string): string {
 type PlayerStreakStatistics = {
     currentStreak: number,
     longestStreak: number,
-    gamesPlayed: number
+    gamesPlayed: number,
 }

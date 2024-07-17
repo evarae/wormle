@@ -67,7 +67,7 @@ export default function WinModal(props: Props) {
     if (props.isDemo) {
       return (
         <div className="center-button">
-          <Button variant="outlined" onClick={props.tryAgainOnClick}>
+          <Button variant="outlined" onClick={props.tryRealGameOnClick}>
             Try the real game
           </Button>
         </div>
@@ -160,6 +160,6 @@ interface Props {
   theme: string;
   date: string;
   isDemo?: boolean;
-  tryAgainOnClick: () => void;
+  tryRealGameOnClick: () => void;
   postRequestStatus?: PostRequestStatus;
 }

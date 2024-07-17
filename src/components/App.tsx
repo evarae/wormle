@@ -14,6 +14,7 @@ import {
   PostStatisticResponseBody,
 } from "../helpers/postStatistic";
 import {
+  getLastDayPlayed,
   getPlayerStreakStatistics,
   updateGameFinishedOnDate,
 } from "../helpers/statistics";
@@ -33,6 +34,10 @@ function App() {
 
   //Initialise the game
   useEffect(() => {
+    if (!getLastDayPlayed()) {
+      setHelpModalOpen(true);
+    }
+
     setStartTime(Date.now);
     setInitialGameData();
   }, []);
@@ -58,6 +63,11 @@ function App() {
     setHelpModalOpen(false);
     setIsDemo(true);
     setGameState(getGameStateFromSetup(demoData.game));
+  }
+
+  function tryRealGameOnClick() {
+    setStartTime(Date.now);
+    resetButtonOnClick();
   }
 
   function resetButtonOnClick() {
@@ -94,8 +104,8 @@ function App() {
       document.activeElement.blur();
     }
 
-    updateGameFinishedOnDate(gameSetupData.date);
-    if (!postRequest.responseData && !isDemo) {
+    if (getLastDayPlayed() !== gameSetupData.date && !isDemo) {
+      updateGameFinishedOnDate(gameSetupData.date);
       SendStatistic();
     }
 
@@ -156,7 +166,7 @@ function App() {
           theme={isDemo ? demoData.game.theme : gameSetupData.game.theme}
           date={gameSetupData.date}
           isDemo={isDemo}
-          tryAgainOnClick={resetButtonOnClick}
+          tryRealGameOnClick={tryRealGameOnClick}
           postRequestStatus={postRequest}
         />
       )}
