@@ -59,8 +59,22 @@ export default function Grid(props: GridProps) {
       });
     }
 
+    //Set hint preview
+    if (!props.isReadOnly && props.isChoosingHint && hoveredCoordinates) {
+      const hoveredKey = getTileKey(hoveredCoordinates);
+      displayModifiers[hoveredKey] = {
+        ...displayModifiers[hoveredKey],
+        isHintPreview: true,
+      };
+    }
+
     //Set preview tile stuff
-    if (hoveredCoordinates && props.gameState.path) {
+    if (
+      hoveredCoordinates &&
+      props.gameState.path &&
+      !props.isReadOnly &&
+      !props.isChoosingHint
+    ) {
       const lastPathCoordinate =
         props.gameState.path[props.gameState.path.length - 1];
       const previewPath = getValidMovesBetweenPoints(
@@ -149,6 +163,7 @@ type TileDisplayMod = {
   tileType: TileType;
   previewString?: string;
   previewTileType?: TileType;
+  isHintPreview?: boolean;
 };
 
 type GridProps =
@@ -161,6 +176,8 @@ type GridProps =
       gridSize?: GridSize;
       gameState: GameState;
       isReadOnly: false;
+      isChoosingHint: boolean;
+      setGameState: (newGameState: GameState) => void;
       tileOnClickCallback: (tile: Tile) => void;
     };
 

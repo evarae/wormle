@@ -1,12 +1,15 @@
 import { Coordinates, GameSetup, GameState, Tile, Word } from '../types/types';
 
+export const NUMBER_OF_HINTS = 3;
+
 function getGameStateFromSetup(gameSetup:GameSetup):GameState{
   return({
     gridSize: getGridSize(gameSetup.words),
     tiles: createTileDictionary(gameSetup.words, gameSetup.startCoordinates),
     pathLetters: gameSetup.pathString.split(''),
     path: [gameSetup.startCoordinates],
-    moveCount: 0
+    moveCount: 0,
+    hintsRemaining: NUMBER_OF_HINTS
   });
 }
 
@@ -19,6 +22,24 @@ function getGridSize(words: Word[]): Coordinates {
   });
 
   return {x: maxWidth, y: words.length};
+}
+
+export function TrySetHint(coordinate: Coordinates, state:GameState, setGameState: (newGameState: GameState) => void){
+  const moveKey = getTileKey(coordinate);
+  const tileAtCoordinate = state.tiles[moveKey];
+
+  if( !tileAtCoordinate || state.hintsRemaining < 1 || tileAtCoordinate.hint ){
+    setGameState({
+      ...state
+    })
+    return;
+  }
+
+  state.tiles[moveKey] = {...tileAtCoordinate, hint: true}
+  state.hintsRemaining -= 1;
+
+  const newState = JSON.parse(JSON.stringify(state));
+  setGameState(newState);
 }
 
 function tryMoveInDirection(state: GameState, direction:Cardinal, setGameState: (newGameState: GameState) => void) : void {

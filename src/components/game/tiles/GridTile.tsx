@@ -52,19 +52,56 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   };
 
   const letterDisplay = () => {
-    const letter = props.tile.guess ? props.tile.guess : props.previewString;
-    return <span className="tile-letter">{letter}</span>;
+    return <span className="tile-letter">{getLetter()}</span>;
   };
+
+  const getLetter = () => {
+    if (props.tile.guess) {
+      return props.tile.guess;
+    }
+
+    if (props.previewString) {
+      return props.previewString;
+    }
+
+    if (props.tile.hint) {
+      return props.tile.value;
+    }
+
+    if (props.isHintPreview) {
+      return "?";
+    }
+
+    return "";
+  };
+
+  const previewSnake =
+    props.previewString && props.previewTileType ? (
+      snakeElement(props.previewTileType, true)
+    ) : (
+      <></>
+    );
+
+  const isHintWrong =
+    (props.tile.guess && props.tile.value !== props.tile.guess) ||
+    (props.previewString && props.tile.value !== props.previewString);
+  const hint =
+    props.tile.hint || props.isHintPreview ? (
+      <div
+        className={`snake-head hint snake-preview${
+          isHintWrong ? " hint-wrong" : ""
+        }`}
+      ></div>
+    ) : (
+      <></>
+    );
 
   const gridContent = (
     <>
       <div className="inner-square coloured-tile">{letterDisplay()}</div>
-      {props.previewString && props.previewTileType ? (
-        snakeElement(props.previewTileType, true)
-      ) : (
-        <></>
-      )}
+      {previewSnake}
       {props.tileType == TileType.Empty ? <></> : snakeElement(props.tileType)}
+      {hint}
     </>
   );
 
@@ -99,6 +136,7 @@ export type GridTileProps =
       tileType: TileType;
       previewString?: string;
       previewTileType?: TileType;
+      isHintPreview?: boolean;
     }
   | {
       isReadOnly: false;
@@ -109,6 +147,7 @@ export type GridTileProps =
       onMouseLeave: () => void;
       previewString?: string;
       previewTileType?: TileType;
+      isHintPreview?: boolean;
     };
 
 export default GridTile;

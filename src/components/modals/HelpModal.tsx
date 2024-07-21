@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import DemoGrid from "../game/DemoGrid";
-import DonationLink from "./Donation";
 
 export default function HelpModal(props: Props) {
   return (

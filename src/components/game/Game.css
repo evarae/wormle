@@ -1,3 +1,18 @@
 .path-container{
     margin: 16px;
 }
+
+.hint-container{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.hint-used {
+    background-color: grey;
+}
+
+.hint-unused {
+    background-color: green;
+}
