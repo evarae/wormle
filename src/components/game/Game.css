@@ -1,3 +1,10 @@
+:root {
+    --hint-size: 16px;
+    --hint-inner-ratio: 0.9;
+    --hint-inner-used-ratio: 0.4;
+    --border-radius: 0.05;
+}
+
 .path-container{
     margin: 16px;
 }
@@ -7,12 +14,27 @@
     justify-content: center;
     gap: 8px;
     padding: 8px;
+    align-items: center;
 }
 
-.hint-used {
-    background-color: grey;
-}
+.hint-indicator{
+    height: var(--hint-size);
+    width: var(--hint-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.hint-unused {
-    background-color: green;
+    .used {
+        height: calc(var(--hint-size)*var(--hint-inner-used-ratio));
+        width: calc(var(--hint-size)*var(--hint-inner-used-ratio));
+        background-color: var(--empty-tile-color);
+        border-radius: 50%
+    };
+
+    .unused {
+        height: calc(var(--hint-size)*var(--hint-inner-ratio));
+        width: calc(var(--hint-size)*var(--hint-inner-ratio));
+        background-color: var(--snake-color);
+        border-radius: 50%
+    };
 }

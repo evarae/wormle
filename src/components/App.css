@@ -46,17 +46,16 @@
   }
 }
 
-.center-button{
-  .MuiButton-root{
-    text-transform: none;
-    background-color: var(--secondary-color);
-    color: black;
-    border-color: black;
-  }
-  .MuiButton-root:hover{
-    background-color: var(--secondary-color-dark);
-    border-color: black;
-  }
+.MuiButton-root.MuiButton-outlinedPrimary {
+  text-transform: none;
+  background-color: var(--secondary-color);
+  color: black;
+  border-color: black;
+}
+
+.MuiButton-root.MuiButton-outlinedPrimary:hover {
+  background-color: var(--secondary-color-dark);
+  border-color: black;
 }
 
 .game-container {

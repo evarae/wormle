@@ -4,6 +4,7 @@ import {
   Cardinal,
   isGameOver,
   NUMBER_OF_HINTS,
+  resetPath,
   tryMove,
   tryMoveInDirection,
   TrySetHint,
@@ -42,6 +43,10 @@ const Game = (props: Props) => {
     }
 
     tryMove(props.gameState, props.setGameState, tile.coordinates);
+  }
+
+  function resetButtonOnClick() {
+    resetPath(props.gameState, props.setGameState);
   }
 
   useEffect(() => {
@@ -91,9 +96,17 @@ const Game = (props: Props) => {
 
     for (let i = 1; i <= initialHints; i++) {
       if (i <= hintsUsed) {
-        hintElements.push(<div className="hint hint-used">.</div>);
+        hintElements.push(
+          <div className="hint-indicator used">
+            <div className="used" />
+          </div>
+        );
       } else {
-        hintElements.push(<div className="hint hint-unused">o</div>);
+        hintElements.push(
+          <div className="hint-indicator unused">
+            <div className="unused" />
+          </div>
+        );
       }
     }
     return hintElements;
@@ -113,8 +126,22 @@ const Game = (props: Props) => {
       </div>
       <div className="hint-container">
         {hints}
-        <Button id={hintButtonId} onClick={useHintOnClick}>
+        <Button
+          variant="outlined"
+          size="small"
+          id={hintButtonId}
+          onClick={useHintOnClick}
+          disabled={props.gameState.hintsRemaining < 1}
+        >
           Use Hint
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={resetButtonOnClick}
+          disabled={props.gameState.path.length <= 1}
+        >
+          {"Reset Tiles"}
         </Button>
       </div>
     </div>

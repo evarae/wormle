@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Game from "./game/Game";
 import { GameState, GameWithDate } from "../types/types";
-import { getGameStateFromSetup, isGameOver } from "../helpers/GameEngine";
+import {
+  getGameStateFromSetup,
+  isGameOver,
+  NUMBER_OF_HINTS,
+} from "../helpers/GameEngine";
 import NavBar from "./navBar/NavBar";
 import { Button } from "@mui/material";
 import { demoData, getData } from "../gameData/data";
@@ -125,6 +129,7 @@ function App() {
       moveCount: gameState.moveCount,
       streak: stats.currentStreak,
       secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+      hintsUsed: NUMBER_OF_HINTS - gameState.hintsRemaining,
     }).then((response) => {
       if (response.successful) {
         setPostRequest({
@@ -171,19 +176,8 @@ function App() {
         />
       )}
       {gameState ? (
-        <div>
-          <div className="game-container">
-            <Game gameState={gameState} setGameState={setGameState} />
-          </div>
-          <div className="center-button">
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={resetButtonOnClick}
-            >
-              {isDemo ? "Go to today's game" : "Reset tiles"}
-            </Button>
-          </div>
+        <div className="game-container">
+          <Game gameState={gameState} setGameState={setGameState} />
         </div>
       ) : (
         <></>

@@ -120,6 +120,7 @@ export default function Grid(props: GridProps) {
                 onClickCallback,
                 onMouseEnter,
                 onMouseLeave,
+                isHintTapIndicator: props.isChoosingHint,
                 ...mods,
               };
 

@@ -24,14 +24,20 @@ function getGridSize(words: Word[]): Coordinates {
   return {x: maxWidth, y: words.length};
 }
 
+export function resetPath(state:GameState, setGameState: (newGameState: GameState) => void){
+  tryMove(state, setGameState, state.path[0])
+}
+
 export function TrySetHint(coordinate: Coordinates, state:GameState, setGameState: (newGameState: GameState) => void){
   const moveKey = getTileKey(coordinate);
   const tileAtCoordinate = state.tiles[moveKey];
 
   if( !tileAtCoordinate || state.hintsRemaining < 1 || tileAtCoordinate.hint ){
-    setGameState({
-      ...state
-    })
+    return;
+  }
+
+  //Can't place hint on the starting coordinate
+  if(areCoordinatesEqual(coordinate, state.path[0])){
     return;
   }
 
