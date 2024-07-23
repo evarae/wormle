@@ -4,7 +4,6 @@ import { Coordinates, GameState } from "../../types/types";
 import Grid from "./grid/Grid";
 import { getGameStateFromSetup, tryMove } from "../../helpers/GameEngine";
 import { demoData } from "../../gameData/data";
-import { Typography } from "@mui/material";
 
 const DemoGrid = () => {
   const [gameState, setGameState] = useState<GameState>();

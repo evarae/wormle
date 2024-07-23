@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GameState, Tile } from "../../types/types";
 import {
   Cardinal,
@@ -18,27 +18,33 @@ const Game = (props: Props) => {
   const hintButtonId = "hintButton";
   const [gameOver, setGameOver] = useState(false);
   const [isChoosingHint, setIsChoosingHint] = useState(false);
+  const isChoosingHintRef = useRef(isChoosingHint);
 
   useEffect(() => {
-    const clickListenerFunction = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const isClickingHintButton = target && target.id === hintButtonId;
+    isChoosingHintRef.current = isChoosingHint;
+  }, [isChoosingHint]);
 
-      if (!isClickingHintButton) {
-        setIsChoosingHint(false);
-      }
-    };
+  const clickListenerFunction = (event: MouseEvent | TouchEvent) => {
+    const target = event.target as HTMLElement;
+    const isClickingHintButton = target && target.id === hintButtonId;
 
+    if (!isClickingHintButton && isChoosingHintRef.current.valueOf()) {
+      setIsChoosingHint(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("touchstart", clickListenerFunction);
     document.addEventListener("click", clickListenerFunction);
     return () => {
       document.removeEventListener("click", clickListenerFunction);
+      document.removeEventListener("touchstart", clickListenerFunction);
     };
   }, []);
 
   function tileOnClickCallback(tile: Tile) {
     if (isChoosingHint) {
       TrySetHint(tile.coordinates, props.gameState, props.setGameState);
-      setIsChoosingHint(false);
       return;
     }
 
