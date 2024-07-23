@@ -152,7 +152,12 @@ export default function Grid(props: GridProps) {
     }
 
     return wordElements;
-  }, [props.gameState, hoveredCoordinates, props.isReadOnly]);
+  }, [
+    props.gameState,
+    hoveredCoordinates,
+    props.isReadOnly,
+    props.isChoosingHint,
+  ]);
 
   return (
     <table
@@ -175,6 +180,7 @@ type GridProps =
       gridSize?: GridSize;
       gameState: GameState;
       isReadOnly: true;
+      isChoosingHint?: boolean;
     }
   | {
       gridSize?: GridSize;

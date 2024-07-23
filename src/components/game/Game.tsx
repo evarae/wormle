@@ -18,32 +18,10 @@ const Game = (props: Props) => {
   const hintButtonId = "hintButton";
   const [gameOver, setGameOver] = useState(false);
   const [isChoosingHint, setIsChoosingHint] = useState(false);
-  const isChoosingHintRef = useRef(isChoosingHint);
-
-  useEffect(() => {
-    isChoosingHintRef.current = isChoosingHint;
-  }, [isChoosingHint]);
-
-  const clickListenerFunction = (event: MouseEvent | TouchEvent) => {
-    const target = event.target as HTMLElement;
-    const isClickingHintButton = target && target.id === hintButtonId;
-
-    if (!isClickingHintButton && isChoosingHintRef.current.valueOf()) {
-      setIsChoosingHint(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("touchstart", clickListenerFunction);
-    document.addEventListener("click", clickListenerFunction);
-    return () => {
-      document.removeEventListener("click", clickListenerFunction);
-      document.removeEventListener("touchstart", clickListenerFunction);
-    };
-  }, []);
 
   function tileOnClickCallback(tile: Tile) {
     if (isChoosingHint) {
+      setIsChoosingHint(false);
       TrySetHint(tile.coordinates, props.gameState, props.setGameState);
       return;
     }
@@ -53,9 +31,15 @@ const Game = (props: Props) => {
 
   function resetButtonOnClick() {
     resetPath(props.gameState, props.setGameState);
+    if (isChoosingHint) {
+      setIsChoosingHint(false);
+    }
   }
 
   useEffect(() => {
+    if (isChoosingHint) {
+      setIsChoosingHint(false);
+    }
     if (isGameOver(props.gameState)) {
       setGameOver(true);
     } else if (gameOver) {
@@ -91,6 +75,10 @@ const Game = (props: Props) => {
   };
 
   function useHintOnClick() {
+    if (isChoosingHint) {
+      setIsChoosingHint(false);
+      return;
+    }
     if (props.gameState.hintsRemaining > 0) {
       setIsChoosingHint(true);
     }
@@ -142,7 +130,7 @@ const Game = (props: Props) => {
           onClick={useHintOnClick}
           disabled={props.gameState.hintsRemaining < 1}
         >
-          Use Hint
+          {isChoosingHint ? "Cancel" : "Use Hint"}
         </Button>
         <Button
           variant="outlined"
