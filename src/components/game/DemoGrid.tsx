@@ -4,16 +4,29 @@ import { Coordinates, GameState } from "../../types/types";
 import Grid from "./grid/Grid";
 import { getGameStateFromSetup, tryMove } from "../../helpers/GameEngine";
 import { demoData } from "../../gameData/data";
+import { Typography } from "@mui/material";
 
 const DemoGrid = () => {
   const [gameState, setGameState] = useState<GameState>();
   const [count, setCount] = useState(-1);
   const moves: Coordinates[] = [
-    { x: 1, y: 1 },
-    { x: 0, y: 1 },
-    { x: 0, y: 0 },
     { x: 1, y: 0 },
     { x: 2, y: 0 },
+    { x: 3, y: 0 },
+    { x: 4, y: 0 },
+    { x: 4, y: 1 },
+    { x: 3, y: 1 },
+    { x: 2, y: 1 },
+    { x: 1, y: 1 },
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+    { x: 1, y: 2 },
+    { x: 1, y: 3 },
+    { x: 2, y: 3 },
+    { x: 2, y: 2 },
+    { x: 3, y: 2 },
+    { x: 3, y: 3 },
+    { x: 4, y: 3 },
   ];
 
   useEffect(() => {
@@ -23,7 +36,7 @@ const DemoGrid = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCount((prevCount) => (prevCount + 1) % (moves.length + 1));
-    }, 1000);
+    }, 300);
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);

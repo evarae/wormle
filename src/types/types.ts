@@ -1,5 +1,6 @@
 export type Tile = {
-    guess: string | undefined,
+    guess?: string,
+    hint?: boolean,
     value: string,
     coordinates: Coordinates
 }
@@ -21,7 +22,8 @@ export type GameState = {
     tiles: Record<string, Tile>,
     pathLetters: string[],
     path: Coordinates[],
-    moveCount: number
+    moveCount: number,
+    hintsRemaining: number
 }
   
 export type Word = {

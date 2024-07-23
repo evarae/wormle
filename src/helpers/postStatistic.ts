@@ -42,7 +42,8 @@ export type PostStatisticRequestBody = {
     date: string,
 	moveCount: number,
 	streak: number,
-	secondsToComplete: number
+	secondsToComplete: number,
+    hintsUsed: number
 }
 
 export interface PostStatisticResponse {

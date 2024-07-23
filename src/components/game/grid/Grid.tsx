@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { TileType, Coordinates, GameState, Tile } from "../../../types/types";
 import {
+  areCoordinatesEqual,
   getTileKey,
   getValidMovesBetweenPoints,
 } from "../../../helpers/GameEngine";
@@ -59,8 +60,24 @@ export default function Grid(props: GridProps) {
       });
     }
 
+    //Set hint preview
+    if (!props.isReadOnly && props.isChoosingHint && hoveredCoordinates) {
+      const hoveredKey = getTileKey(hoveredCoordinates);
+      if (!areCoordinatesEqual(props.gameState.path[0], hoveredCoordinates)) {
+        displayModifiers[hoveredKey] = {
+          ...displayModifiers[hoveredKey],
+          isHintPreview: true,
+        };
+      }
+    }
+
     //Set preview tile stuff
-    if (hoveredCoordinates && props.gameState.path) {
+    if (
+      hoveredCoordinates &&
+      props.gameState.path &&
+      !props.isReadOnly &&
+      !props.isChoosingHint
+    ) {
       const lastPathCoordinate =
         props.gameState.path[props.gameState.path.length - 1];
       const previewPath = getValidMovesBetweenPoints(
@@ -106,6 +123,7 @@ export default function Grid(props: GridProps) {
                 onClickCallback,
                 onMouseEnter,
                 onMouseLeave,
+                isHintTapIndicator: props.isChoosingHint,
                 ...mods,
               };
 
@@ -149,6 +167,7 @@ type TileDisplayMod = {
   tileType: TileType;
   previewString?: string;
   previewTileType?: TileType;
+  isHintPreview?: boolean;
 };
 
 type GridProps =
@@ -161,6 +180,8 @@ type GridProps =
       gridSize?: GridSize;
       gameState: GameState;
       isReadOnly: false;
+      isChoosingHint: boolean;
+      setGameState: (newGameState: GameState) => void;
       tileOnClickCallback: (tile: Tile) => void;
     };
 

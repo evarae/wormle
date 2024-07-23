@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Game from "./game/Game";
 import { GameState, GameWithDate } from "../types/types";
-import { getGameStateFromSetup, isGameOver } from "../helpers/GameEngine";
+import {
+  getGameStateFromSetup,
+  isGameOver,
+  NUMBER_OF_HINTS,
+} from "../helpers/GameEngine";
 import NavBar from "./navBar/NavBar";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
@@ -125,6 +129,7 @@ function App() {
       moveCount: gameState.moveCount,
       streak: stats.currentStreak,
       secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+      hintsUsed: NUMBER_OF_HINTS - gameState.hintsRemaining,
     }).then((response) => {
       if (response.successful) {
         setPostRequest({
@@ -171,20 +176,35 @@ function App() {
         />
       )}
       {gameState ? (
-        <div>
+        <>
+          {isDemo && (
+            <div className="center-text-container demo-text">
+              <Typography>
+                Use the arrow keys or mouse to guide the worm and spell a
+                related word on each row. Letters appear in the order shown at
+                the bottom of the screen. If you make a mistake, tap the worm to
+                move backwards, or hit &quot;reset tiles&quot;.
+              </Typography>
+            </div>
+          )}
           <div className="game-container">
-            <Game gameState={gameState} setGameState={setGameState} />
+            <Game
+              gameState={gameState}
+              setGameState={setGameState}
+              realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
+            />
           </div>
-          <div className="center-button">
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={resetButtonOnClick}
-            >
-              {isDemo ? "Go to today's game" : "Reset tiles"}
-            </Button>
-          </div>
-        </div>
+          {isDemo && (
+            <div className="center-text-container demo-text">
+              <Typography>
+                Can you figure out the theme? If you need some <b>direction</b>,
+                use a hint to reveal a letter. If your motivation is going{" "}
+                <b>South</b>, the &quot;
+                <b>?</b>&quot; icon could be your <b>North</b> star.
+              </Typography>
+            </div>
+          )}
+        </>
       ) : (
         <></>
       )}

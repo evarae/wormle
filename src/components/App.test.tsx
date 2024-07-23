@@ -79,6 +79,6 @@ test("Displays game grid", async () => {
 
 test("Displays reset tiles button", async () => {
   render(<App />);
-  const resetButton = await screen.findByText("Reset tiles");
+  const resetButton = await screen.findByText("Reset Tiles");
   expect(resetButton).toBeInTheDocument();
 });

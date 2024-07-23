@@ -8,6 +8,7 @@ import "./WinModal.css";
 import { PostRequestStatus } from "../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import DonationLink from "./Donation";
+import { NUMBER_OF_HINTS } from "../../helpers/GameEngine";
 
 const MIN_PERCENTAGE_TO_DISPLAY = 50;
 
@@ -16,10 +17,14 @@ export default function WinModal(props: Props) {
 
   const statisticMessage = useMemo(() => {
     const isMin = minMoves >= props.gameState.moveCount;
+    const numHints = NUMBER_OF_HINTS - props.gameState.hintsRemaining;
 
-    let moveCommentString = isMin
-      ? "Thats the minimum number possible!"
-      : `The minimum possible was ${minMoves}.`;
+    let moveCommentString =
+      isMin && numHints === 0
+        ? "Thats the minimum number possible!"
+        : isMin
+        ? ""
+        : `The minimum possible was ${minMoves}.`;
 
     if (props.postRequestStatus && props.postRequestStatus.responseData) {
       const ratio =
@@ -36,7 +41,11 @@ export default function WinModal(props: Props) {
 
     return (
       <Typography align="center" paddingTop={"8px"}>
-        {`You finished the game in ${props.gameState.moveCount} moves. ${moveCommentString}`}
+        {`You finished the game in ${
+          props.gameState.moveCount
+        } moves, using ${numHints} hint${
+          numHints === 1 ? "" : "s"
+        }. ${moveCommentString}`}
       </Typography>
     );
   }, [

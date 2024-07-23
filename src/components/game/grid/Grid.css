@@ -102,45 +102,59 @@
     align-items: center;
     background-color: var(--snake-color);
     position: absolute;
+    /* Border calculation */
+    --round-border: calc(0.5*var(--grid-size)*(1 - 2*var(--snake-size-offset)));
 }
 
 .snake-preview{
     background-color: var(--snake-hover-color);
 }
 
+.hint{
+    height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    margin: calc(var(--grid-size)*var(--snake-size-offset));
+    border-radius: calc(0.5*var(--grid-size)*(1 - 2*var(--snake-size-offset)));
+    background-color: var(--hint-color);
+}
+
+.hint-wrong{
+    background-color: var(--hint-color-wrong);
+}
+
 .end{
     height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     margin: calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 50%;
+    border-radius: var(--round-border);
 }
 
 .south-end{
     height: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
     width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 50% 50% 0 0;
+    border-radius: var(--round-border) var(--round-border) 0 0;
 }
 
 .north-end{
     height: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
     width: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     margin: 0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset))calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 0% 0% 50% 50%;
+    border-radius: 0% 0% var(--round-border) var(--round-border);
 }
 
 .west-end{
     height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     width: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
     margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0;
-    border-radius: 0% 50% 50% 0%;
+    border-radius: 0% var(--round-border) var(--round-border) 0%;
 }
 
 .east-end{
     height: calc(var(--grid-size)*(1 - 2*var(--snake-size-offset)));
     width: calc(var(--grid-size)*(1 - var(--snake-size-offset)));
     margin: calc(var(--grid-size)*var(--snake-size-offset))  0 calc(var(--grid-size)*var(--snake-size-offset))  calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 50% 0% 0% 50%;
+    border-radius: var(--round-border) 0% 0% var(--round-border);
 }
 
 .vertical-through{
@@ -162,7 +176,7 @@
 
 .south-east {
     margin: calc(var(--grid-size)*var(--snake-size-offset)) 0 0 calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 50% 0 0 0;
+    border-radius: var(--round-border) 0 0 0;
     .corner{
         top: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
         left: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
@@ -174,7 +188,7 @@
 
 .south-west {
     margin: calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 0 ;
-    border-radius: 0 50% 0 0;
+    border-radius: 0 var(--round-border) 0 0;
     .corner{
         top: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
         left: calc(-1*var(--grid-size)*(1/2 - var(--snake-size-offset)));
@@ -188,7 +202,7 @@
 
 .north-east {
     margin:  0 0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset));
-    border-radius: 0 0 0 50%;
+    border-radius: 0 0 0 var(--round-border);
     .corner{
         top: calc(-1*var(--grid-size)*(1/2 - var(--snake-size-offset)));
         left: calc(var(--grid-size)*(1/2 - var(--snake-size-offset)));
@@ -202,7 +216,7 @@
 
 .north-west {
     margin:  0 calc(var(--grid-size)*var(--snake-size-offset)) calc(var(--grid-size)*var(--snake-size-offset)) 0 ;
-    border-radius: 0 0 50% 0;
+    border-radius: 0 0 var(--round-border) 0;
     .corner{
         top: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
         left: calc(-1*(var(--grid-size)*(1/2 - var(--snake-size-offset))));
@@ -245,4 +259,31 @@
     font-size: inherit;
     box-sizing: border-box;
     background-color: var(--empty-tile-color);
+}
+
+.hintTapIndicator{
+    background-color: white;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    z-index: 2;
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.hintTapIndicator.hidden {
+    background-color: transparent;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.1,0.1)
+    }
+
+    100% {
+        transform: scale(0.2,0.2)
+    }
 }

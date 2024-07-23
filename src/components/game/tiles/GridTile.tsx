@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useMemo } from "react";
 import { TileType, Tile } from "../../../types/types";
 import "../grid/Grid.css";
 import { getClassFromTileType } from "../../../helpers/tileTypeHelper";
@@ -21,60 +21,94 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
     }
   }
 
-  const snakeElement = (tileType: TileType, isPreview = false) => {
-    switch (tileType) {
-      case TileType.Empty:
-        return <></>;
-      case TileType.CornerNorthEast:
-      case TileType.CornerNorthWest:
-      case TileType.CornerSouthEast:
-      case TileType.CornerSouthWest:
-        return (
-          <div
-            className={`snake-head ${
-              isPreview ? "snake-preview" : ""
-            } ${getClassFromTileType(tileType)}`}
-          >
-            <div className="corner">
-              <div className="inner-corner" />
-            </div>
-          </div>
-        );
-      default:
-        return (
-          <div
-            className={`snake-head ${
-              isPreview ? "snake-preview" : ""
-            } ${getClassFromTileType(tileType)}`}
-          />
-        );
+  const getLetter = () => {
+    if (props.isHintPreview && props.tile.guess && !props.tile.hint) {
+      return "?";
     }
+
+    if (props.tile.guess) {
+      return props.tile.guess;
+    }
+
+    if (props.previewString) {
+      return props.previewString;
+    }
+
+    if (props.tile.hint) {
+      return props.tile.value;
+    }
+
+    if (props.isHintPreview) {
+      return "?";
+    }
+
+    return "";
   };
 
-  const letterDisplay = () => {
-    const letter = props.tile.guess ? props.tile.guess : props.previewString;
-    return <span className="tile-letter">{letter}</span>;
-  };
+  const letterDisplay = <span className="tile-letter">{getLetter()}</span>;
 
-  const gridContent = (
-    <>
-      <div className="inner-square coloured-tile">{letterDisplay()}</div>
-      {props.previewString && props.previewTileType ? (
-        snakeElement(props.previewTileType, true)
-      ) : (
-        <></>
-      )}
-      {props.tileType == TileType.Empty ? <></> : snakeElement(props.tileType)}
-    </>
+  const previewSnake = useMemo(() => {
+    return props.previewString && props.previewTileType ? (
+      getSnakeElement(props.previewTileType, true)
+    ) : (
+      <></>
+    );
+  }, [props.previewString, props.previewTileType]);
+
+  const guessSnake = useMemo(() => {
+    return props.tileType == TileType.Empty ? (
+      <></>
+    ) : (
+      getSnakeElement(props.tileType)
+    );
+  }, [props.tileType]);
+
+  const hint = useMemo(() => {
+    const isHintWrong =
+      (props.isHintPreview && props.tile.guess) ||
+      (props.tile.guess && props.tile.value !== props.tile.guess) ||
+      (props.previewString && props.tile.value !== props.previewString);
+    return props.tile.hint || props.isHintPreview ? (
+      <div
+        className={`snake-head hint snake-preview${
+          isHintWrong ? " hint-wrong" : ""
+        }`}
+      />
+    ) : (
+      <></>
+    );
+  }, [props.tile.hint, props.isHintPreview, props.tile.guess]);
+
+  const tapIndicator = useMemo(() => {
+    const showHintTapIndicator =
+      props.isHintTapIndicator &&
+      !props.tile.hint &&
+      !props.previewString &&
+      !props.isHintPreview &&
+      !props.tile.guess;
+
+    return (
+      <div
+        className={`hintTapIndicator ${showHintTapIndicator ? "" : "hidden"}`}
+      />
+    );
+  }, [props.isHintPreview, props.tile.hint, props.isHintTapIndicator]);
+
+  const ariaLabel = useMemo(
+    () =>
+      `coordinate ${props.tile.coordinates.x + 1}, ${
+        props.tile.coordinates.y + 1
+      }, guess ${props.tile.guess ?? "none"}`,
+    [props.tile.guess]
   );
-
-  const ariaLabel = `coordinate ${props.tile.coordinates.x + 1}, ${
-    props.tile.coordinates.y + 1
-  }, guess ${props.tile.guess ?? "none"}`;
 
   return props.isReadOnly ? (
     <td aria-label={ariaLabel} className="tile">
-      {gridContent}
+      <div className="inner-square coloured-tile">{letterDisplay}</div>
+      {previewSnake}
+      {guessSnake}
+      {hint}
+      {tapIndicator}
     </td>
   ) : (
     <button
@@ -85,12 +119,46 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {gridContent}
+      <div className="inner-square coloured-tile">{letterDisplay}</div>
+      {previewSnake}
+      {guessSnake}
+      {hint}
+      {tapIndicator}
     </button>
   );
 });
 
 GridTile.displayName = "GridTile";
+
+const getSnakeElement = (tileType: TileType, isPreview = false) => {
+  switch (tileType) {
+    case TileType.Empty:
+      return <></>;
+    case TileType.CornerNorthEast:
+    case TileType.CornerNorthWest:
+    case TileType.CornerSouthEast:
+    case TileType.CornerSouthWest:
+      return (
+        <div
+          className={`snake-head ${
+            isPreview ? "snake-preview" : ""
+          } ${getClassFromTileType(tileType)}`}
+        >
+          <div className="corner">
+            <div className="inner-corner" />
+          </div>
+        </div>
+      );
+    default:
+      return (
+        <div
+          className={`snake-head ${
+            isPreview ? "snake-preview" : ""
+          } ${getClassFromTileType(tileType)}`}
+        />
+      );
+  }
+};
 
 export type GridTileProps =
   | {
@@ -99,6 +167,8 @@ export type GridTileProps =
       tileType: TileType;
       previewString?: string;
       previewTileType?: TileType;
+      isHintPreview?: boolean;
+      isHintTapIndicator?: boolean;
     }
   | {
       isReadOnly: false;
@@ -109,6 +179,8 @@ export type GridTileProps =
       onMouseLeave: () => void;
       previewString?: string;
       previewTileType?: TileType;
+      isHintPreview?: boolean;
+      isHintTapIndicator?: boolean;
     };
 
 export default GridTile;
