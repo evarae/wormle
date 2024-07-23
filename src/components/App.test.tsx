@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import App from "./App";
@@ -48,6 +48,14 @@ test("renders game title", () => {
 
 test("Displays game grid", async () => {
   render(<App />);
+
+  //Displays modal
+  const modal = await screen.findByRole("presentation");
+  expect(modal).toBeInTheDocument();
+
+  //Closes modal
+  fireEvent.keyDown(modal, { key: "Escape", code: "Escape" });
+  expect(modal).not.toBeInTheDocument();
 
   //Displays word rows
   const wordRows = await screen.findAllByRole("row");
