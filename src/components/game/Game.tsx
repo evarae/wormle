@@ -58,6 +58,9 @@ const Game = (props: Props) => {
   }, [props.gameState]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (isChoosingHint) {
+      setIsChoosingHint(false);
+    }
     let direction = undefined;
 
     switch (event.code) {

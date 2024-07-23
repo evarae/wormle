@@ -224,4 +224,4 @@ export enum Cardinal{
   West
 }
 
-export { getTileKey, getGameStateFromSetup, tryMove, isGameOver, getValidMovesBetweenPoints, tryMoveInDirection};
+export { getTileKey, getGameStateFromSetup, tryMove, isGameOver, getValidMovesBetweenPoints, tryMoveInDirection, areCoordinatesEqual};

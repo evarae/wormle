@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { TileType, Coordinates, GameState, Tile } from "../../../types/types";
 import {
+  areCoordinatesEqual,
   getTileKey,
   getValidMovesBetweenPoints,
 } from "../../../helpers/GameEngine";
@@ -62,10 +63,12 @@ export default function Grid(props: GridProps) {
     //Set hint preview
     if (!props.isReadOnly && props.isChoosingHint && hoveredCoordinates) {
       const hoveredKey = getTileKey(hoveredCoordinates);
-      displayModifiers[hoveredKey] = {
-        ...displayModifiers[hoveredKey],
-        isHintPreview: true,
-      };
+      if (!areCoordinatesEqual(props.gameState.path[0], hoveredCoordinates)) {
+        displayModifiers[hoveredKey] = {
+          ...displayModifiers[hoveredKey],
+          isHintPreview: true,
+        };
+      }
     }
 
     //Set preview tile stuff

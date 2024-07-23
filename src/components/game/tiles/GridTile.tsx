@@ -77,7 +77,7 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
     ) : (
       <></>
     );
-  }, [props.tile.hint, props.isHintPreview]);
+  }, [props.tile.hint, props.isHintPreview, props.tile.guess]);
 
   const tapIndicator = useMemo(() => {
     const showHintTapIndicator =
