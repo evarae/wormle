@@ -68,3 +68,19 @@
   text-align: center;
   font-style: italic;
 }
+
+.center-text-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.demo-text{
+  padding: 24px;
+  padding-bottom: 0px;
+  p {
+    max-width: 800px;
+  }
+}

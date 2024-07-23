@@ -8,7 +8,7 @@ import {
   NUMBER_OF_HINTS,
 } from "../helpers/GameEngine";
 import NavBar from "./navBar/NavBar";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
@@ -176,9 +176,35 @@ function App() {
         />
       )}
       {gameState ? (
-        <div className="game-container">
-          <Game gameState={gameState} setGameState={setGameState} />
-        </div>
+        <>
+          {isDemo && (
+            <div className="center-text-container demo-text">
+              <Typography>
+                Use the arrow keys or mouse to guide the worm and spell a
+                related word on each row. Letters appear in the order shown at
+                the bottom of the screen. If you make a mistake, tap the worm to
+                move backwards, or hit &quot;reset tiles&quot;.
+              </Typography>
+            </div>
+          )}
+          <div className="game-container">
+            <Game
+              gameState={gameState}
+              setGameState={setGameState}
+              realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
+            />
+          </div>
+          {isDemo && (
+            <div className="center-text-container demo-text">
+              <Typography>
+                Can you figure out the theme? If you need some <b>direction</b>,
+                use a hint to reveal a letter. If your motivation is going{" "}
+                <b>South</b>, the &quot;
+                <b>?</b>&quot; icon could be your <b>North</b> star.
+              </Typography>
+            </div>
+          )}
+        </>
       ) : (
         <></>
       )}

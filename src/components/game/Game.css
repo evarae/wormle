@@ -15,6 +15,7 @@
     gap: 8px;
     padding: 8px;
     align-items: center;
+    flex-flow: wrap;
 }
 
 .hint-indicator{

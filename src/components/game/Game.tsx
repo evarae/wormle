@@ -144,8 +144,17 @@ const Game = (props: Props) => {
           onClick={resetButtonOnClick}
           disabled={props.gameState.path.length <= 1}
         >
-          {"Reset Tiles"}
+          Reset Tiles
         </Button>
+        {props.realGameOnClick && (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={props.realGameOnClick}
+          >
+            Try the real game
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -154,6 +163,7 @@ const Game = (props: Props) => {
 interface Props {
   gameState: GameState;
   setGameState: (newGameState: GameState) => void;
+  realGameOnClick?: () => void;
 }
 
 export default Game;
