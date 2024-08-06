@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     gap: 32px;
-    padding-top: 16px;
 }
 
 .statistic-block-item {
@@ -12,4 +11,34 @@
     align-items: center;
     flex-direction: column;
     text-align: center;
+}
+
+.padding-small{
+    padding: 16px;
+}
+
+.padding-bottom-small{
+    padding-bottom: 16px;
+}
+
+.statistics{
+    padding-top: 16px;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid black;
+    }
+    
+    th {
+    text-align: left;
+    }
+    
+    td {
+        text-align: right;
+    }
+    
+    th,td {
+        padding: 5px;
+        border: 1px solid black;
+    }
 }

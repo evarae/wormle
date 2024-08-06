@@ -35,6 +35,7 @@ function App() {
     isError: false,
     isLoading: false,
   });
+  const [secondsToComplete, setSecondsToComplete] = useState(0);
 
   //Initialise the game
   useEffect(() => {
@@ -122,13 +123,16 @@ function App() {
     }
 
     const stats = getPlayerStreakStatistics();
+    const seconds = Math.floor((Date.now() - startTime) / 1000);
+    setSecondsToComplete(seconds);
+
     setPostRequest({ ...postRequest, isLoading: true, isError: false });
 
     postStatistic({
       date: gameSetupData.date,
       moveCount: gameState.moveCount,
       streak: stats.currentStreak,
-      secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+      secondsToComplete: seconds,
       hintsUsed: NUMBER_OF_HINTS - gameState.hintsRemaining,
     }).then((response) => {
       if (response.successful) {
@@ -165,6 +169,7 @@ function App() {
       />
       {gameState && gameSetupData && (
         <WinModal
+          seconds={secondsToComplete}
           isOpen={isWinModalOpen}
           onClose={winModalOnClose}
           gameState={gameState}
