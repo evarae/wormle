@@ -8,7 +8,7 @@ import {
   NUMBER_OF_HINTS,
 } from "../helpers/GameEngine";
 import NavBar from "./navBar/NavBar";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
@@ -35,6 +35,7 @@ function App() {
     isError: false,
     isLoading: false,
   });
+  const [secondsToComplete, setSecondsToComplete] = useState(0);
 
   //Initialise the game
   useEffect(() => {
@@ -79,6 +80,10 @@ function App() {
     setIsDemo(false);
     setInfoModalOpen(false);
     setWinModalOpen(false);
+    setPostRequest({
+      isError: false,
+      isLoading: false,
+    });
   }
 
   function infoModalOnClose() {
@@ -122,13 +127,16 @@ function App() {
     }
 
     const stats = getPlayerStreakStatistics();
+    const seconds = Math.floor((Date.now() - startTime) / 1000);
+    setSecondsToComplete(seconds);
+
     setPostRequest({ ...postRequest, isLoading: true, isError: false });
 
     postStatistic({
       date: gameSetupData.date,
       moveCount: gameState.moveCount,
       streak: stats.currentStreak,
-      secondsToComplete: Math.floor((Date.now() - startTime) / 1000),
+      secondsToComplete: seconds,
       hintsUsed: NUMBER_OF_HINTS - gameState.hintsRemaining,
     }).then((response) => {
       if (response.successful) {
@@ -165,6 +173,7 @@ function App() {
       />
       {gameState && gameSetupData && (
         <WinModal
+          seconds={secondsToComplete}
           isOpen={isWinModalOpen}
           onClose={winModalOnClose}
           gameState={gameState}
