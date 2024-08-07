@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
 import { formatDate } from "../../helpers/dateFormatter";
-import { getPlayerStreakStatistics } from "../../helpers/statistics";
+import {
+  getLastDayPlayed,
+  getPlayerStreakStatistics,
+} from "../../helpers/statistics";
 import "./WinModal.css";
 import { PostRequestStatus } from "../App";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -11,8 +14,6 @@ import DonationLink from "./Donation";
 import { NUMBER_OF_HINTS } from "../../helpers/GameEngine";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { PostStatisticResponseBody } from "../../helpers/postStatistic";
-
-const MIN_PERCENTAGE_TO_DISPLAY = 50;
 
 export default function WinModal(props: Props) {
   const [showStatistics, setShowStatistics] = useState(false);
@@ -29,61 +30,43 @@ export default function WinModal(props: Props) {
       {!props.isDemo && (
         <Typography variant="body2">{formatDate(props.date)}</Typography>
       )}
+      {!showStatistics && (
+        <div className="padding-small">
+          <Grid
+            gameState={props.gameState}
+            isReadOnly={true}
+            gridSize="small"
+          />
+        </div>
+      )}
     </>
   );
 
   const modalBottomContent = () => {
     if (props.isDemo) {
       return (
-        <>
-          <div className="padding-small">
-            <Grid
-              gameState={props.gameState}
-              isReadOnly={true}
-              gridSize="small"
-            />
-          </div>
-          <div className="center-button">
-            <Button variant="outlined" onClick={props.tryRealGameOnClick}>
-              Try the real game
-            </Button>
-          </div>
-        </>
+        <div className="center-button">
+          <Button variant="outlined" onClick={props.tryRealGameOnClick}>
+            Try the real game
+          </Button>
+        </div>
       );
     }
 
     if (props.postRequestStatus?.isError) {
       return (
-        <>
-          <div className="padding-small">
-            <Grid
-              gameState={props.gameState}
-              isReadOnly={true}
-              gridSize="small"
-            />
-          </div>
-          <div className="info-text-container">
-            Error posting statistics. Please check your internet connection and
-            ad-blocker settings.
-          </div>
-        </>
+        <div className="info-text-container">
+          Error posting statistics. Please check your internet connection and
+          ad-blocker settings.
+        </div>
       );
     }
 
     if (props.postRequestStatus?.isLoading) {
       return (
-        <>
-          <div className="padding-small">
-            <Grid
-              gameState={props.gameState}
-              isReadOnly={true}
-              gridSize="small"
-            />
-          </div>
-          <Box sx={{ display: "flex" }}>
-            <CircularProgress />
-          </Box>
-        </>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
       );
     }
 
@@ -93,6 +76,7 @@ export default function WinModal(props: Props) {
           {props.postRequestStatus?.responseData &&
             !props.postRequestStatus.isLoading && (
               <Statistics
+                hintsUsed={NUMBER_OF_HINTS - props.gameState.hintsRemaining}
                 minMoves={props.gameState.path.length - 1}
                 seconds={props.seconds}
                 moves={props.gameState.moveCount}
@@ -105,16 +89,12 @@ export default function WinModal(props: Props) {
       );
     }
 
+    const showStatisticsButton =
+      !props.isDemo && props.postRequestStatus?.responseData;
+
     return (
       <>
-        <div className="padding-small">
-          <Grid
-            gameState={props.gameState}
-            isReadOnly={true}
-            gridSize="small"
-          />
-        </div>
-        {!props.isDemo && props.postRequestStatus?.responseData && (
+        {showStatisticsButton && (
           <div className="padding-bottom-small">
             <ShowStatisticsButton />
           </div>
@@ -192,48 +172,57 @@ function StreakBlock(props: StreakProps) {
 }
 
 function Statistics(props: StatisticProps) {
-  let timePercentile;
-  let movesPercentile;
+  const timePercentile = Math.floor(
+    (1 -
+      props.statisticPostData.secondsToCompleteBetterThanCount /
+        props.statisticPostData.playerCount) *
+      100
+  );
 
-  if (props.statisticPostData) {
-    timePercentile = Math.floor(
-      (1 -
-        props.statisticPostData.secondsToCompleteBetterThanCount /
-          props.statisticPostData.playerCount) *
-        100
-    );
+  const movesPercentile = Math.floor(
+    (1 -
+      props.statisticPostData.moveCountBetterThanCount /
+        props.statisticPostData.playerCount) *
+      100
+  );
 
-    movesPercentile = Math.floor(
-      (1 -
-        props.statisticPostData.moveCountBetterThanCount /
-          props.statisticPostData.playerCount) *
-        100
-    );
-  }
+  const movesPercentileText =
+    movesPercentile <= 50 ? `top ${movesPercentile}%*` : "bottom 50%*";
 
-  //props.totalPlayerCount>1 ? (Percentage of other players you've beaten: {timeBeatenPercent}):()
+  const timePercentileText =
+    timePercentile <= 50 ? `top ${timePercentile}%` : "bottom 50%";
+
   return (
     <div className="statistics">
       <table>
         <tr>
+          <th scope="row">{`Hints used`}</th>
+          <td>{props.hintsUsed}</td>
+          <td></td>
+        </tr>
+        <tr>
           <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
           <td>{props.moves}</td>
-          <td>{`top ${movesPercentile}%`}</td>
+          <td>{movesPercentileText}</td>
         </tr>
         <tr>
           <th scope="row">Time (seconds)</th>
           <td>{props.seconds}</td>
-          <td>{`top ${timePercentile}%`}</td>
+          <td>{timePercentileText}</td>
         </tr>
       </table>
-      <Typography
-        paddingTop={"16px"}
-        paddingBottom={"16px"}
-        textAlign={"center"}
-      >
+      <Typography paddingTop={"16px"} textAlign={"center"}>
         {props.statisticPostData.playerCount > 1
           ? `Not bad, but there's always room for improvement.`
           : `You're the first person to win today, so you've set the bar!`}
+      </Typography>
+      <Typography
+        paddingBottom={"16px"}
+        textAlign={"center"}
+        className="info-text-container"
+      >
+        *You are ranked first on number of hints used, then number of moves. You
+        outrank anyone who used more hints than you.
       </Typography>
     </div>
   );
@@ -243,6 +232,7 @@ interface StatisticProps {
   seconds: number;
   moves: number;
   minMoves: number;
+  hintsUsed: number;
   statisticPostData: PostStatisticResponseBody;
 }
 

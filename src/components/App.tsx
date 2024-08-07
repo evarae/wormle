@@ -8,7 +8,7 @@ import {
   NUMBER_OF_HINTS,
 } from "../helpers/GameEngine";
 import NavBar from "./navBar/NavBar";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { demoData, getData } from "../gameData/data";
 import HelpModal from "./modals/HelpModal";
 import WinModal from "./modals/WinModal";
@@ -80,6 +80,10 @@ function App() {
     setIsDemo(false);
     setInfoModalOpen(false);
     setWinModalOpen(false);
+    setPostRequest({
+      isError: false,
+      isLoading: false,
+    });
   }
 
   function infoModalOnClose() {
