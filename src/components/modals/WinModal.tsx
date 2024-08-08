@@ -3,10 +3,7 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
 import { formatDate } from "../../helpers/dateFormatter";
-import {
-  getLastDayPlayed,
-  getPlayerStreakStatistics,
-} from "../../helpers/statistics";
+import { getPlayerStreakStatistics } from "../../helpers/statistics";
 import "./WinModal.css";
 import { PostRequestStatus } from "../App";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -31,7 +28,7 @@ export default function WinModal(props: Props) {
         <Typography variant="body2">{formatDate(props.date)}</Typography>
       )}
       {!showStatistics && (
-        <div className="padding-small">
+        <div className="padding">
           <Grid
             gameState={props.gameState}
             isReadOnly={true}
@@ -45,11 +42,9 @@ export default function WinModal(props: Props) {
   const modalBottomContent = () => {
     if (props.isDemo) {
       return (
-        <div className="center-button">
-          <Button variant="outlined" onClick={props.tryRealGameOnClick}>
-            Try the real game
-          </Button>
-        </div>
+        <Button variant="outlined" onClick={props.tryRealGameOnClick}>
+          Try the real game
+        </Button>
       );
     }
 
@@ -94,11 +89,7 @@ export default function WinModal(props: Props) {
 
     return (
       <>
-        {showStatisticsButton && (
-          <div className="padding-bottom-small">
-            <ShowStatisticsButton />
-          </div>
-        )}
+        {showStatisticsButton && <ShowStatisticsButton />}
         <StreakGroup />
         <DonationLink />
       </>
@@ -130,10 +121,8 @@ export default function WinModal(props: Props) {
       className="modal"
     >
       <Box>
-        <>
-          {modalTopContent}
-          {modalBottomContent()}
-        </>
+        {modalTopContent}
+        {modalBottomContent()}
       </Box>
     </Modal>
   );
@@ -143,7 +132,7 @@ function StreakGroup() {
   const stats = getPlayerStreakStatistics();
 
   return (
-    <div className="statistic-block">
+    <div className="statistic-block padding-top padding-bottom">
       <StreakBlock
         statisticName="Your streak"
         statisticNumber={stats.currentStreak}
@@ -194,32 +183,33 @@ function Statistics(props: StatisticProps) {
 
   return (
     <div className="statistics">
-      <table>
-        <tr>
-          <th scope="row">{`Hints used`}</th>
-          <td>{props.hintsUsed}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
-          <td>{props.moves}</td>
-          <td>{movesPercentileText}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time (seconds)</th>
-          <td>{props.seconds}</td>
-          <td>{timePercentileText}</td>
-        </tr>
-      </table>
-      <Typography paddingTop={"16px"} textAlign={"center"}>
+      <div className="padding-top padding-bottom">
+        <table>
+          <tr>
+            <th scope="row">{`Hints used`}</th>
+            <td>{props.hintsUsed}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
+            <td>{props.moves}</td>
+            <td>{movesPercentileText}</td>
+          </tr>
+          <tr>
+            <th scope="row">Time (seconds)</th>
+            <td>{props.seconds}</td>
+            <td>{timePercentileText}</td>
+          </tr>
+        </table>
+      </div>
+      <Typography textAlign={"center"}>
         {props.statisticPostData.playerCount > 1
           ? `Not bad, but there's always room for improvement.`
           : `You're the first person to win today, so you've set the bar!`}
       </Typography>
       <Typography
-        paddingBottom={"16px"}
         textAlign={"center"}
-        className="info-text-container"
+        className="info-text-container padding-top"
       >
         *You are ranked first on number of hints used, then number of moves. You
         outrank anyone who used more hints than you.

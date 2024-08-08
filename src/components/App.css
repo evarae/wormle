@@ -16,11 +16,22 @@
   --tile-color-1: rgb(242, 192, 192);
   --tile-color-2: rgb(216, 210, 157);
   --tile-color-3: rgb(159, 198, 218);
+
+  /* Padding and spacing */
+  --space-small: 8px;
+  --space: 16px;
+  --space-large: 24px;
+  --space-xlarge: 32px;
 }
 
 .App {
   text-align: center;
   color: rgb(0, 0, 0);
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .modal{
@@ -29,20 +40,16 @@
   align-items: center;
   top: 40px !important;
   .MuiBox-root{
+    padding: var(--space-large);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 24px;
     border-radius: 8px;
     width: 380px;
     max-width: 80%;
     box-shadow: 24px;
     background-color: var(--main-bg-color);
     outline: none
-  }
-  .center-button{
-    padding-top: 16px;
   }
 }
 
@@ -58,29 +65,42 @@
   border-color: black;
 }
 
-.game-container {
-  margin-top: 32px;
-}
-
 .info-text-container {
   color: var(--info-text-color);
-  padding: 16px;
-  text-align: center;
   font-style: italic;
 }
 
-.center-text-container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
+.demo-text{
+  padding: var(--space) var(--space) 0 var(--space);
+  max-width: 800px;
 }
 
-.demo-text{
-  padding: 24px;
-  padding-bottom: 0px;
-  p {
-    max-width: 800px;
-  }
+/* SPACING */
+
+.padding-bottom-none {
+  padding-bottom: 0;
+}
+
+.padding {
+  padding: var(--space)
+}
+
+.padding-bottom {
+  padding-bottom: var(--space)
+}
+
+.padding-top {
+  padding-top: var(--space)
+}
+
+.padding-small {
+  padding: var(--space-small);
+}
+
+.padding-large {
+  padding: var(--space-large);
+}
+
+.padding-xlarge {
+  padding: var(--space-xlarge);
 }

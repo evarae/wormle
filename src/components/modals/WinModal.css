@@ -1,28 +1,16 @@
 .statistic-block {
     display: flex;
-    justify-content: center;
-    gap: 32px;
+    gap: var(--space-large);
 }
 
 .statistic-block-item {
     flex-grow: 1;
-    align-items: center;
     display: flex;
     align-items: center;
     flex-direction: column;
-    text-align: center;
-}
-
-.padding-small{
-    padding: 16px;
-}
-
-.padding-bottom-small{
-    padding-bottom: 16px;
 }
 
 .statistics{
-    padding-top: 16px;
     table {
         width: 100%;
         border-collapse: collapse;
@@ -30,7 +18,7 @@
     }
     
     th {
-    text-align: left;
+        text-align: left;
     }
     
     td {

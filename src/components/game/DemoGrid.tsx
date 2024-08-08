@@ -55,7 +55,7 @@ const DemoGrid = () => {
   }, [count]);
 
   return (
-    <div>
+    <div className="padding">
       {gameState ? (
         <Grid gameState={gameState} isReadOnly={true} gridSize="medium" />
       ) : (

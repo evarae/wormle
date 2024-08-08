@@ -18,7 +18,6 @@ export default function HelpModal(props: Props) {
         <Typography
           id=" modal-modal-description"
           sx={{ mt: 2 }}
-          paddingBottom={"16px"}
           textAlign={"center"}
         >
           Use the arrow keys or mouse to move the worm through the grid. Use the
@@ -26,11 +25,9 @@ export default function HelpModal(props: Props) {
           move is always done for you.
         </Typography>
         <DemoGrid />
-        <div className="center-button">
-          <Button variant="outlined" onClick={props.tryDemoOnClick}>
-            Try a demo
-          </Button>
-        </div>
+        <Button variant="outlined" onClick={props.tryDemoOnClick}>
+          Try a demo
+        </Button>
       </Box>
     </Modal>
   );

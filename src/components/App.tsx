@@ -185,9 +185,9 @@ function App() {
         />
       )}
       {gameState ? (
-        <>
+        <body>
           {isDemo && (
-            <div className="center-text-container demo-text">
+            <div className="demo-text">
               <Typography>
                 Use the arrow keys or mouse to guide the worm and spell a
                 related word on each row. Letters appear in the order shown at
@@ -196,15 +196,13 @@ function App() {
               </Typography>
             </div>
           )}
-          <div className="game-container">
-            <Game
-              gameState={gameState}
-              setGameState={setGameState}
-              realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
-            />
-          </div>
+          <Game
+            gameState={gameState}
+            setGameState={setGameState}
+            realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
+          />
           {isDemo && (
-            <div className="center-text-container demo-text">
+            <div className="demo-text">
               <Typography>
                 Can you figure out the theme? If you need some <b>direction</b>,
                 use a hint to reveal a letter. If your motivation is going{" "}
@@ -213,7 +211,7 @@ function App() {
               </Typography>
             </div>
           )}
-        </>
+        </body>
       ) : (
         <></>
       )}

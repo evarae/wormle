@@ -5,15 +5,10 @@
     --border-radius: 0.05;
 }
 
-.path-container{
-    margin: 16px;
-}
-
 .hint-container{
     display: flex;
     justify-content: center;
-    gap: 8px;
-    padding: 8px;
+    gap: var(--space-small);
     align-items: center;
     flex-flow: wrap;
 }

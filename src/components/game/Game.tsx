@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GameState, Tile } from "../../types/types";
 import {
   Cardinal,
@@ -111,17 +111,17 @@ const Game = (props: Props) => {
 
   return (
     <div onKeyDown={handleKeyDown}>
-      <Grid
-        setGameState={props.setGameState}
-        gameState={props.gameState}
-        isReadOnly={gameOver}
-        tileOnClickCallback={tileOnClickCallback}
-        isChoosingHint={isChoosingHint}
-      />
-      <div className="path-container">
-        <Path gameState={props.gameState} />
+      <div className="padding-xlarge">
+        <Grid
+          setGameState={props.setGameState}
+          gameState={props.gameState}
+          isReadOnly={gameOver}
+          tileOnClickCallback={tileOnClickCallback}
+          isChoosingHint={isChoosingHint}
+        />
       </div>
-      <div className="hint-container">
+      <Path gameState={props.gameState} />
+      <div className="hint-container padding">
         {hints}
         <Button
           variant="outlined"
