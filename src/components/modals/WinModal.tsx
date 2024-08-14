@@ -23,7 +23,9 @@ export default function WinModal(props: Props) {
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
       </Typography>
-      <Typography variant="h6">{props.theme}</Typography>
+      <Typography variant="h6" component={"body"} textAlign={"center"}>
+        {props.theme}
+      </Typography>
       {!props.isDemo && (
         <Typography variant="body2">{formatDate(props.date)}</Typography>
       )}
@@ -185,21 +187,23 @@ function Statistics(props: StatisticProps) {
     <div className="statistics">
       <div className="padding-top padding-bottom">
         <table>
-          <tr>
-            <th scope="row">{`Hints used`}</th>
-            <td>{props.hintsUsed}</td>
-            <td></td>
-          </tr>
-          <tr>
-            <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
-            <td>{props.moves}</td>
-            <td>{movesPercentileText}</td>
-          </tr>
-          <tr>
-            <th scope="row">Time (seconds)</th>
-            <td>{props.seconds}</td>
-            <td>{timePercentileText}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <th scope="row">{`Hints used`}</th>
+              <td>{props.hintsUsed}</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
+              <td>{props.moves}</td>
+              <td>{movesPercentileText}</td>
+            </tr>
+            <tr>
+              <th scope="row">Time (seconds)</th>
+              <td>{props.seconds}</td>
+              <td>{timePercentileText}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <Typography textAlign={"center"}>

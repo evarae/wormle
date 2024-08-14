@@ -92,15 +92,16 @@ const Game = (props: Props) => {
     const hintElements = [];
 
     for (let i = 1; i <= initialHints; i++) {
+      const key = `hint-${i}`;
       if (i <= hintsUsed) {
         hintElements.push(
-          <div className="hint-indicator used">
+          <div key={key} className="hint-indicator used">
             <div className="used" />
           </div>
         );
       } else {
         hintElements.push(
-          <div className="hint-indicator unused">
+          <div key={key} className="hint-indicator unused">
             <div className="unused" />
           </div>
         );

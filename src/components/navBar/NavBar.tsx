@@ -10,8 +10,8 @@ import InfoIcon from "@mui/icons-material/Info";
 
 export default function NavBar(props: Props) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className="nav-header">
+    <Box sx={{ flexGrow: 1 }} className="nav-header">
+      <AppBar position="static">
         <Toolbar>
           <IconButton
             onClick={props.infoButtonOnClick}

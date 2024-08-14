@@ -128,16 +128,21 @@ export default function Grid(props: GridProps) {
               };
 
           tileElements.push(
-            <GridTile
-              key={`grid-tile-${getTileKey(t.coordinates)}`}
-              {...tileProps}
-              ref={(ref) =>
-                (textInputRefs.current[getTileKey(t.coordinates)] = ref!)
-              }
-            />
+            <td key={`grid-tile-${getTileKey(t.coordinates)}`}>
+              <GridTile
+                {...tileProps}
+                ref={(ref) =>
+                  (textInputRefs.current[getTileKey(t.coordinates)] = ref!)
+                }
+              />
+            </td>
           );
         } else {
-          tileElements.push(<InvisibleTile key={getTileKey({ x: i, y: j })} />);
+          tileElements.push(
+            <td key={getTileKey({ x: i, y: j })}>
+              <InvisibleTile />
+            </td>
+          );
         }
       }
 
@@ -160,11 +165,13 @@ export default function Grid(props: GridProps) {
   ]);
 
   return (
-    <table
+    <div
       className={`grid-container grid-container-${props.gridSize ?? "large"}`}
     >
-      {renderedTiles}
-    </table>
+      <table cellSpacing="0" cellPadding="0" role="grid">
+        <tbody>{renderedTiles}</tbody>
+      </table>
+    </div>
   );
 }
 

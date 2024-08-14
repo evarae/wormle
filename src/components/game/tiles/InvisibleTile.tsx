@@ -1,8 +1,6 @@
-import React from 'react';
-import '../grid/Grid.css';
+import React from "react";
+import "../grid/Grid.css";
 
 export default function InvisibleTile() {
-  return (
-    <div className='tile'/>
-  );
+  return <div className="tile" />;
 }

@@ -52,6 +52,7 @@ function App() {
       const data = await getData();
       setGameSetupData(data);
       setGameState(getGameStateFromSetup(data.game));
+      console.log("Here you go, cheater!\n", data.game.words);
     };
     fetchData();
   }
@@ -185,7 +186,7 @@ function App() {
         />
       )}
       {gameState ? (
-        <body>
+        <div>
           {isDemo && (
             <div className="demo-text">
               <Typography>
@@ -211,7 +212,7 @@ function App() {
               </Typography>
             </div>
           )}
-        </body>
+        </div>
       ) : (
         <></>
       )}

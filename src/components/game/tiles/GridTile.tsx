@@ -103,13 +103,13 @@ const GridTile = forwardRef<HTMLButtonElement, GridTileProps>((props, ref) => {
   );
 
   return props.isReadOnly ? (
-    <td aria-label={ariaLabel} className="tile">
+    <div aria-label={ariaLabel} className="tile">
       <div className="inner-square coloured-tile">{letterDisplay}</div>
       {previewSnake}
       {guessSnake}
       {hint}
       {tapIndicator}
-    </td>
+    </div>
   ) : (
     <button
       aria-label={ariaLabel}
