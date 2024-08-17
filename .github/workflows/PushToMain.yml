@@ -24,6 +24,7 @@ jobs:
         run: npm run build --if-present
         env:
           CI: false
+          REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID: ${{vars.REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID}}
 
       - name: Test
         run: npm test

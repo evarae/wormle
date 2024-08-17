@@ -17,6 +17,7 @@
     "msw": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-ga4": "^2.1.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -47,7 +48,10 @@
     "typescript-eslint": "^7.13.1"
   },
   "jest": {
-  "transformIgnorePatterns": ["/node_modules/(?!(@bundled-es-modules)/)",       "[/\\\\]node_modules[/\\\\].+[^esm]\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"]
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(@bundled-es-modules)/)",
+      "[/\\\\]node_modules[/\\\\].+[^esm]\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ]
   }
 }
