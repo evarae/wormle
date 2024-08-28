@@ -3,14 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./components/App";
 import reportWebVitals from "./config/reportWebVitals";
-import ReactGA from "react-ga4";
-
-const analyticsId = process.env.REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID;
-
-if (analyticsId) {
-  ReactGA.initialize(analyticsId);
-  ReactGA.send({ hitType: "pageview", page: "index", title: "Wormle" });
-}
+import GoogleAnalytics from "./components/GoogleAnalytics";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,6 +11,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+    <GoogleAnalytics />
     <App />
   </React.StrictMode>
 );

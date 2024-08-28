@@ -25,7 +25,7 @@ export default function NavBar(props: Props) {
           <Typography
             fontWeight="bold"
             variant="h3"
-            component="div"
+            component="h1"
             sx={{ flexGrow: 1 }}
           >
             WORMLE
