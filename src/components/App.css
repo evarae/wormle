@@ -106,3 +106,9 @@
 .padding-xlarge {
   padding: var(--space-xlarge);
 }
+
+.modal-image{
+  max-width: 280px;
+  padding-top: var(--space-large);
+  margin: var(--space-large);
+}

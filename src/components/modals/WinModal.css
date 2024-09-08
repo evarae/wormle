@@ -28,3 +28,10 @@
     border-collapse: collapse;
     border: 2px solid black;
 }
+
+.button-container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: var(--space-small);
+}

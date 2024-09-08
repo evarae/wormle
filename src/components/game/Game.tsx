@@ -129,7 +129,7 @@ const Game = (props: Props) => {
           size="small"
           id={hintButtonId}
           onClick={useHintOnClick}
-          disabled={props.gameState.hintsRemaining < 1}
+          disabled={props.gameState.hintsRemaining < 1 || gameOver}
         >
           {isChoosingHint ? "Cancel" : "Use Hint"}
         </Button>
@@ -137,7 +137,7 @@ const Game = (props: Props) => {
           variant="outlined"
           size="small"
           onClick={resetButtonOnClick}
-          disabled={props.gameState.path.length <= 1}
+          disabled={props.gameState.path.length <= 1 || gameOver}
         >
           Reset Tiles
         </Button>

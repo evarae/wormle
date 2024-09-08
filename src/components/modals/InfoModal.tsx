@@ -3,6 +3,7 @@ import { Box, Link, Modal, Typography } from "@mui/material";
 import { KOFI_LINK } from "./Donation";
 
 const HANG_FIVE_LINK = "https://playhangfive.com";
+const LINKEDIN_LINK = "https://linkedin.com/in/evaraemclean";
 
 export default function InfoModal(props: Props) {
   return (
@@ -17,9 +18,11 @@ export default function InfoModal(props: Props) {
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Welcome to Wormle!
         </Typography>
+
         <Typography id="modal-modal-description" sx={{ mt: 2 }} align="center">
-          Wormle is a daily word game created by me, Rae McLean. It&apos;s still
-          in the development phase, but your feedback is welcome.
+          Wormle is a daily word game created by{" "}
+          <Link href={LINKEDIN_LINK}>me</Link>, Rae McLean. It&apos;s still in
+          the development phase, but your feedback is welcome.
           <br />
           <br />I was inspired to make a daily word game after my co-worker
           shared his awesome hangman-like game,{" "}
@@ -29,6 +32,11 @@ export default function InfoModal(props: Props) {
           If you want to help me pay for the costs of hosting wormle, you can{" "}
           <Link href={KOFI_LINK}>buy me a coffee through ko-fi</Link>
         </Typography>
+        <img
+          className="modal-image"
+          src={"/wormleThanksForYourSupport.png"}
+          alt={"A game of wormle that spells thanks for your support"}
+        />
       </Box>
     </Modal>
   );

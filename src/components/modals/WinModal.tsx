@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Modal, Typography } from "@mui/material";
 import { GameState } from "../../types/types";
 import Grid from "../game/grid/Grid";
-import { formatDate } from "../../helpers/dateFormatter";
-import { getPlayerStreakStatistics } from "../../helpers/statistics";
 import "./WinModal.css";
 import { PostRequestStatus } from "../App";
-import CircularProgress from "@mui/material/CircularProgress";
 import DonationLink from "./Donation";
-import { NUMBER_OF_HINTS } from "../../helpers/GameEngine";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import { PostStatisticResponseBody } from "../../helpers/postStatistic";
+import {
+  NUMBER_OF_HINTS,
+  PostStatisticResponseBody,
+  formatLongDisplayDate,
+  getPlayerStreakStatistics,
+  getShareText,
+} from "../../helpers";
+import {
+  Box,
+  Button,
+  Modal,
+  Popover,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import { Leaderboard, Share, ArrowBackIosNew } from "@mui/icons-material/";
+import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 
 export default function WinModal(props: Props) {
   const [showStatistics, setShowStatistics] = useState(false);
@@ -27,7 +37,9 @@ export default function WinModal(props: Props) {
         {props.theme}
       </Typography>
       {!props.isDemo && (
-        <Typography variant="body2">{formatDate(props.date)}</Typography>
+        <Typography variant="body2">
+          {formatLongDisplayDate(props.date)}
+        </Typography>
       )}
       {!showStatistics && (
         <div className="padding">
@@ -52,10 +64,15 @@ export default function WinModal(props: Props) {
 
     if (props.postRequestStatus?.isError) {
       return (
-        <div className="info-text-container">
-          Error posting statistics. Please check your internet connection and
-          ad-blocker settings.
-        </div>
+        <>
+          <div className="info-text-container">
+            Sorry! There was an error posting statistics. Please check your
+            internet connection or come back tomorrow.
+          </div>
+          <div className="button-container padding-top padding-bottom">
+            <ShareButton />
+          </div>
+        </>
       );
     }
 
@@ -81,6 +98,10 @@ export default function WinModal(props: Props) {
               />
             )}
           <StreakGroup />
+          <div className="button-container padding-top padding-bottom">
+            <BackButton />
+            <ShareButton />
+          </div>
           <DonationLink />
         </>
       );
@@ -91,25 +112,96 @@ export default function WinModal(props: Props) {
 
     return (
       <>
-        {showStatisticsButton && <ShowStatisticsButton />}
         <StreakGroup />
+        {showStatisticsButton && (
+          <div className="button-container padding-top padding-bottom">
+            <ShowStatisticsButton />
+            <ShareButton />
+          </div>
+        )}
         <DonationLink />
       </>
     );
   };
 
-  function ShowStatisticsButton() {
+  function BackButton() {
     return (
       <Button
         variant="outlined"
-        startIcon={<LeaderboardIcon />}
-        onClick={() => setShowStatistics(true)}
+        startIcon={<ArrowBackIosNew />}
+        onClick={() => {
+          setShowStatistics(false);
+        }}
       >
-        See Statistics
+        Back
       </Button>
     );
   }
 
+  function ShowStatisticsButton() {
+    return (
+      <Button
+        variant="outlined"
+        startIcon={<Leaderboard />}
+        onClick={() => setShowStatistics(true)}
+      >
+        Statistics
+      </Button>
+    );
+  }
+
+  const shareButtonOnClick = () => {
+    const text = getShareText(
+      props.gameState.moveCount,
+      props.seconds,
+      NUMBER_OF_HINTS - props.gameState.hintsRemaining,
+      props.date
+    );
+    navigator.clipboard.writeText(text);
+  };
+
+  function ShareButton() {
+    return (
+      <PopupState variant="popover" popupId="demo-popup-popover">
+        {(popupState) => {
+          const { onClick, onTouchStart } = bindTrigger(popupState);
+          const combinedOnClick = (event: React.MouseEvent) => {
+            onClick(event);
+            shareButtonOnClick();
+            setTimeout(() => popupState.setOpen(false), 1000);
+          };
+
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                startIcon={<Share />}
+                onClick={combinedOnClick}
+                onTouchStart={onTouchStart}
+              >
+                Share Results
+              </Button>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: "center",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "center",
+                  horizontal: -4,
+                }}
+              >
+                <Typography sx={{ p: 1 }}>
+                  Results copied to clipboard
+                </Typography>
+              </Popover>
+            </div>
+          );
+        }}
+      </PopupState>
+    );
+  }
   useEffect(() => {
     setShowStatistics(false);
   }, [props.isOpen]);
@@ -134,7 +226,7 @@ function StreakGroup() {
   const stats = getPlayerStreakStatistics();
 
   return (
-    <div className="statistic-block padding-top padding-bottom">
+    <div className="statistic-block">
       <StreakBlock
         statisticName="Your streak"
         statisticNumber={stats.currentStreak}
@@ -178,7 +270,9 @@ function Statistics(props: StatisticProps) {
   );
 
   const movesPercentileText =
-    movesPercentile <= 50 ? `top ${movesPercentile}%*` : "bottom 50%*";
+    movesPercentile <= 50 || props.moves === props.minMoves
+      ? `top ${movesPercentile}%*`
+      : "bottom 50%*";
 
   const timePercentileText =
     timePercentile <= 50 ? `top ${timePercentile}%` : "bottom 50%";
@@ -213,7 +307,7 @@ function Statistics(props: StatisticProps) {
       </Typography>
       <Typography
         textAlign={"center"}
-        className="info-text-container padding-top"
+        className="info-text-container padding-top padding-bottom"
       >
         *You are ranked first on number of hints used, then number of moves. You
         outrank anyone who used more hints than you.

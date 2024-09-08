@@ -1,4 +1,4 @@
-export function formatDate(dateString: string): string {
+export function formatLongDisplayDate(dateString: string): string {
     const months = [
         "Jan", "Feb", "March", "April", "May", "June", 
         "July", "Aug", "Sept", "Oct", "Nov", "Dec"
