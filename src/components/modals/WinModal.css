@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 }
 
 .statistics td, th {
@@ -34,4 +35,8 @@
     align-items: center;
     flex-direction: row;
     gap: var(--space-small);
+}
+
+.theme {
+    text-align: center;
 }

@@ -30,24 +30,26 @@ export default function WinModal(props: Props) {
       <Typography id="modal-modal-title" variant="h5" component="h2">
         Nice work, you win!
       </Typography>
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
-      </Typography>
-      <Typography variant="h6" component={"body"} textAlign={"center"}>
-        {props.theme}
-      </Typography>
-      {!props.isDemo && (
-        <Typography variant="body2">
-          {formatLongDisplayDate(props.date)}
-        </Typography>
-      )}
       {!showStatistics && (
-        <div className="padding">
-          <Grid
-            gameState={props.gameState}
-            isReadOnly={true}
-            gridSize="small"
-          />
+        <div className="theme">
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
+          </Typography>
+          <Typography variant="h6" component={"body"}>
+            {props.theme}
+          </Typography>
+          {!props.isDemo && (
+            <Typography variant="body2">
+              {formatLongDisplayDate(props.date)}
+            </Typography>
+          )}
+          <div className="padding">
+            <Grid
+              gameState={props.gameState}
+              isReadOnly={true}
+              gridSize="small"
+            />
+          </div>
         </div>
       )}
     </>
