@@ -22,6 +22,7 @@ import {
   getPlayerStreakStatistics,
   updateGameFinishedOnDate,
 } from "../helpers/statistics";
+import { getSolvedPuzzle } from "../helpers/gameSolver";
 
 function App() {
   const [isWinModalOpen, setWinModalOpen] = useState(false);
@@ -36,6 +37,21 @@ function App() {
     isLoading: false,
   });
   const [secondsToComplete, setSecondsToComplete] = useState(0);
+  const [shouldPostStatistics, setShouldPostStatistics] = useState(true);
+
+  //Attach automatic solver
+  useEffect(() => {
+    const solvePuzzle = () => {
+      if (gameSetupData?.game) {
+        const solution = getSolvedPuzzle(gameSetupData?.game);
+        setShouldPostStatistics(false);
+        setGameState(solution);
+      }
+    };
+
+    window.Wormle = window.Wormle || {};
+    window.Wormle.solvePuzzle = solvePuzzle;
+  }, [gameSetupData]);
 
   //Initialise the game
   useEffect(() => {
@@ -47,14 +63,11 @@ function App() {
     setInitialGameData();
   }, []);
 
-  function setInitialGameData() {
-    const fetchData = async () => {
-      const data = await getData();
-      setGameSetupData(data);
-      setGameState(getGameStateFromSetup(data.game));
-      console.log("Here you go, cheater!\n", data.game.words);
-    };
-    fetchData();
+  async function setInitialGameData() {
+    const data = await getData();
+    setGameSetupData(data);
+    setGameState(getGameStateFromSetup(data.game));
+    console.log("Here you go, cheater!\n", data.game.words);
   }
 
   function infoButtonOnClick() {
@@ -114,7 +127,11 @@ function App() {
       document.activeElement.blur();
     }
 
-    if (getLastDayPlayed() !== gameSetupData.date && !isDemo) {
+    if (
+      getLastDayPlayed() !== gameSetupData.date &&
+      !isDemo &&
+      shouldPostStatistics
+    ) {
       updateGameFinishedOnDate(gameSetupData.date);
       SendStatistic();
     }

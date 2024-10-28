@@ -35,7 +35,7 @@ export default function WinModal(props: Props) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {`${props.isDemo ? "The demo" : "Today's"} theme is:`}
           </Typography>
-          <Typography variant="h6" component={"body"}>
+          <Typography variant="h6" component={"p"}>
             {props.theme}
           </Typography>
           {!props.isDemo && (
@@ -249,7 +249,7 @@ function StreakBlock(props: StreakProps) {
   return (
     <div className="statistic-block-item">
       <Typography component="h3">{props.statisticName}</Typography>
-      <Typography variant="h4" component="body">
+      <Typography variant="h4" component="p">
         {props.statisticNumber}
       </Typography>
     </div>
