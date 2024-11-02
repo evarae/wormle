@@ -166,7 +166,9 @@ export default function Grid(props: GridProps) {
 
   return (
     <div
-      className={`grid-container grid-container-${props.gridSize ?? "large"}`}
+      className={`grid-container grid-container-${
+        props.gridSize ?? "large"
+      } puppeteer-target`}
     >
       <table cellSpacing="0" cellPadding="0" role="grid">
         <tbody>{renderedTiles}</tbody>
