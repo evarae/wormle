@@ -134,14 +134,14 @@ function isGameOver(gameState:GameState) : boolean {
   }
 
   const values: Tile[] = Object.values(gameState.tiles);
-  let isMatch = true;
-  values.forEach(t => {
-    if(t.guess !== t.value){
-      isMatch = false;
-    }
-  });
 
-  return isMatch;
+  for(const t of values){
+    if(t.guess !== t.value){
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function createTileDictionary(words: Word[], startCoordinates:Coordinates): Record<string,Tile>{

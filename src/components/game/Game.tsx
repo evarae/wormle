@@ -86,27 +86,18 @@ const Game = (props: Props) => {
 
   const hints = useMemo(() => {
     const initialHints = NUMBER_OF_HINTS;
-    const hintsRemaining = props.gameState.hintsRemaining;
-    const hintsUsed = initialHints - hintsRemaining;
+    const hintsUsed = initialHints - props.gameState.hintsRemaining;
 
     const hintElements = [];
 
     for (let i = 1; i <= initialHints; i++) {
-      const key = `hint-${i}`;
-      if (i <= hintsUsed) {
-        hintElements.push(
-          <div key={key} className="hint-indicator used">
-            <div className="used" />
-          </div>
-        );
-      } else {
-        hintElements.push(
-          <div key={key} className="hint-indicator unused">
-            <div className="unused" />
-          </div>
-        );
-      }
+      hintElements.push(
+        <div key={`hint-${i}`} className={`hint-indicator`}>
+          <div className={i <= hintsUsed ? "used" : "unused"} />
+        </div>
+      );
     }
+
     return hintElements;
   }, [props.gameState.hintsRemaining]);
 

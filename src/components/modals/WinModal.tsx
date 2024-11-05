@@ -6,7 +6,6 @@ import { PostRequestStatus } from "../App";
 import DonationLink from "./Donation";
 import {
   NUMBER_OF_HINTS,
-  PostStatisticResponseBody,
   formatLongDisplayDate,
   getPlayerStreakStatistics,
   getShareText,
@@ -21,6 +20,7 @@ import {
 } from "@mui/material";
 import { Leaderboard, Share, ArrowBackIosNew } from "@mui/icons-material/";
 import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
+import { Statistics } from "./Statistics";
 
 export default function WinModal(props: Props) {
   const [showStatistics, setShowStatistics] = useState(false);
@@ -254,76 +254,6 @@ function StreakBlock(props: StreakProps) {
       </Typography>
     </div>
   );
-}
-
-function Statistics(props: StatisticProps) {
-  const timePercentile = Math.floor(
-    (1 -
-      props.statisticPostData.secondsToCompleteBetterThanCount /
-        props.statisticPostData.playerCount) *
-      100
-  );
-
-  const movesPercentile = Math.floor(
-    (1 -
-      props.statisticPostData.moveCountBetterThanCount /
-        props.statisticPostData.playerCount) *
-      100
-  );
-
-  const movesPercentileText =
-    movesPercentile <= 50 || props.moves === props.minMoves
-      ? `top ${movesPercentile}%*`
-      : "bottom 50%*";
-
-  const timePercentileText =
-    timePercentile <= 50 ? `top ${timePercentile}%` : "bottom 50%";
-
-  return (
-    <div className="statistics">
-      <div className="padding-top padding-bottom">
-        <table>
-          <tbody>
-            <tr>
-              <th scope="row">{`Hints used`}</th>
-              <td>{props.hintsUsed}</td>
-              <td></td>
-            </tr>
-            <tr>
-              <th scope="row">{`Moves (minimum ${props.minMoves})`}</th>
-              <td>{props.moves}</td>
-              <td>{movesPercentileText}</td>
-            </tr>
-            <tr>
-              <th scope="row">Time (seconds)</th>
-              <td>{props.seconds}</td>
-              <td>{timePercentileText}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <Typography textAlign={"center"}>
-        {props.statisticPostData.playerCount > 1
-          ? `Not bad, but there's always room for improvement.`
-          : `You're the first person to win today, so you've set the bar!`}
-      </Typography>
-      <Typography
-        textAlign={"center"}
-        className="info-text-container padding-top padding-bottom"
-      >
-        *You are ranked first on number of hints used, then number of moves. You
-        outrank anyone who used more hints than you.
-      </Typography>
-    </div>
-  );
-}
-
-interface StatisticProps {
-  seconds: number;
-  moves: number;
-  minMoves: number;
-  hintsUsed: number;
-  statisticPostData: PostStatisticResponseBody;
 }
 
 interface StreakProps {

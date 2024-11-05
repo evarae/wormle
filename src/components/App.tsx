@@ -202,7 +202,7 @@ function App() {
           postRequestStatus={postRequest}
         />
       )}
-      {gameState ? (
+      {gameState && (
         <div>
           {isDemo && (
             <div className="demo-text">
@@ -230,8 +230,6 @@ function App() {
             </div>
           )}
         </div>
-      ) : (
-        <></>
       )}
     </div>
   );
