@@ -23,6 +23,9 @@ import {
   updateGameFinishedOnDate,
 } from "../helpers/statistics";
 import { getSolvedPuzzle } from "../helpers/gameSolver";
+import InstagramIcon from "@mui/icons-material/Instagram";
+
+const INSTAGRAM_LINK = "https://www.instagram.com/wormle.game/";
 
 function App() {
   const [isWinModalOpen, setWinModalOpen] = useState(false);
@@ -179,59 +182,72 @@ function App() {
         infoButtonOnClick={infoButtonOnClick}
         helpButtonOnClick={helpButtonOnClick}
       />
-      <HelpModal
-        isOpen={isHelpModalOpen}
-        onClose={helpModalOnClose}
-        tryDemoOnClick={tryDemoOnClick}
-      />
-      <InfoModal
-        isOpen={isInfoModalOpen}
-        onClose={infoModalOnClose}
-        tryDemoOnClick={tryDemoOnClick}
-      />
-      {gameState && gameSetupData && (
-        <WinModal
-          seconds={secondsToComplete}
-          isOpen={isWinModalOpen}
-          onClose={winModalOnClose}
-          gameState={gameState}
-          theme={isDemo ? demoData.game.theme : gameSetupData.game.theme}
-          date={gameSetupData.date}
-          isDemo={isDemo}
-          tryRealGameOnClick={tryRealGameOnClick}
-          postRequestStatus={postRequest}
+      <div className="page-body">
+        <HelpModal
+          isOpen={isHelpModalOpen}
+          onClose={helpModalOnClose}
+          tryDemoOnClick={tryDemoOnClick}
         />
-      )}
-      {gameState && (
-        <div>
-          {isDemo && (
-            <div className="demo-text">
-              <Typography>
-                Use the arrow keys or mouse to guide the worm and spell a
-                related word on each row. Letters appear in the order shown at
-                the bottom of the screen. If you make a mistake, tap the worm to
-                move backwards, or hit &quot;reset tiles&quot;.
-              </Typography>
-            </div>
-          )}
-          <Game
+        <InfoModal
+          isOpen={isInfoModalOpen}
+          onClose={infoModalOnClose}
+          tryDemoOnClick={tryDemoOnClick}
+        />
+        {gameState && gameSetupData && (
+          <WinModal
+            seconds={secondsToComplete}
+            isOpen={isWinModalOpen}
+            onClose={winModalOnClose}
             gameState={gameState}
-            setGameState={setGameState}
-            realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
+            theme={isDemo ? demoData.game.theme : gameSetupData.game.theme}
+            date={gameSetupData.date}
+            isDemo={isDemo}
+            tryRealGameOnClick={tryRealGameOnClick}
+            postRequestStatus={postRequest}
           />
-          {isDemo && (
-            <div className="demo-text">
-              <Typography>
-                Can you figure out the theme? If you need some <b>direction</b>,
-                use a hint to reveal a letter. If your motivation is going{" "}
-                <b>South</b>, the &quot;
-                <b>?</b>&quot; icon could be your <b>North</b> star.
-              </Typography>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+        {gameState && (
+          <div>
+            {isDemo && (
+              <div className="demo-text">
+                <Typography>
+                  Use the arrow keys or mouse to guide the worm and spell a
+                  related word on each row. Letters appear in the order shown at
+                  the bottom of the screen. If you make a mistake, tap the worm
+                  to move backwards, or hit &quot;reset tiles&quot;.
+                </Typography>
+              </div>
+            )}
+            <Game
+              gameState={gameState}
+              setGameState={setGameState}
+              realGameOnClick={isDemo ? tryRealGameOnClick : undefined}
+            />
+            {isDemo && (
+              <div className="demo-text">
+                <Typography>
+                  Can you figure out the theme? If you need some{" "}
+                  <b>direction</b>, use a hint to reveal a letter. If your
+                  motivation is going <b>South</b>, the &quot;
+                  <b>?</b>&quot; icon could be your <b>North</b> star.
+                </Typography>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      <PageFooter />
     </div>
+  );
+}
+
+function PageFooter() {
+  return (
+    <footer className="page-footer padding">
+      <a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer">
+        Follow wormle.game on Instagram <InstagramIcon />
+      </a>
+    </footer>
   );
 }
 
